@@ -103,6 +103,7 @@ fastlane/test_output
 ## Various settings
 
 ## Other
+taipeipublic/Constant.swift
 
 ### Xcode Patch ###
 *.xcodeproj/*
