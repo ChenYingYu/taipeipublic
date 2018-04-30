@@ -12,6 +12,7 @@
 		0A6EDBEA2096AE00004BBF3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A6EDBE82096AE00004BBF3C /* Main.storyboard */; };
 		0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A6EDBEB2096AE03004BBF3C /* Assets.xcassets */; };
 		0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A6EDBED2096AE03004BBF3C /* LaunchScreen.storyboard */; };
+		F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 534588B88CA253347B214A56 /* Pods_taipeipublic.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,9 @@
 		0A6EDBEB2096AE03004BBF3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A6EDBEE2096AE03004BBF3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A6EDBF02096AE03004BBF3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taipeipublic.release.xcconfig"; path = "Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic.release.xcconfig"; sourceTree = "<group>"; };
+		534588B88CA253347B214A56 /* Pods_taipeipublic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_taipeipublic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AE4647D95EDEB0E4801DA3A /* Pods-taipeipublic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taipeipublic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +45,8 @@
 			children = (
 				0A6EDBE32096ADFF004BBF3C /* taipeipublic */,
 				0A6EDBE22096ADFF004BBF3C /* Products */,
+				D3149E127504D6CEB898CCD3 /* Pods */,
+				B932BCB6D553A847A5CE8DB9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +71,23 @@
 			path = taipeipublic;
 			sourceTree = "<group>";
 		};
+		B932BCB6D553A847A5CE8DB9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				534588B88CA253347B214A56 /* Pods_taipeipublic.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D3149E127504D6CEB898CCD3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7AE4647D95EDEB0E4801DA3A /* Pods-taipeipublic.debug.xcconfig */,
+				1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +95,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A6EDBF32096AE03004BBF3C /* Build configuration list for PBXNativeTarget "taipeipublic" */;
 			buildPhases = (
+				A11C1108072732791A4EA101 /* [CP] Check Pods Manifest.lock */,
 				0A6EDBDD2096ADFF004BBF3C /* Sources */,
 				0A6EDBDE2096ADFF004BBF3C /* Frameworks */,
 				0A6EDBDF2096ADFF004BBF3C /* Resources */,
+				FCE7DD7CE6BEDEF0735229B2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -129,6 +155,47 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A11C1108072732791A4EA101 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-taipeipublic-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FCE7DD7CE6BEDEF0735229B2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0A6EDBDD2096ADFF004BBF3C /* Sources */ = {
@@ -278,15 +345,13 @@
 		};
 		0A6EDBF42096AE03004BBF3C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AE4647D95EDEB0E4801DA3A /* Pods-taipeipublic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9VPGGN82CW;
 				INFOPLIST_FILE = taipeipublic/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChenAlan.taipeipublic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -296,15 +361,13 @@
 		};
 		0A6EDBF52096AE03004BBF3C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9VPGGN82CW;
 				INFOPLIST_FILE = taipeipublic/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChenAlan.taipeipublic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
