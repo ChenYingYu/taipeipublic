@@ -14,6 +14,7 @@ class MapViewController: UIViewController {
     
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
+    @IBOutlet weak var mapView: GMSMapView!
     
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
@@ -31,6 +32,11 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
         dismiss(animated: true, completion: nil)
+
+        let marker = GMSMarker(position: place.coordinate)
+        marker.title = place.formattedAddress
+        marker.map = mapView
+        mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
@@ -60,17 +66,15 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     }
 
     func setupMap() {
-        let camera = GMSCameraPosition.camera(withLatitude: 25.042416, longitude: 121.564793, zoom: 15.0)
-        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+        mapView.camera = GMSCameraPosition.camera(withLatitude: 25.042416, longitude: 121.564793, zoom: 15.0)
         mapView.isMyLocationEnabled = true
-        view = mapView
-        view.addSubview(searchButton)
+        mapView.addSubview(searchButton)
     }
     
     func setupButton() {
         searchButton.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        searchButton.frame = CGRect(x: 15.0, y: 30.0, width: view.frame.size.width - 30.0, height: 45.0)
+        searchButton.layer.shadowRadius = 4.0
     }
 }
 
