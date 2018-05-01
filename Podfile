@@ -7,6 +7,7 @@ target 'taipeipublic' do
 
   pod 'GoogleMaps'
   pod 'GooglePlaces'
+  pod 'Alamofire'
 
   # Pods for taipeipublic
 

@@ -32,7 +32,8 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
         dismiss(animated: true, completion: nil)
-
+        let id = place.placeID
+        let url = URL(string: "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(id)&key=\(Constant.googlePlacesAPIKey)")
         let marker = GMSMarker(position: place.coordinate)
         marker.title = place.formattedAddress
         marker.map = mapView

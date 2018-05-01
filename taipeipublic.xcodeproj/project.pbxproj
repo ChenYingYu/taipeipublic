@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A16D9E220984B5200EEBB4F /* ACHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E120984B5200EEBB4F /* ACHTTPClient.swift */; };
 		0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33C0362096FC3D00C9ED7E /* Constant.swift */; };
 		0A6EDBE52096AE00004BBF3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6EDBE42096AE00004BBF3C /* AppDelegate.swift */; };
 		0A6EDBE72096AE00004BBF3C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6EDBE62096AE00004BBF3C /* MapViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A16D9E120984B5200EEBB4F /* ACHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHTTPClient.swift; sourceTree = "<group>"; };
 		0A33C0362096FC3D00C9ED7E /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		0A6EDBE12096ADFF004BBF3C /* taipeipublic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taipeipublic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A6EDBE42096AE00004BBF3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			children = (
 				0A6EDBE42096AE00004BBF3C /* AppDelegate.swift */,
 				0A6EDBE62096AE00004BBF3C /* MapViewController.swift */,
+				0A16D9E120984B5200EEBB4F /* ACHTTPClient.swift */,
 				0A6EDBE82096AE00004BBF3C /* Main.storyboard */,
 				0A6EDBEB2096AE03004BBF3C /* Assets.xcassets */,
 				0A6EDBED2096AE03004BBF3C /* LaunchScreen.storyboard */,
@@ -103,6 +106,7 @@
 				0A6EDBDE2096ADFF004BBF3C /* Frameworks */,
 				0A6EDBDF2096ADFF004BBF3C /* Resources */,
 				FCE7DD7CE6BEDEF0735229B2 /* [CP] Copy Pods Resources */,
+				34DADA4CCD70F8618A3A3EBF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -160,6 +164,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		34DADA4CCD70F8618A3A3EBF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A11C1108072732791A4EA101 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -205,6 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A16D9E220984B5200EEBB4F /* ACHTTPClient.swift in Sources */,
 				0A6EDBE72096AE00004BBF3C /* MapViewController.swift in Sources */,
 				0A6EDBE52096AE00004BBF3C /* AppDelegate.swift in Sources */,
 				0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */,
