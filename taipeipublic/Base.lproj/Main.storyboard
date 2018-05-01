@@ -43,19 +43,56 @@
                                     <constraint firstItem="ICl-re-SCB" firstAttribute="top" secondItem="6qb-Ff-xfq" secondAttribute="top" constant="30" id="kkX-xd-Xo8"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qle-93-xXK">
+                                <rect key="frame" x="0.0" y="517" width="375" height="150"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oe1-tW-T4i">
+                                        <rect key="frame" x="30" y="20" width="315" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="74I-aq-AI0"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zgH-Qs-O7m">
+                                        <rect key="frame" x="30" y="60" width="315" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="2YK-Sy-Li4"/>
+                                    <constraint firstItem="zgH-Qs-O7m" firstAttribute="top" secondItem="oe1-tW-T4i" secondAttribute="bottom" constant="10" id="70j-Pb-3h9"/>
+                                    <constraint firstItem="oe1-tW-T4i" firstAttribute="top" secondItem="Qle-93-xXK" secondAttribute="top" constant="20" id="8Eo-PA-Wg5"/>
+                                    <constraint firstAttribute="bottom" secondItem="zgH-Qs-O7m" secondAttribute="bottom" constant="30" id="DOF-Vq-qsn"/>
+                                    <constraint firstItem="oe1-tW-T4i" firstAttribute="leading" secondItem="Qle-93-xXK" secondAttribute="leading" constant="30" id="FHx-km-Dk3"/>
+                                    <constraint firstAttribute="trailing" secondItem="zgH-Qs-O7m" secondAttribute="trailing" constant="30" id="JMb-rZ-o5k"/>
+                                    <constraint firstAttribute="trailing" secondItem="oe1-tW-T4i" secondAttribute="trailing" constant="30" id="QMc-de-Mpx"/>
+                                    <constraint firstItem="zgH-Qs-O7m" firstAttribute="leading" secondItem="Qle-93-xXK" secondAttribute="leading" constant="30" id="pBh-XQ-Zp0"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6qb-Ff-xfq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="-20" id="Nbd-ei-rdn"/>
+                            <constraint firstItem="Qle-93-xXK" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Sna-FI-4UY"/>
                             <constraint firstItem="6qb-Ff-xfq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gKx-yF-U2D"/>
+                            <constraint firstItem="Qle-93-xXK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="nCa-wL-axB"/>
+                            <constraint firstItem="Qle-93-xXK" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="oY6-ue-abH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6qb-Ff-xfq" secondAttribute="bottom" id="q6z-Ik-EOj"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6qb-Ff-xfq" secondAttribute="trailing" id="sw4-vv-HHk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="addressLabel" destination="zgH-Qs-O7m" id="9RT-39-vSr"/>
+                        <outlet property="infoView" destination="Qle-93-xXK" id="aml-76-xXh"/>
                         <outlet property="mapView" destination="6qb-Ff-xfq" id="aAk-PJ-JMz"/>
                         <outlet property="searchButton" destination="ICl-re-SCB" id="ai7-Ul-rIZ"/>
+                        <outlet property="titleLabel" destination="oe1-tW-T4i" id="7Tz-Th-dCC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

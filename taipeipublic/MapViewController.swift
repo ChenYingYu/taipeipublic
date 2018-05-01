@@ -9,12 +9,16 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
+import Alamofire
 
 class MapViewController: UIViewController {
     
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
@@ -32,12 +36,14 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
         dismiss(animated: true, completion: nil)
-        let id = place.placeID
-        let url = URL(string: "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(id)&key=\(Constant.googlePlacesAPIKey)")
         let marker = GMSMarker(position: place.coordinate)
-        marker.title = place.formattedAddress
         marker.map = mapView
         mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
+        titleLabel.text = place.name
+        addressLabel.text = place.formattedAddress
+        infoView.isHidden = false
+        
+        view.addSubview(infoView)
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
@@ -62,6 +68,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        infoView.isHidden = true
         setupButton()
         setupMap()
     }
