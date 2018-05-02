@@ -8,7 +8,8 @@ target 'taipeipublic' do
   pod 'GoogleMaps'
   pod 'GooglePlaces'
   pod 'Alamofire'
-
+  pod 'SwiftLint'
+  
   # Pods for taipeipublic
 
 end

@@ -7,23 +7,27 @@ PODS:
     - GoogleMaps/Base
   - GooglePlaces (2.6.0):
     - GoogleMaps/Base (= 2.6.0)
+  - SwiftLint (0.25.0)
 
 DEPENDENCIES:
   - Alamofire
   - GoogleMaps
   - GooglePlaces
+  - SwiftLint
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - GoogleMaps
     - GooglePlaces
+    - SwiftLint
 
 SPEC CHECKSUMS:
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
   GoogleMaps: 42f91c68b7fa2f84d5c86597b18ceb99f5414c7f
   GooglePlaces: f6ddf33b75cef69e888907d9947c57198ed845f3
+  SwiftLint: e14651157288e9e01d6e1a71db7014fb5744a8ea
 
-PODFILE CHECKSUM: 323ef85d9f6c155bd7417960223082da295593a2
+PODFILE CHECKSUM: 84440fb12724c6bcde5990557cebd4124850bdbf
 
 COCOAPODS: 1.5.0
