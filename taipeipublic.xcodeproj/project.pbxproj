@@ -122,6 +122,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A6EDBF32096AE03004BBF3C /* Build configuration list for PBXNativeTarget "taipeipublic" */;
 			buildPhases = (
+				0A16D9E620997E9400EEBB4F /* ShellScript */,
 				A11C1108072732791A4EA101 /* [CP] Check Pods Manifest.lock */,
 				0A6EDBDD2096ADFF004BBF3C /* Sources */,
 				0A6EDBDE2096ADFF004BBF3C /* Frameworks */,
@@ -185,6 +186,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0A16D9E620997E9400EEBB4F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
+		};
 		34DADA4CCD70F8618A3A3EBF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

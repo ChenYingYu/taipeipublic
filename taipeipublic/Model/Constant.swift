@@ -9,7 +9,6 @@
 import Foundation
 
 class Constant {
-    
     static let googleMapsAPIKey = "AIzaSyAGVKnhXAE-eiDJuTK3i-91rSnpngQAkHI"
     static let googlePlacesAPIKey = "AIzaSyC07iM6JrYRi4fvQVybWRLYQthE1f7ITf8"
 }
