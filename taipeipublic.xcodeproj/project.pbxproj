@@ -42,6 +42,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A16D9E32099680000EEBB4F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0A6EDBE62096AE00004BBF3C /* MapViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		0A16D9E42099681300EEBB4F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0A33C0362096FC3D00C9ED7E /* Constant.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0A16D9E52099683300EEBB4F /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		0A6EDBD82096ADFF004BBF3C = {
 			isa = PBXGroup;
 			children = (
@@ -63,13 +86,14 @@
 		0A6EDBE32096ADFF004BBF3C /* taipeipublic */ = {
 			isa = PBXGroup;
 			children = (
+				0A16D9E42099681300EEBB4F /* Model */,
+				0A16D9E52099683300EEBB4F /* View */,
+				0A16D9E32099680000EEBB4F /* Controller */,
 				0A6EDBE42096AE00004BBF3C /* AppDelegate.swift */,
-				0A6EDBE62096AE00004BBF3C /* MapViewController.swift */,
 				0A6EDBE82096AE00004BBF3C /* Main.storyboard */,
 				0A6EDBEB2096AE03004BBF3C /* Assets.xcassets */,
 				0A6EDBED2096AE03004BBF3C /* LaunchScreen.storyboard */,
 				0A6EDBF02096AE03004BBF3C /* Info.plist */,
-				0A33C0362096FC3D00C9ED7E /* Constant.swift */,
 			);
 			path = taipeipublic;
 			sourceTree = "<group>";
