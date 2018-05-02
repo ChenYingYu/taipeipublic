@@ -13,13 +13,17 @@ import Alamofire
 
 class MapViewController: UIViewController {
 
+    var destinationId = ""
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
-
+    @IBAction func showRoute(_ sender: UIButton) {
+        let routeManager = RouteManager()
+        routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
+    }
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
@@ -39,6 +43,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         let marker = GMSMarker(position: place.coordinate)
         marker.map = mapView
         mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
+        destinationId = place.placeID
         titleLabel.text = place.name
         addressLabel.text = place.formattedAddress
         infoView.isHidden = false
@@ -73,8 +78,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     }
 
     func setupMap() {
-        let locationmanager = CLLocationManager()
-        mapView.camera = GMSCameraPosition.camera(withLatitude: (locationmanager.location?.coordinate.latitude)!, longitude: (locationmanager.location?.coordinate.longitude)!, zoom: 15.0)
+        mapView.camera = GMSCameraPosition.camera(withLatitude: getUserLatitude(), longitude: getUserLongitude(), zoom: 15.0)
         mapView.isMyLocationEnabled = true
         mapView.addSubview(searchButton)
         mapView.settings.myLocationButton = true
@@ -84,5 +88,21 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         searchButton.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         searchButton.layer.shadowRadius = 4.0
+    }
+    func getUserLatitude() -> Double {
+        let locationmanager = CLLocationManager()
+        guard let userLatitude = locationmanager.location?.coordinate.latitude else {
+            print("Cannot find user's location")
+            return 25.042416
+        }
+        return userLatitude
+    }
+    func getUserLongitude() -> Double {
+        let locationmanager = CLLocationManager()
+        guard let userLongitude = locationmanager.location?.coordinate.longitude else {
+            print("Cannot find user's location")
+            return 121.564793
+        }
+        return userLongitude
     }
 }

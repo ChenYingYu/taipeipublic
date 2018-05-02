@@ -70,6 +70,9 @@
                                         <state key="normal" title="規劃路線">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="showRoute:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XSY-3q-lIt"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
