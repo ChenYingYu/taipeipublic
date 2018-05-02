@@ -74,9 +74,11 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     }
 
     func setupMap() {
-        mapView.camera = GMSCameraPosition.camera(withLatitude: 25.042416, longitude: 121.564793, zoom: 15.0)
+        let locationmanager = CLLocationManager()
+        mapView.camera = GMSCameraPosition.camera(withLatitude: (locationmanager.location?.coordinate.latitude)!, longitude:  (locationmanager.location?.coordinate.longitude)!, zoom: 15.0)
         mapView.isMyLocationEnabled = true
         mapView.addSubview(searchButton)
+        mapView.settings.myLocationButton = true
     }
     
     func setupButton() {
