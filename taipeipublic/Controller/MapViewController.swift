@@ -14,6 +14,7 @@ import Alamofire
 class MapViewController: UIViewController {
 
     var destinationId = ""
+    var destinationName = ""
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
@@ -30,6 +31,11 @@ class MapViewController: UIViewController {
         autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let routeViewController = segue.destination as? RouteViewController {
+            routeViewController.destinationName = destinationName
+        }
+    }
 }
 
 extension MapViewController: GMSAutocompleteViewControllerDelegate {
@@ -44,7 +50,9 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         marker.map = mapView
         mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
         destinationId = place.placeID
+        destinationName = place.name
         titleLabel.text = place.name
+        searchButton.setTitle(place.name, for: UIControlState.normal)
         addressLabel.text = place.formattedAddress
         infoView.isHidden = false
 
