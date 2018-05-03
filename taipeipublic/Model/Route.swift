@@ -76,4 +76,3 @@ struct Line {
     let textColor: String
     let icon: String
 }
-
