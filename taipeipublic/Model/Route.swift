@@ -25,35 +25,34 @@ struct Location {
 
 struct Legs {
     let arrivalTime: String
-    let depatureTime: String
+    let departureTime: String
     let distance: String
     let duration: String
     let endAddress: String
-    let endLocation: String
+    let endLocation: Location
     let startAddress: String
-    let startLocation: String
+    let startLocation: Location
     let steps: [Step]
-    let travelMode: Travel.Mode
 }
 
 struct Step {
     let distance: String
     let duration: String
     let endLocation: Location
-    let instrction: String
+    let instructions: String
     let startLocation: Location
     let polyline: String
-    let walkingDetail: [Step]
-    let transitDetail: [Transit]
-    let travelMode: Travel.Mode
+    let walkingDetail: [Step]?
+    let transitDetail: [Transit]?
+    let travelMode: String
 }
 
 struct Travel {
     let walking: String
     let transit: String
     enum Mode: String {
-        case walking = "Walking"
-        case transit = "Transit"
+        case walking = "WALKING"
+        case transit = "TRANSIT"
     }
 }
 

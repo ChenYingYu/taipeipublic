@@ -24,25 +24,64 @@ class RouteManager {
                     print("Cannot find key 'routes' in data: \(dictionary)")
                     return
                 }
-                for route in routes {
+//                for route in routes {
+                let route = routes[0]
                     guard let bounds = route["bounds"] as? [String: AnyObject], let northeast = bounds["northeast"] as? [String: Double], let northeastLat = northeast["lat"], let northeastLng = northeast["lng"], let southwest = bounds["southwest"] as? [String: Double], let southwestLat = southwest["lat"], let southwestLng = southwest["lng"] else {
                         print("Cannot find key 'bounds' in routes: \(routes)")
                         return
                     }
                     let newBounds = Bounds(northeast: Location(lat: northeastLat, lng: northeastLng), southwest: Location(lat: southwestLat, lng: southwestLng))
-                    print("======================")
-                    print(newBounds)
-                    print("======================")
-                    let routes = [Route]()
-                    
                     guard let legs = route["legs"] as? [[String: AnyObject]], legs.count > 0 else {
                         print("Cannot find key 'legs' in routes: \(routes)")
                         return
                     }
-                    guard let arrivalTime = legs[0]["arrival_time"] else {
+                    let leg = legs[0]
+                    guard let arrival = leg["arrival_time"] as? [String: AnyObject], let arrivalTime = arrival["text"] as? String, let departure = leg["departure_time"] as? [String: AnyObject], let departureTime = departure["text"] as? String, let distance = leg["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = leg["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
                         return
                     }
+                    guard let endAddress = leg["end_address"] as? String, let endLocation = leg["end_location"] as? [String: AnyObject], let endLocationlat = endLocation["lat"] as? Double, let endLocationLng = endLocation["lng"] as? Double, let startAddress = leg["start_address"] as? String, let startLocation = leg["start_location"] as? [String: AnyObject], let startLocationlat = startLocation["lat"] as? Double, let startLocationLng = startLocation["lng"] as? Double else {
+                        return
+                    }
+                    let newEndLocation = Location(lat: endLocationlat, lng: endLocationLng)
+                    let newStartLocation = Location(lat: startLocationlat, lng: startLocationLng)
+                var newSteps = [Step]()
+                    guard let steps = leg["steps"] as? [[String: AnyObject]] else {
+                        return
+                    }
+                for step in steps {
+                    guard let distance = step["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = leg["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
+                        return
+                    }
+                    guard let endLocation = leg["end_location"] as? [String: AnyObject], let endLocationlat = endLocation["lat"] as? Double, let endLocationLng = endLocation["lng"] as? Double, let startLocation = leg["start_location"] as? [String: AnyObject], let startLocationlat = startLocation["lat"] as? Double, let startLocationLng = startLocation["lng"] as? Double else {
+                        return
+                    }
+                    let newEndLocation = Location(lat: endLocationlat, lng: endLocationLng)
+                    let newStartLocation = Location(lat: startLocationlat, lng: startLocationLng)
+                    guard let instructions = step["html_instructions"] as? String, let polyline = step["polyline"] as? [String: AnyObject], let points = polyline["points"] as? String else {
+                        return
+                    }
+                    guard let travelMode = step["travel_mode"] as? String else {
+                        return
+                    }
+                    let walkingDetail: [Step]?
+                    let transitDetail: [Transit]?
+                    if travelMode == "WLAKING" {
+                        transitDetail = nil
+                        walkingDetail = [Step]()
+                        let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
+                        newSteps.append(newStep)
+                    } else if travelMode == "TRANSIT" {
+                        walkingDetail = nil
+                        transitDetail = [Transit]()
+                        let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
+                        newSteps.append(newStep)
+                    }
                 }
+                    let newLegs = Legs(arrivalTime: arrivalTime, departureTime: departureTime, distance: distanceText, duration: durationText, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps)
+                print("======================")
+                print(newLegs)
+                print("======================")
+//                }
             case .failure(let error):
                 print(error)
             }
