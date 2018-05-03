@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A16D9E82099A6D600EEBB4F /* RouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E72099A6D600EEBB4F /* RouteManager.swift */; };
+		0A16D9EA2099C4BE00EEBB4F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E92099C4BE00EEBB4F /* Route.swift */; };
 		0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33C0362096FC3D00C9ED7E /* Constant.swift */; };
 		0A6EDBE52096AE00004BBF3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6EDBE42096AE00004BBF3C /* AppDelegate.swift */; };
 		0A6EDBE72096AE00004BBF3C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6EDBE62096AE00004BBF3C /* MapViewController.swift */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		0A16D9E72099A6D600EEBB4F /* RouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteManager.swift; sourceTree = "<group>"; };
+		0A16D9E92099C4BE00EEBB4F /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		0A33C0362096FC3D00C9ED7E /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		0A6EDBE12096ADFF004BBF3C /* taipeipublic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taipeipublic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A6EDBE42096AE00004BBF3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 			children = (
 				0A33C0362096FC3D00C9ED7E /* Constant.swift */,
 				0A16D9E72099A6D600EEBB4F /* RouteManager.swift */,
+				0A16D9E92099C4BE00EEBB4F /* Route.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				0A6EDBE72096AE00004BBF3C /* MapViewController.swift in Sources */,
 				0A6EDBE52096AE00004BBF3C /* AppDelegate.swift in Sources */,
 				0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */,
+				0A16D9EA2099C4BE00EEBB4F /* Route.swift in Sources */,
 				0A16D9E82099A6D600EEBB4F /* RouteManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
