@@ -56,10 +56,10 @@ class RouteManager {
                         return
                     }
                 for step in steps {
-                    guard let distance = step["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = leg["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
+                    guard let distance = step["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = step["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
                         return
                     }
-                    guard let endLocation = leg["end_location"] as? [String: AnyObject], let endLocationlat = endLocation["lat"] as? Double, let endLocationLng = endLocation["lng"] as? Double, let startLocation = leg["start_location"] as? [String: AnyObject], let startLocationlat = startLocation["lat"] as? Double, let startLocationLng = startLocation["lng"] as? Double else {
+                    guard let endLocation = step["end_location"] as? [String: AnyObject], let endLocationlat = endLocation["lat"] as? Double, let endLocationLng = endLocation["lng"] as? Double, let startLocation = step["start_location"] as? [String: AnyObject], let startLocationlat = startLocation["lat"] as? Double, let startLocationLng = startLocation["lng"] as? Double else {
                         return
                     }
                     let newEndLocation = Location(lat: endLocationlat, lng: endLocationLng)
@@ -72,7 +72,7 @@ class RouteManager {
                     }
                     let walkingDetail: [Step]?
                     let transitDetail: [Transit]?
-                    if travelMode == "WLAKING" {
+                    if travelMode == "WALKING" {
                         transitDetail = nil
                         walkingDetail = [Step]()
                         let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
