@@ -9,8 +9,8 @@
 import Foundation
 
 struct Route {
-    let bounds: Bounds
-    let legs: Legs
+    let bounds: Bounds?
+    let legs: Legs?
 }
 
 struct Bounds {

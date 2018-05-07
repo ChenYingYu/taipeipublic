@@ -16,7 +16,7 @@ class MapViewController: UIViewController {
     var destinationId = ""
     var destinationName = ""
     var routes = [Route]()
-    var path = ""
+    var seletedRoute = Route(bounds: nil, legs: nil)
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
@@ -37,10 +37,12 @@ class MapViewController: UIViewController {
             routeViewController.destinationName = destinationName
             routeViewController.destinationId = destinationId
             routeViewController.routes = routes
-            routeViewController.passHandller = { [weak self] (path) in
-                self?.path = path
+            routeViewController.passHandller = { [weak self] (route) in
+                self?.seletedRoute = route
             }
         }
+        self.infoView.isHidden = true
+        self.searchButton.isHidden = true
     }
 }
 
@@ -87,11 +89,21 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        let path = GMSPath(fromEncodedPath: self.path)
+        guard let legs = self.seletedRoute.legs else {
+            return
+        }
+        let path = GMSPath(fromEncodedPath: legs.points)
         let polyline = GMSPolyline(path: path)
         polyline.strokeColor = UIColor.blue
         polyline.strokeWidth = 6.0
         polyline.map = mapView
+        for step in legs.steps {
+            let position = CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng)
+            let marker = GMSMarker(position: position)
+            marker.icon = UIImage(named: "icon_location")
+            marker.title = step.instructions
+            marker.map = mapView
+        }
     }
 
     override func viewDidLoad() {

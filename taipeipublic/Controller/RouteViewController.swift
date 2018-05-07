@@ -14,7 +14,7 @@ class RouteViewController: UIViewController {
     var destinationName = ""
     var destinationId = ""
     var routes = [Route]()
-    var passHandller: ((String) -> Void)?
+    var passHandller: ((Route) -> Void)?
     @IBOutlet weak var routeTableView: UITableView!
     @IBAction func back(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
@@ -49,22 +49,23 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
+        cell.backgroundColor = UIColor.gray
         guard routes.count > indexPath.row else {
-            cell.backgroundColor = UIColor.gray
             return cell
         }
         let route = routes[indexPath.row]
         var text = ""
-        for step in route.legs.steps {
-            text += "\(step.instructions)\n"
+        if let legs = route.legs {
+            for step in legs.steps {
+                text += "\(step.instructions)\n"
+            }
         }
-        cell.backgroundColor = UIColor.gray
         cell.textLabel?.text = text
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let path = routes[indexPath.row].legs.points
-        self.passHandller?(path)
+        let route = routes[indexPath.row]
+        self.passHandller?(route)
         dismiss(animated: true, completion: nil)
     }
 }
