@@ -9,13 +9,21 @@
 import Foundation
 import Alamofire
 
+protocol RouteManagerDelegate: class {
+    func manager(_ manager: RouteManager, didGet routes: [Route])
+    func manager(_ manager: RouteManager, didFailWith error: Error)
+}
+
 class RouteManager {
+    weak var delegate: RouteManagerDelegate?
+    var myRoutes = [Route]()
     func requestRoute(originLatitude: Double, originLongitude: Double, destinationId: String) {
         let urlString = "https://maps.googleapis.com/maps/api/directions/json?origin=\(originLatitude),\(originLongitude)&destination=place_id:\(destinationId)&mode=transit&key=\(Constant.googlePlacesAPIKey)&alternatives=true"
 
         Alamofire.request(urlString).validate().responseJSON { response in
             switch response.result {
             case .success:
+                self.myRoutes = [Route]()
                 guard let dictionary = response.result.value as? [String: Any] else {
                     print("Cannot parse data as JSON: \(String(describing: response.result.value))")
                     return
@@ -24,8 +32,7 @@ class RouteManager {
                     print("Cannot find key 'routes' in data: \(dictionary)")
                     return
                 }
-//                for route in routes {
-                let route = routes[0]
+                for route in routes {
                     guard let bounds = route["bounds"] as? [String: AnyObject], let northeast = bounds["northeast"] as? [String: Double], let northeastLat = northeast["lat"], let northeastLng = northeast["lng"], let southwest = bounds["southwest"] as? [String: Double], let southwestLat = southwest["lat"], let southwestLng = southwest["lng"] else {
                         print("Cannot find key 'bounds' in routes: \(routes)")
                         return
@@ -77,13 +84,21 @@ class RouteManager {
                         newSteps.append(newStep)
                     }
                 }
-                    let newLegs = Legs(arrivalTime: arrivalTime, departureTime: departureTime, distance: distanceText, duration: durationText, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps)
+                guard let polyline = route["overview_polyline"] as? [String: String], let points = polyline["points"] else {
+                    return
+                }
+                let newLegs = Legs(arrivalTime: arrivalTime, departureTime: departureTime, distance: distanceText, duration: durationText, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps, points: points)
                 print("======================")
                 print(newLegs)
                 print("======================")
-//                }
+                let myRoute = Route(bounds: newBounds, legs: newLegs)
+                    self.myRoutes.append(myRoute)
+                    DispatchQueue.main.async {
+                        self.delegate?.manager(self, didGet: self.myRoutes)
+                    }
+                }
             case .failure(let error):
-                print(error)
+                self.delegate?.manager(self, didFailWith: error)
             }
         }
     }

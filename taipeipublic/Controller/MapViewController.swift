@@ -15,6 +15,8 @@ class MapViewController: UIViewController {
 
     var destinationId = ""
     var destinationName = ""
+    var routes = [Route]()
+    var path = ""
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
@@ -22,8 +24,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBAction func showRoute(_ sender: UIButton) {
-        let routeManager = RouteManager()
-        routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
+
     }
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
@@ -34,6 +35,11 @@ class MapViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let routeViewController = segue.destination as? RouteViewController {
             routeViewController.destinationName = destinationName
+            routeViewController.destinationId = destinationId
+            routeViewController.routes = routes
+            routeViewController.passHandller = { [weak self] (path) in
+                self?.path = path
+            }
         }
     }
 }
@@ -55,6 +61,9 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         searchButton.setTitle(place.name, for: UIControlState.normal)
         addressLabel.text = place.formattedAddress
         infoView.isHidden = false
+        let routeManager = RouteManager()
+        routeManager.delegate = self
+        routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
 
         view.addSubview(infoView)
     }
@@ -75,6 +84,14 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
 
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        let path = GMSPath(fromEncodedPath: self.path)
+        let polyline = GMSPolyline(path: path)
+        polyline.strokeColor = UIColor.blue
+        polyline.strokeWidth = 6.0
+        polyline.map = mapView
     }
 
     override func viewDidLoad() {
@@ -112,5 +129,14 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             return 121.564793
         }
         return userLongitude
+    }
+}
+
+extension MapViewController: RouteManagerDelegate {
+    func manager(_ manager: RouteManager, didGet routes: [Route]) {
+        self.routes = routes
+    }
+    func manager(_ manager: RouteManager, didFailWith error: Error) {
+        print("Found Error:\n\(error)\n")
     }
 }

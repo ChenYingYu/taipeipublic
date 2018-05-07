@@ -33,6 +33,7 @@ struct Legs {
     let startAddress: String
     let startLocation: Location
     let steps: [Step]
+    let points: String
 }
 
 struct Step {

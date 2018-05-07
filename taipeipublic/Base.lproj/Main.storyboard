@@ -191,6 +191,7 @@
                     </view>
                     <connections>
                         <outlet property="destinationLabel" destination="Bw5-sw-yPo" id="Adk-uH-E0T"/>
+                        <outlet property="routeTableView" destination="I1f-gt-2mI" id="10r-RM-DsU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Me-fE-fR0" userLabel="First Responder" sceneMemberID="firstResponder"/>
