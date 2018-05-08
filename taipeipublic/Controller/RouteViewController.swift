@@ -49,18 +49,33 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.backgroundColor = UIColor.gray
+        cell.backgroundColor = UIColor.white
+        cell.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0).cgColor
+        cell.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        cell.layer.shadowRadius = 4.0
+        cell.layer.shadowOpacity = 1.0
         guard routes.count > indexPath.row else {
             return cell
         }
         let route = routes[indexPath.row]
-        var text = ""
+        var routeInfo = ""
         if let legs = route.legs {
-            for step in legs.steps {
-                text += "\(step.instructions)\n"
+            routeInfo += "\(legs.duration): \n"
+            for index in legs.steps.indices {
+                if index != 0 {
+                    routeInfo += " > "
+                }
+                let instruction = legs.steps[index].instructions.enumerated()
+                for (index, character) in instruction {
+                    if index < 2 {
+                        routeInfo += "\(character)"
+                    }
+                }
+                routeInfo += "\(legs.steps[index].duration)"
             }
         }
-        cell.textLabel?.text = text
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.text = routeInfo
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
