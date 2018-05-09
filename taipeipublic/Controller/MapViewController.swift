@@ -94,6 +94,12 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         if navigationMode {
+            mapView.clear()
+            if let place = destination {
+                let marker = GMSMarker(position: place.coordinate)
+                marker.map = mapView
+                mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
+            }
             self.infoView.isHidden = true
             self.searchButton.isHidden = true
             guard let legs = self.seletedRoute.legs else {
@@ -104,24 +110,40 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             polyline.strokeColor = UIColor.blue
             polyline.strokeWidth = 6.0
             polyline.map = mapView
-            for step in legs.steps {
-                let position = CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng)
-                let marker = GMSMarker(position: position)
-                marker.icon = UIImage(named: "icon_location")
-                marker.title = step.instructions
-                marker.map = mapView
-                if let youbikeManager = YoubikeManager.getStationInfo() {
-                    let stations = youbikeManager.checkNearbyStation(position: position)
-                    for station in stations {
-                        if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
-                            let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
-                            let marker = GMSMarker(position: position)
-                            marker.icon = UIImage(named: "icon_bicycle")
-                            marker.title = station.name
-                            marker.map = mapView
+            // Try to replace first walking polyline to youbike polyline
+            var startingYoubikeStation: YoubikeStation?
+            var endingYoubikeStation: YoubikeStation?
+            for index in legs.steps.indices {
+                if index < 2 {
+                    if let youbikeManager = YoubikeManager.getStationInfo() {
+                        let stations = youbikeManager.checkNearbyStation(position: position)
+                        if stations.count > 0 {
+                            let station = stations[0]
+                            if index == 0 {
+                                startingYoubikeStation = station
+                            } else if index == 1 {
+                                endingYoubikeStation = station
+                            }
+                            if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
+                                let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
+                                let marker = GMSMarker(position: position)
+                                marker.icon = UIImage(named: "icon_bicycle")
+                                marker.title = station.name
+                                marker.map = mapView
+                            }
                         }
                     }
                 }
+            }
+            if let newStart = startingYoubikeStation, let newEnd = endingYoubikeStation, newStart.name != newEnd.name {
+                print("= = = = = = = = = = = = = = = =")
+                print("AWESOME! WE FOUND A NEW ROUTE!")
+                print("= = = = = = = = = = = = = = = =")
+                let position = CLLocationCoordinate2D(latitude: newStart.latitude, longitude: newStart.longitude)
+                let marker = GMSMarker(position: position)
+                marker.icon = UIImage(named: "icon_location")
+                marker.title = legs.steps[index].instructions
+                marker.map = mapView
             }
             self.backButton.isHidden = false
             mapView.addSubview(backButton)
