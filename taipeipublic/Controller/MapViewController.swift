@@ -16,6 +16,7 @@ class MapViewController: UIViewController {
 
     var navigationMode = false
     var destinationMode = false
+    var destination: GMSPlace?
     var destinationId = ""
     var destinationName = ""
     var routes = [Route]()
@@ -56,9 +57,10 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         print("Place address: \(String(describing: place.formattedAddress))")
         print("Place attributions: \(String(describing: place.attributions))")
         dismiss(animated: true, completion: nil)
-        let marker = GMSMarker(position: place.coordinate)
-        marker.map = mapView
-        mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
+        destination = place
+//        let marker = GMSMarker(position: destination.coordinate)
+//        marker.map = mapView
+//        mapView.camera = GMSCameraPosition.camera(withLatitude: destination.coordinate.latitude, longitude: destination.coordinate.longitude, zoom: 15.0)
         destinationId = place.placeID
         destinationName = place.name
         titleLabel.text = place.name
@@ -125,6 +127,12 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             self.infoView.isHidden = false
             self.searchButton.isHidden = false
             self.backButton.isHidden = true
+            mapView.clear()
+            if let place = destination {
+                let marker = GMSMarker(position: place.coordinate)
+                marker.map = mapView
+                mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
+            }
         } else {
             mapView.clear()
             self.backButton.isHidden = true
