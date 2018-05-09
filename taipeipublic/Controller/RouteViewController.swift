@@ -14,14 +14,17 @@ class RouteViewController: UIViewController {
     var destinationName = ""
     var destinationId = ""
     var routes = [Route]()
-    var passHandller: ((Route) -> Void)?
+    var passHandller: ((Route?, Bool) -> Void)?
     @IBOutlet weak var routeTableView: UITableView!
+    @IBOutlet weak var backButton: UIButton!
     @IBAction func back(_ sender: UIButton) {
+        self.passHandller?(nil, false)
         dismiss(animated: true, completion: nil)
     }
     @IBOutlet weak var destinationLabel: UILabel!
     override func viewDidLoad() {
-        destinationLabel.text = destinationName
+        backButton.tintColor = UIColor.white
+        destinationLabel.text = "  \(destinationName)"
         routeTableView.delegate = self
         routeTableView.dataSource = self
     }
@@ -80,7 +83,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let route = routes[indexPath.row]
-        self.passHandller?(route)
+        self.passHandller?(route, true)
         dismiss(animated: true, completion: nil)
     }
 }

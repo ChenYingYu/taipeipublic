@@ -14,6 +14,8 @@ import Foundation
 
 class MapViewController: UIViewController {
 
+    var navigationMode = false
+    var destinationMode = false
     var destinationId = ""
     var destinationName = ""
     var routes = [Route]()
@@ -24,26 +26,25 @@ class MapViewController: UIViewController {
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
-    @IBAction func showRoute(_ sender: UIButton) {
-
-    }
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
         autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
     }
+    @IBOutlet weak var backButton: UIButton!
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let routeViewController = segue.destination as? RouteViewController {
             routeViewController.destinationName = destinationName
             routeViewController.destinationId = destinationId
             routeViewController.routes = routes
-            routeViewController.passHandller = { [weak self] (route) in
-                self?.seletedRoute = route
+            routeViewController.passHandller = { [weak self] (route, isNavigationMode) in
+                if let selectedRoute = route {
+                    self?.seletedRoute = selectedRoute
+                }
+                self?.navigationMode = isNavigationMode
             }
         }
-        self.infoView.isHidden = true
-        self.searchButton.isHidden = true
     }
 }
 
@@ -61,9 +62,9 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         destinationId = place.placeID
         destinationName = place.name
         titleLabel.text = place.name
-        searchButton.setTitle(place.name, for: UIControlState.normal)
+        searchButton.setTitle("  \(place.name)", for: UIControlState.normal)
         addressLabel.text = place.formattedAddress
-        infoView.isHidden = false
+        destinationMode = true
         let routeManager = RouteManager()
         routeManager.delegate = self
         routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
@@ -90,30 +91,43 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        guard let legs = self.seletedRoute.legs else {
-            return
-        }
-        let path = GMSPath(fromEncodedPath: legs.points)
-        let polyline = GMSPolyline(path: path)
-        polyline.strokeColor = UIColor.blue
-        polyline.strokeWidth = 6.0
-        polyline.map = mapView
-        for step in legs.steps {
-            let position = CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng)
-            let marker = GMSMarker(position: position)
-            marker.icon = UIImage(named: "icon_location")
-            marker.title = step.instructions
-            marker.map = mapView
-            let stations = checkNearbyStation(position: position)
-            for station in stations {
-                if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
-                    let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
-                    let marker = GMSMarker(position: position)
-                    marker.icon = UIImage(named: "icon_bicycle")
-                    marker.title = station.name
-                    marker.map = mapView
+        if navigationMode {
+            self.infoView.isHidden = true
+            self.searchButton.isHidden = true
+            guard let legs = self.seletedRoute.legs else {
+                return
+            }
+            let path = GMSPath(fromEncodedPath: legs.points)
+            let polyline = GMSPolyline(path: path)
+            polyline.strokeColor = UIColor.blue
+            polyline.strokeWidth = 6.0
+            polyline.map = mapView
+            for step in legs.steps {
+                let position = CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng)
+                let marker = GMSMarker(position: position)
+                marker.icon = UIImage(named: "icon_location")
+                marker.title = step.instructions
+                marker.map = mapView
+                let stations = checkNearbyStation(position: position)
+                for station in stations {
+                    if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
+                        let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
+                        let marker = GMSMarker(position: position)
+                        marker.icon = UIImage(named: "icon_bicycle")
+                        marker.title = station.name
+                        marker.map = mapView
+                    }
                 }
             }
+            self.backButton.isHidden = false
+            mapView.addSubview(backButton)
+        } else if destinationMode {
+            self.infoView.isHidden = false
+            self.searchButton.isHidden = false
+            self.backButton.isHidden = true
+        } else {
+            mapView.clear()
+            self.backButton.isHidden = true
         }
     }
 
@@ -169,6 +183,9 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         searchButton.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         searchButton.layer.shadowRadius = 4.0
+        backButton.tintColor = UIColor.gray
+        backButton.backgroundColor = UIColor.white
+        backButton.layer.cornerRadius = backButton.bounds.width / 2
     }
     func getUserLatitude() -> Double {
         let locationmanager = CLLocationManager()
@@ -179,8 +196,8 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         return userLatitude
     }
     func getUserLongitude() -> Double {
-        let locationmanager = CLLocationManager()
-        guard let userLongitude = locationmanager.location?.coordinate.longitude else {
+        let locationManager = CLLocationManager()
+        guard let userLongitude = locationManager.location?.coordinate.longitude else {
             print("Cannot find user's location")
             return 121.564793
         }
