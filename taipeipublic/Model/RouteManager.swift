@@ -70,19 +70,15 @@ class RouteManager {
                     guard let travelMode = step["travel_mode"] as? String else {
                         return
                     }
-                    let walkingDetail: [Step]?
-                    let transitDetail: [Transit]?
+                    var walkingDetail = [Step]()
+                    var transitDetail = [Transit]()
                     if travelMode == "WALKING" {
-                        transitDetail = nil
-                        walkingDetail = [Step]()
-                        let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
-                        newSteps.append(newStep)
+                        
                     } else if travelMode == "TRANSIT" {
-                        walkingDetail = nil
-                        transitDetail = [Transit]()
-                        let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
-                        newSteps.append(newStep)
+                        
                     }
+                    let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
+                    newSteps.append(newStep)
                 }
                 guard let polyline = route["overview_polyline"] as? [String: String], let points = polyline["points"] else {
                     return
