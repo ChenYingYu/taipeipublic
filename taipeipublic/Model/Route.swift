@@ -24,10 +24,10 @@ struct Location {
 }
 
 struct Legs {
-    let arrivalTime: String
-    let departureTime: String
-    let distance: String
-    let duration: String
+    let arrivalTime: String?
+    let departureTime: String?
+    let distance: String?
+    let duration: String?
     let endAddress: String
     let endLocation: Location
     let startAddress: String

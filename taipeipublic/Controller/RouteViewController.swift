@@ -62,8 +62,8 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         }
         let route = routes[indexPath.row]
         var routeInfo = ""
-        if let legs = route.legs {
-            routeInfo += "\(legs.duration): \n"
+        if let legs = route.legs, let duration = legs.duration {
+            routeInfo += "\(duration): \n"
             for index in legs.steps.indices {
                 if index != 0 {
                     routeInfo += " > "

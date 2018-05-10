@@ -20,6 +20,7 @@ class MapViewController: UIViewController {
     var destinationId = ""
     var destinationName = ""
     var routes = [Route]()
+    var youbikeRoute: Route?
     var seletedRoute = Route(bounds: nil, legs: nil)
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
@@ -58,9 +59,6 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         print("Place attributions: \(String(describing: place.attributions))")
         dismiss(animated: true, completion: nil)
         destination = place
-//        let marker = GMSMarker(position: destination.coordinate)
-//        marker.map = mapView
-//        mapView.camera = GMSCameraPosition.camera(withLatitude: destination.coordinate.latitude, longitude: destination.coordinate.longitude, zoom: 15.0)
         destinationId = place.placeID
         destinationName = place.name
         titleLabel.text = place.name
@@ -139,6 +137,15 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
                 print("= = = = = = = = = = = = = = = =")
                 addYoubikeMarker(of: newStart)
                 addYoubikeMarker(of: newEnd)
+                print("= = = = = New Start Location = = = = =")
+                print(newStart)
+                print("= = = = = End Start Location = = = = =")
+                print(newEnd)
+                let startPoint = legs.steps[0].startLocation
+                let endPoint = legs.steps[0].endLocation
+                let routeManager = RouteManager()
+                routeManager.youbikeDelegate = self
+                routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: newStart, and: newEnd)
             }
             self.backButton.isHidden = false
             mapView.addSubview(backButton)
@@ -210,6 +217,22 @@ extension MapViewController: RouteManagerDelegate {
         self.routes = routes
     }
     func manager(_ manager: RouteManager, didFailWith error: Error) {
+        print("Found Error:\n\(error)\n")
+    }
+}
+extension MapViewController: YoubikeRouteManagerDelegate {
+    func youbikeManager(_ manager: RouteManager, didGet routes: [Route]) {
+        self.youbikeRoute = routes[0]
+        guard let route = self.youbikeRoute, let legs = route.legs else {
+            return
+        }
+        let path = GMSPath(fromEncodedPath: legs.points)
+        let polyline = GMSPolyline(path: path)
+        polyline.strokeColor = UIColor.yellow
+        polyline.strokeWidth = 6.0
+        polyline.map = mapView
+    }
+    func youbikeManager(_ manager: RouteManager, didFailWith error: Error) {
         print("Found Error:\n\(error)\n")
     }
 }
