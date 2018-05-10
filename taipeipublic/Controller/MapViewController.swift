@@ -114,6 +114,11 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             var startingYoubikeStation: YoubikeStation?
             var endingYoubikeStation: YoubikeStation?
             for index in legs.steps.indices {
+                let position = CLLocationCoordinate2D(latitude: legs.steps[index].startLocation.lat, longitude: legs.steps[index].startLocation.lng)
+                let marker = GMSMarker(position: position)
+                marker.icon = UIImage(named: "icon_location")
+                marker.title = legs.steps[index].instructions
+                marker.map = mapView
                 if index < 2 {
                     if let youbikeManager = YoubikeManager.getStationInfo() {
                         let stations = youbikeManager.checkNearbyStation(position: position)
@@ -124,13 +129,6 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
                             } else if index == 1 {
                                 endingYoubikeStation = station
                             }
-                            if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
-                                let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
-                                let marker = GMSMarker(position: position)
-                                marker.icon = UIImage(named: "icon_bicycle")
-                                marker.title = station.name
-                                marker.map = mapView
-                            }
                         }
                     }
                 }
@@ -139,11 +137,8 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
                 print("= = = = = = = = = = = = = = = =")
                 print("AWESOME! WE FOUND A NEW ROUTE!")
                 print("= = = = = = = = = = = = = = = =")
-                let position = CLLocationCoordinate2D(latitude: newStart.latitude, longitude: newStart.longitude)
-                let marker = GMSMarker(position: position)
-                marker.icon = UIImage(named: "icon_location")
-                marker.title = legs.steps[index].instructions
-                marker.map = mapView
+                addYoubikeMarker(of: newStart)
+                addYoubikeMarker(of: newEnd)
             }
             self.backButton.isHidden = false
             mapView.addSubview(backButton)
@@ -182,6 +177,15 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         backButton.tintColor = UIColor.gray
         backButton.backgroundColor = UIColor.white
         backButton.layer.cornerRadius = backButton.bounds.width / 2
+    }
+    func addYoubikeMarker(of station: YoubikeStation) {
+        if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
+            let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
+            let marker = GMSMarker(position: position)
+            marker.icon = UIImage(named: "icon_bicycle")
+            marker.title = station.name
+            marker.map = mapView
+        }
     }
     func getUserLatitude() -> Double {
         let locationmanager = CLLocationManager()
