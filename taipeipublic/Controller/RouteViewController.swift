@@ -23,10 +23,14 @@ class RouteViewController: UIViewController {
     }
     @IBOutlet weak var destinationLabel: UILabel!
     override func viewDidLoad() {
+        routes = [Route]()
         backButton.tintColor = UIColor.white
         destinationLabel.text = "  \(destinationName)"
         routeTableView.delegate = self
         routeTableView.dataSource = self
+        let routeManager = RouteManager()
+        routeManager.delegate = self
+        routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
     }
     func getUserLatitude() -> Double {
         let locationmanager = CLLocationManager()
@@ -85,5 +89,14 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         let route = routes[indexPath.row]
         self.passHandller?(route, true)
         dismiss(animated: true, completion: nil)
+    }
+}
+extension RouteViewController: RouteManagerDelegate {
+    func manager(_ manager: RouteManager, didGet routes: [Route]) {
+        self.routes += routes
+        routeTableView.reloadData()
+    }
+    func manager(_ manager: RouteManager, didFailWith error: Error) {
+        print("Found Error:\n\(error)\n")
     }
 }

@@ -94,9 +94,9 @@ class RouteManager {
                 print("======================")
                 let myRoute = Route(bounds: newBounds, legs: newLegs)
                     self.myRoutes.append(myRoute)
-                    DispatchQueue.main.async {
-                        self.delegate?.manager(self, didGet: self.myRoutes)
-                    }
+                }
+                DispatchQueue.main.async {
+                    self.delegate?.manager(self, didGet: self.myRoutes)
                 }
             case .failure(let error):
                 self.delegate?.manager(self, didFailWith: error)
@@ -166,9 +166,9 @@ class RouteManager {
                     print("======================")
                     let myRoute = Route(bounds: newBounds, legs: newLegs)
                     self.myRoutes.append(myRoute)
-                    DispatchQueue.main.async {
-                        self.youbikeDelegate?.youbikeManager(self, didGet: self.myRoutes)
-                    }
+                }
+                DispatchQueue.main.async {
+                    self.youbikeDelegate?.youbikeManager(self, didGet: self.myRoutes)
                 }
             case .failure(let error):
                 self.youbikeDelegate?.youbikeManager(self, didFailWith: error)

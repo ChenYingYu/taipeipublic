@@ -65,10 +65,6 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         searchButton.setTitle("  \(place.name)", for: UIControlState.normal)
         addressLabel.text = place.formattedAddress
         destinationMode = true
-        let routeManager = RouteManager()
-        routeManager.delegate = self
-        routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
-
         view.addSubview(infoView)
     }
 
@@ -214,7 +210,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
 
 extension MapViewController: RouteManagerDelegate {
     func manager(_ manager: RouteManager, didGet routes: [Route]) {
-        self.routes = routes
+        self.routes += routes
     }
     func manager(_ manager: RouteManager, didFailWith error: Error) {
         print("Found Error:\n\(error)\n")
@@ -222,7 +218,9 @@ extension MapViewController: RouteManagerDelegate {
 }
 extension MapViewController: YoubikeRouteManagerDelegate {
     func youbikeManager(_ manager: RouteManager, didGet routes: [Route]) {
-        self.youbikeRoute = routes[0]
+        if routes.count > 0 {
+            self.youbikeRoute = routes[0]
+        }
         guard let route = self.youbikeRoute, let legs = route.legs else {
             return
         }
