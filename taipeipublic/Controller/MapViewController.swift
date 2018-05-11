@@ -21,7 +21,9 @@ class MapViewController: UIViewController {
     var destinationName = ""
     var routes = [Route]()
     var youbikeRoute: Route?
-    var seletedRoute = Route(bounds: nil, legs: nil)
+    var seletedRoute: Route?
+    var selectedYoubikeRoute: Route?
+    var selectedYoubikeStation = [YoubikeStation]()
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
@@ -40,9 +42,11 @@ class MapViewController: UIViewController {
             routeViewController.destinationName = destinationName
             routeViewController.destinationId = destinationId
             routeViewController.routes = routes
-            routeViewController.passHandller = { [weak self] (route, isNavigationMode) in
-                if let selectedRoute = route {
-                    self?.seletedRoute = selectedRoute
+            routeViewController.passHandller = { [weak self] (route, youbikeRoute, youbikeStation,  isNavigationMode) in
+                    self?.seletedRoute = route
+                    self?.selectedYoubikeRoute = youbikeRoute
+                if let selectedYoubikeStation = youbikeStation {
+                    self?.selectedYoubikeStation = selectedYoubikeStation
                 }
                 self?.navigationMode = isNavigationMode
             }
@@ -96,7 +100,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             }
             self.infoView.isHidden = true
             self.searchButton.isHidden = true
-            guard let legs = self.seletedRoute.legs else {
+            guard let legs = self.seletedRoute?.legs else {
                 return
             }
             let path = GMSPath(fromEncodedPath: legs.points)
@@ -104,44 +108,16 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             polyline.strokeColor = UIColor.blue
             polyline.strokeWidth = 6.0
             polyline.map = mapView
-            // Try to replace first walking polyline to youbike polyline
-            var startingYoubikeStation: YoubikeStation?
-            var endingYoubikeStation: YoubikeStation?
-            for index in legs.steps.indices {
-                let position = CLLocationCoordinate2D(latitude: legs.steps[index].startLocation.lat, longitude: legs.steps[index].startLocation.lng)
-                let marker = GMSMarker(position: position)
-                marker.icon = UIImage(named: "icon_location")
-                marker.title = legs.steps[index].instructions
-                marker.map = mapView
-                if index < 2 {
-                    if let youbikeManager = YoubikeManager.getStationInfo() {
-                        let stations = youbikeManager.checkNearbyStation(position: position)
-                        if stations.count > 0 {
-                            let station = stations[0]
-                            if index == 0 {
-                                startingYoubikeStation = station
-                            } else if index == 1 {
-                                endingYoubikeStation = station
-                            }
-                        }
-                    }
-                }
+            if let youbikeLegs = self.selectedYoubikeRoute?.legs {
+                let path = GMSPath(fromEncodedPath: youbikeLegs.points)
+                let polyline = GMSPolyline(path: path)
+                polyline.strokeColor = UIColor.yellow
+                polyline.strokeWidth = 6.0
+                polyline.map = mapView
             }
-            if let newStart = startingYoubikeStation, let newEnd = endingYoubikeStation, newStart.name != newEnd.name {
-                print("= = = = = = = = = = = = = = = =")
-                print("AWESOME! WE FOUND A NEW ROUTE!")
-                print("= = = = = = = = = = = = = = = =")
-                addYoubikeMarker(of: newStart)
-                addYoubikeMarker(of: newEnd)
-                print("= = = = = New Start Location = = = = =")
-                print(newStart)
-                print("= = = = = End Start Location = = = = =")
-                print(newEnd)
-                let startPoint = legs.steps[0].startLocation
-                let endPoint = legs.steps[0].endLocation
-                let routeManager = RouteManager()
-                routeManager.youbikeDelegate = self
-                routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: newStart, and: newEnd)
+            let stations = selectedYoubikeStation
+            for station in stations {
+                addYoubikeMarker(of: station)
             }
             self.backButton.isHidden = false
             mapView.addSubview(backButton)
@@ -205,32 +181,5 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             return 121.564793
         }
         return userLongitude
-    }
-}
-
-extension MapViewController: RouteManagerDelegate {
-    func manager(_ manager: RouteManager, didGet routes: [Route]) {
-        self.routes += routes
-    }
-    func manager(_ manager: RouteManager, didFailWith error: Error) {
-        print("Found Error:\n\(error)\n")
-    }
-}
-extension MapViewController: YoubikeRouteManagerDelegate {
-    func youbikeManager(_ manager: RouteManager, didGet routes: [Route]) {
-        if routes.count > 0 {
-            self.youbikeRoute = routes[0]
-        }
-        guard let route = self.youbikeRoute, let legs = route.legs else {
-            return
-        }
-        let path = GMSPath(fromEncodedPath: legs.points)
-        let polyline = GMSPolyline(path: path)
-        polyline.strokeColor = UIColor.yellow
-        polyline.strokeWidth = 6.0
-        polyline.map = mapView
-    }
-    func youbikeManager(_ manager: RouteManager, didFailWith error: Error) {
-        print("Found Error:\n\(error)\n")
     }
 }

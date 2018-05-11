@@ -14,16 +14,21 @@ class RouteViewController: UIViewController {
     var destinationName = ""
     var destinationId = ""
     var routes = [Route]()
-    var passHandller: ((Route?, Bool) -> Void)?
+    var youbikeRoute: Route?
+    var youbikeRoutes = [Route?]()
+    var youbikeStations = [[YoubikeStation]?]()
+    var passHandller: ((Route?, Route?, [YoubikeStation]?, Bool) -> Void)?
     @IBOutlet weak var routeTableView: UITableView!
     @IBOutlet weak var backButton: UIButton!
     @IBAction func back(_ sender: UIButton) {
-        self.passHandller?(nil, false)
+        self.passHandller?(nil, nil, nil, false)
         dismiss(animated: true, completion: nil)
     }
     @IBOutlet weak var destinationLabel: UILabel!
     override func viewDidLoad() {
         routes = [Route]()
+        youbikeRoutes = [Route]()
+        youbikeStations = [[YoubikeStation]]()
         backButton.tintColor = UIColor.white
         destinationLabel.text = "  \(destinationName)"
         routeTableView.delegate = self
@@ -47,6 +52,11 @@ class RouteViewController: UIViewController {
             return 121.564793
         }
         return userLongitude
+    }
+    func addYoubikeMarker(of station: YoubikeStation) {
+        if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
+            let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
+        }
     }
 }
 
@@ -87,16 +97,86 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let route = routes[indexPath.row]
-        self.passHandller?(route, true)
+        let youbikeStations = self.youbikeStations[indexPath.row]
+        var youbikeRoute: Route?
+        if youbikeRoutes.count > indexPath.row {
+            youbikeRoute = youbikeRoutes[indexPath.row]
+        }
+        self.passHandller?(route, youbikeRoute, youbikeStations, true)
         dismiss(animated: true, completion: nil)
     }
 }
 extension RouteViewController: RouteManagerDelegate {
     func manager(_ manager: RouteManager, didGet routes: [Route]) {
         self.routes += routes
+        for route in routes {
+            guard let legs = route.legs else {
+                return
+            }
+            // Try to replace first walking polyline to youbike polyline
+            var startingYoubikeStation: YoubikeStation?
+            var endingYoubikeStation: YoubikeStation?
+            for index in legs.steps.indices {
+                let position = CLLocationCoordinate2D(latitude: legs.steps[index].startLocation.lat, longitude: legs.steps[index].startLocation.lng)
+                if index < 2 {
+                    if let youbikeManager = YoubikeManager.getStationInfo() {
+                        let stations = youbikeManager.checkNearbyStation(position: position)
+                        if stations.count > 0 {
+                            let station = stations[0]
+                            if index == 0 {
+                                startingYoubikeStation = station
+                            } else if index == 1 {
+                                endingYoubikeStation = station
+                            }
+                        }
+                    }
+                }
+            }
+            if let newStart = startingYoubikeStation, let newEnd = endingYoubikeStation, newStart.name != newEnd.name {
+                print("= = = = = = = = = = = = = = = =")
+                print("AWESOME! WE FOUND A NEW ROUTE!")
+                print("= = = = = = = = = = = = = = = =")
+                addYoubikeMarker(of: newStart)
+                addYoubikeMarker(of: newEnd)
+                var stations = [YoubikeStation]()
+                stations.append(newStart)
+                stations.append(newEnd)
+                youbikeStations.append(stations)
+                print("= = = = = New Start Location = = = = =")
+                print(newStart)
+                print("= = = = = End Start Location = = = = =")
+                print(newEnd)
+                let startPoint = legs.steps[0].startLocation
+                let endPoint = legs.steps[0].endLocation
+                let routeManager = RouteManager()
+                routeManager.youbikeDelegate = self
+                routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: newStart, and: newEnd)
+            } else {
+                let routeManager = RouteManager()
+                routeManager.requestYoubikeRoute(originLatitude: 1000000.0, originLongitude: 1000000.0, destinationLatitude: 1000000.0, destinationLongitude: 1000000.0, through: YoubikeStation(name: "", latitude: "1000000.0", longitude: "1000000.0"), and: YoubikeStation(name: "", latitude: "1000000.0", longitude: "1000000.0"))
+                self.youbikeStations.append(nil)
+            }
+        }
         routeTableView.reloadData()
     }
     func manager(_ manager: RouteManager, didFailWith error: Error) {
         print("Found Error:\n\(error)\n")
+    }
+}
+extension RouteViewController: YoubikeRouteManagerDelegate {
+    func youbikeManager(_ manager: RouteManager, didGet routes: [Route]) {
+        self.youbikeRoute = nil
+        if routes.count > 0 {
+            self.youbikeRoute = routes[0]
+        }
+        guard let route = self.youbikeRoute else {
+            self.youbikeRoutes.append(self.youbikeRoute)
+            return
+        }
+        self.youbikeRoutes.append(route)
+    }
+    func youbikeManager(_ manager: RouteManager, didFailWith error: Error) {
+        print("Found Error:\n\(error)\n")
+        self.youbikeRoutes.append(Route(bounds: nil, legs: nil))
     }
 }
