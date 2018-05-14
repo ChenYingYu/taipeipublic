@@ -57,8 +57,6 @@ struct YoubikeManager: Codable {
             for index in stations.indices {
                 if let latitude = Double(stations[index].latitude), let longitude = Double(stations[index].longitude) {
                     if self.getdistance(lng1: position.longitude, lat1: position.latitude, lng2: Double(longitude), lat2: Double(latitude)) < 300.0 {
-                        print("= = = Got a Youbike Station Near User = = =\n")
-                        print("= = = = = \(index) = = = = = =\n")
                         nearbyStations.append(stations[index])
                     }
                 } else {

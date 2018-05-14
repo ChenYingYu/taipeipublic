@@ -89,9 +89,6 @@ class RouteManager {
                     return
                 }
                 let newLegs = Legs(arrivalTime: arrivalTime, departureTime: departureTime, distance: distanceText, duration: durationText, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps, points: points)
-                print("======================")
-                print(newLegs)
-                print("======================")
                 let myRoute = Route(bounds: newBounds, legs: newLegs)
                     self.myRoutes.append(myRoute)
                 }
@@ -110,7 +107,10 @@ class RouteManager {
             case .success:
                 self.myRoutes = [Route]()
                 if originLatitude > 360.0 {
+                    let myRoute = Route(bounds: nil, legs: nil)
+                    self.myRoutes.append(myRoute)
                     self.youbikeDelegate?.youbikeManager(self, didGet: self.myRoutes)
+                    return
                 }
                 guard let dictionary = response.result.value as? [String: Any] else {
                     print("Cannot parse data as JSON: \(String(describing: response.result.value))")
@@ -164,9 +164,6 @@ class RouteManager {
                         return
                     }
                     let newLegs = Legs(arrivalTime: nil, departureTime: nil, distance: nil, duration: nil, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps, points: points)
-                    print("======================")
-                    print(newLegs)
-                    print("======================")
                     let myRoute = Route(bounds: newBounds, legs: newLegs)
                     self.myRoutes.append(myRoute)
                     self.youbikeDelegate?.youbikeManager(self, didGet: self.myRoutes)

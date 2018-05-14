@@ -142,10 +142,6 @@ extension RouteViewController: RouteManagerDelegate {
                 stations.append(newStart)
                 stations.append(newEnd)
                 youbikeStations.append(stations)
-                print("= = = = = New Start Location = = = = =")
-                print(newStart)
-                print("= = = = = End Start Location = = = = =")
-                print(newEnd)
                 let startPoint = legs.steps[0].startLocation
                 let endPoint = legs.steps[0].endLocation
                 let routeManager = RouteManager()
@@ -171,9 +167,15 @@ extension RouteViewController: YoubikeRouteManagerDelegate {
         }
         guard let route = self.youbikeRoute else {
             self.youbikeRoutes.append(self.youbikeRoute)
+            print("==== No Value ====")
+            print("==== \(self.youbikeRoutes.count) Youbike Routes Now ====")
+            print("- - - - - - - - - - - - - - - - - - -- ")
             return
         }
         self.youbikeRoutes.append(route)
+        print("==== Got Value ====")
+        print("==== \(self.youbikeRoutes.count) Youbike Routes Now ====")
+        print("- - - - - - - - - - - - - - - - - - -- ")
     }
     func youbikeManager(_ manager: RouteManager, didFailWith error: Error) {
         print("Found Error:\n\(error)\n")
