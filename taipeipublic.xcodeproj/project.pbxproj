@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A09C40820AA90E1007D3EBE /* RouteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */; };
+		0A09C40920AA90E1007D3EBE /* RouteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */; };
 		0A16D9E82099A6D600EEBB4F /* RouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E72099A6D600EEBB4F /* RouteManager.swift */; };
 		0A16D9EA2099C4BE00EEBB4F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E92099C4BE00EEBB4F /* Route.swift */; };
 		0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33C0362096FC3D00C9ED7E /* Constant.swift */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTableViewCell.swift; sourceTree = "<group>"; };
+		0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteTableViewCell.xib; sourceTree = "<group>"; };
 		0A16D9E72099A6D600EEBB4F /* RouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteManager.swift; sourceTree = "<group>"; };
 		0A16D9E92099C4BE00EEBB4F /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		0A33C0362096FC3D00C9ED7E /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
@@ -76,6 +80,8 @@
 		0A16D9E52099683300EEBB4F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */,
+				0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -196,6 +202,7 @@
 				0A67E47C20A1511B00070EBD /* YouBikeStations.json in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,
 				0A6EDBEA2096AE00004BBF3C /* Main.storyboard in Resources */,
+				0A09C40920AA90E1007D3EBE /* RouteTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +290,7 @@
 				0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */,
 				0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */,
 				0A16D9EA2099C4BE00EEBB4F /* Route.swift in Sources */,
+				0A09C40820AA90E1007D3EBE /* RouteTableViewCell.swift in Sources */,
 				0A67E47E20A1519B00070EBD /* YoubikeManager.swift in Sources */,
 				0A16D9E82099A6D600EEBB4F /* RouteManager.swift in Sources */,
 			);

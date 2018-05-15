@@ -31,6 +31,8 @@ class RouteViewController: UIViewController {
         youbikeStations = [[YoubikeStation]]()
         backButton.tintColor = UIColor.white
         destinationLabel.text = "  \(destinationName)"
+        let customTableViewCell = UINib(nibName: "RouteTableViewCell", bundle: nil)
+        routeTableView.register(customTableViewCell, forCellReuseIdentifier: "Cell")
         routeTableView.delegate = self
         routeTableView.dataSource = self
         let routeManager = RouteManager()
@@ -62,15 +64,17 @@ class RouteViewController: UIViewController {
 
 extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return routes.count
+        return 4
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.backgroundColor = UIColor.white
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? RouteTableViewCell else {
+            return UITableViewCell()
+        }
         cell.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0).cgColor
         cell.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         cell.layer.shadowRadius = 4.0
         cell.layer.shadowOpacity = 1.0
+        
         guard routes.count > indexPath.row else {
             return cell
         }
@@ -91,8 +95,8 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
                 routeInfo += "\(legs.steps[index].duration)"
             }
         }
-        cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = routeInfo
+        cell.subtitleLabel.numberOfLines = 0
+        cell.subtitleLabel.text = routeInfo
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -190,7 +190,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I1f-gt-2mI">
-                                <rect key="frame" x="0.0" y="190" width="414" height="546"/>
+                                <rect key="frame" x="0.0" y="130" width="414" height="606"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
                         </subviews>
@@ -201,7 +201,7 @@
                             <constraint firstItem="sqJ-fx-16m" firstAttribute="trailing" secondItem="J79-FE-ctI" secondAttribute="trailing" id="g3h-LC-yMd"/>
                             <constraint firstItem="I1f-gt-2mI" firstAttribute="leading" secondItem="J79-FE-ctI" secondAttribute="leading" id="ha0-Nk-6Gc"/>
                             <constraint firstItem="sqJ-fx-16m" firstAttribute="top" secondItem="fOK-b3-Mcb" secondAttribute="top" id="iOR-Ts-Viu"/>
-                            <constraint firstItem="I1f-gt-2mI" firstAttribute="top" secondItem="sqJ-fx-16m" secondAttribute="bottom" constant="60" id="lwz-lx-E54"/>
+                            <constraint firstItem="I1f-gt-2mI" firstAttribute="top" secondItem="sqJ-fx-16m" secondAttribute="bottom" id="lwz-lx-E54"/>
                             <constraint firstItem="I1f-gt-2mI" firstAttribute="bottom" secondItem="J79-FE-ctI" secondAttribute="bottom" id="tKo-8E-xep"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="J79-FE-ctI"/>
