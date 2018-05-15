@@ -17,6 +17,7 @@ class RouteViewController: UIViewController {
     var youbikeRoute: Route?
     var youbikeRoutes = [Route?]()
     var youbikeStations = [[YoubikeStation]?]()
+    var haveYoubikeRoute = [Bool]()
     var passHandller: ((Route?, Route?, [YoubikeStation]?, Bool) -> Void)?
     @IBOutlet weak var routeTableView: UITableView!
     @IBOutlet weak var backButton: UIButton!
@@ -64,7 +65,7 @@ class RouteViewController: UIViewController {
 
 extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return routes.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? RouteTableViewCell else {
@@ -74,7 +75,6 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         cell.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         cell.layer.shadowRadius = 4.0
         cell.layer.shadowOpacity = 1.0
-        
         guard routes.count > indexPath.row else {
             return cell
         }
@@ -97,6 +97,13 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.subtitleLabel.numberOfLines = 0
         cell.subtitleLabel.text = routeInfo
+        if haveYoubikeRoute.count > indexPath.row {
+            if haveYoubikeRoute[indexPath.row] {
+                cell.youbikeLabel.isHidden = false
+            } else {
+                cell.youbikeLabel.isHidden = true
+            }
+        }
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -113,6 +120,9 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
 extension RouteViewController: RouteManagerDelegate {
     func manager(_ manager: RouteManager, didGet routes: [Route]) {
         self.routes += routes
+        for _ in routes.indices {
+            self.youbikeRoutes.append(Route(bounds: nil, legs: nil))
+        }
         for route in routes {
             guard let legs = route.legs else {
                 return
@@ -151,10 +161,12 @@ extension RouteViewController: RouteManagerDelegate {
                 let routeManager = RouteManager()
                 routeManager.youbikeDelegate = self
                 routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: newStart, and: newEnd)
+                self.haveYoubikeRoute.append(true)
             } else {
                 let routeManager = RouteManager()
                 routeManager.requestYoubikeRoute(originLatitude: 1000000.0, originLongitude: 1000000.0, destinationLatitude: 1000000.0, destinationLongitude: 1000000.0, through: YoubikeStation(name: "", latitude: "1000000.0", longitude: "1000000.0"), and: YoubikeStation(name: "", latitude: "1000000.0", longitude: "1000000.0"))
                 self.youbikeStations.append(nil)
+                self.haveYoubikeRoute.append(false)
             }
         }
         routeTableView.reloadData()
@@ -176,13 +188,17 @@ extension RouteViewController: YoubikeRouteManagerDelegate {
             print("- - - - - - - - - - - - - - - - - - -- ")
             return
         }
-        self.youbikeRoutes.append(route)
         print("==== Got Value ====")
         print("==== \(self.youbikeRoutes.count) Youbike Routes Now ====")
         print("- - - - - - - - - - - - - - - - - - -- ")
+        for index in haveYoubikeRoute.indices {
+            if self.haveYoubikeRoute[index] {
+                self.youbikeRoutes[index] = route
+                return
+            }
+        }
     }
     func youbikeManager(_ manager: RouteManager, didFailWith error: Error) {
         print("Found Error:\n\(error)\n")
-        self.youbikeRoutes.append(Route(bounds: nil, legs: nil))
     }
 }
