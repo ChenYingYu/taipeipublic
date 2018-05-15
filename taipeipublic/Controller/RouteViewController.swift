@@ -121,7 +121,7 @@ extension RouteViewController: RouteManagerDelegate {
     func manager(_ manager: RouteManager, didGet routes: [Route]) {
         self.routes += routes
         for _ in routes.indices {
-            self.youbikeRoutes.append(Route(bounds: nil, legs: nil))
+            self.youbikeRoutes.append(nil)
         }
         for route in routes {
             guard let legs = route.legs else {
@@ -192,7 +192,7 @@ extension RouteViewController: YoubikeRouteManagerDelegate {
         print("==== \(self.youbikeRoutes.count) Youbike Routes Now ====")
         print("- - - - - - - - - - - - - - - - - - -- ")
         for index in haveYoubikeRoute.indices {
-            if self.haveYoubikeRoute[index] {
+            if self.haveYoubikeRoute[index], self.youbikeRoutes[index] == nil {
                 self.youbikeRoutes[index] = route
                 return
             }
