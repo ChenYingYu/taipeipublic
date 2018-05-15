@@ -106,12 +106,6 @@ class RouteManager {
             switch response.result {
             case .success:
                 self.myRoutes = [Route]()
-                if originLatitude > 360.0 {
-                    let myRoute = Route(bounds: nil, legs: nil)
-                    self.myRoutes.append(myRoute)
-                    self.youbikeDelegate?.youbikeManager(self, didGet: self.myRoutes)
-                    return
-                }
                 guard let dictionary = response.result.value as? [String: Any] else {
                     print("Cannot parse data as JSON: \(String(describing: response.result.value))")
                     return
