@@ -103,6 +103,12 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             guard let legs = self.seletedRoute?.legs else {
                 return
             }
+            for step in legs.steps {
+                let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng))
+                marker.title = step.instructions
+                marker.icon = UIImage(named: "icon_location")
+                marker.map = mapView
+            }
             let path = GMSPath(fromEncodedPath: legs.points)
             let polyline = GMSPolyline(path: path)
             polyline.strokeColor = UIColor.blue
