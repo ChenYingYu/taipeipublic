@@ -19,6 +19,7 @@ class RouteViewController: UIViewController {
     var youbikeStations = [[YoubikeStation]?]()
     var haveYoubikeRoute = [Bool]()
     var passHandller: ((Route?, Route?, [YoubikeStation]?, Bool) -> Void)?
+    @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var routeTableView: UITableView!
     @IBOutlet weak var backButton: UIButton!
     @IBAction func back(_ sender: UIButton) {
@@ -39,6 +40,10 @@ class RouteViewController: UIViewController {
         let routeManager = RouteManager()
         routeManager.delegate = self
         routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
+        setupTitleView()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        UIApplication.shared.statusBarStyle = .default
     }
     func getUserLatitude() -> Double {
         let locationmanager = CLLocationManager()
@@ -60,6 +65,18 @@ class RouteViewController: UIViewController {
         if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
             let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
         }
+    }
+    func setupTitleView() {
+        let colorLeft =  UIColor(red: 10.0/255.0, green: 140.0/255.0, blue: 204.0/255.0, alpha: 1.0).cgColor
+        let colorRight = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
+        let gradient = CAGradientLayer()
+        gradient.colors = [colorLeft, colorRight]
+        gradient.locations = [0.0, 1.0]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        gradient.frame = self.titleView.bounds
+        self.titleView.layer.insertSublayer(gradient, at: 0)
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
     }
 }
 

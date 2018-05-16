@@ -30,6 +30,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var showRouteButton: UIButton!
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
@@ -146,7 +147,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         infoView.isHidden = true
-        setupButton()
+        setupView()
         setupMap()
     }
     func setupMap() {
@@ -155,13 +156,18 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         mapView.addSubview(searchButton)
         mapView.settings.myLocationButton = true
     }
-    func setupButton() {
+    func setupView() {
         searchButton.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         searchButton.layer.shadowRadius = 4.0
+        searchButton.layer.shadowOpacity = 1.0
         backButton.tintColor = UIColor.gray
         backButton.backgroundColor = UIColor.white
         backButton.layer.cornerRadius = backButton.bounds.width / 2
+        showRouteButton.layer.cornerRadius = showRouteButton.bounds.height / 2
+        infoView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        infoView.layer.shadowRadius = 4.0
+        infoView.layer.shadowOpacity = 1.0
     }
     func addYoubikeMarker(of station: YoubikeStation) {
         if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
