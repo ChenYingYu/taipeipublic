@@ -20,7 +20,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="452" height="127.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本段路線提供Youbike站點" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="384-K2-HlM">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本路段提供Youbike騎乘路線" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="384-K2-HlM">
                         <rect key="frame" x="20" y="11" width="412" height="25"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="25" id="SMh-ir-9zs"/>
