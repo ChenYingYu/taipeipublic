@@ -142,6 +142,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             mapView.clear()
             self.backButton.isHidden = true
         }
+        updateLocationButton()
     }
 
     override func viewDidLoad() {
@@ -180,8 +181,8 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         }
     }
     func getUserLatitude() -> Double {
-        let locationmanager = CLLocationManager()
-        guard let userLatitude = locationmanager.location?.coordinate.latitude else {
+        let locationManager = CLLocationManager()
+        guard let userLatitude = locationManager.location?.coordinate.latitude else {
             print("Cannot find user's location")
             return 25.042416
         }
@@ -195,13 +196,16 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         }
         return userLongitude
     }
+    func updateLocationButton() {
+    mapView.padding = infoView.isHidden ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 0, left: 0, bottom: infoView.bounds.height, right: 0)
+    }
 }
 
 extension MapViewController: GMSMapViewDelegate {
-//    self.view = mapView
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         if destinationMode && !navigationMode {
             infoView.isHidden = infoView.isHidden ? false : true
+            updateLocationButton()
         }
     }
 }
