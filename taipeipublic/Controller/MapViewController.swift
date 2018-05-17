@@ -43,7 +43,7 @@ class MapViewController: UIViewController {
             routeViewController.destinationName = destinationName
             routeViewController.destinationId = destinationId
             routeViewController.routes = routes
-            routeViewController.passHandller = { [weak self] (route, youbikeRoute, youbikeStation,  isNavigationMode) in
+            routeViewController.passHandller = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode) in
                     self?.seletedRoute = route
                     self?.selectedYoubikeRoute = youbikeRoute
                 if let selectedYoubikeStation = youbikeStation {
@@ -155,6 +155,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         mapView.isMyLocationEnabled = true
         mapView.addSubview(searchButton)
         mapView.settings.myLocationButton = true
+        mapView.delegate = self
     }
     func setupView() {
         searchButton.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0).cgColor
@@ -193,5 +194,14 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             return 121.564793
         }
         return userLongitude
+    }
+}
+
+extension MapViewController: GMSMapViewDelegate {
+//    self.view = mapView
+    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+        if destinationMode && !navigationMode {
+            infoView.isHidden = infoView.isHidden ? false : true
+        }
     }
 }
