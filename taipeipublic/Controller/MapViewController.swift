@@ -24,7 +24,7 @@ class MapViewController: UIViewController {
     var seletedRoute: Route?
     var selectedYoubikeRoute: Route?
     var selectedYoubikeStation = [YoubikeStation]()
-    var routeInfoTableView = UITableView()
+    var routeDetailTableView = UITableView()
     var transitTag = 0
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
@@ -132,7 +132,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             mapView.addSubview(backButton)
             setUpRouteInfoTableView()
         } else if destinationMode {
-            routeInfoTableView.removeFromSuperview()
+            routeDetailTableView.removeFromSuperview()
             self.infoView.isHidden = false
             self.searchButton.isHidden = false
             self.backButton.isHidden = true
@@ -177,13 +177,15 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     }
     func setUpRouteInfoTableView() {
         transitTag = 0
-        routeInfoTableView.removeFromSuperview()
-        routeInfoTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
-        routeInfoTableView.backgroundColor = UIColor(red: 4.0/255.0, green: 52.0/255.0, blue: 76.0/255.0, alpha: 1.0)
-        routeInfoTableView.delegate = self
-        routeInfoTableView.dataSource = self
-        view.addSubview(routeInfoTableView)
-        routeInfoTableView.reloadData()
+        routeDetailTableView.removeFromSuperview()
+        routeDetailTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
+        routeDetailTableView.backgroundColor = UIColor(red: 4.0/255.0, green: 52.0/255.0, blue: 76.0/255.0, alpha: 1.0)
+        routeDetailTableView.delegate = self
+        routeDetailTableView.dataSource = self
+        let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)
+        routeDetailTableView.register(nib, forCellReuseIdentifier: "Cell")
+        view.addSubview(routeDetailTableView)
+        routeDetailTableView.reloadData()
     }
     func addYoubikeMarker(of station: YoubikeStation) {
         if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
@@ -232,19 +234,20 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         return seletedRoute?.legs?.steps.count ?? 2
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.backgroundColor = UIColor(red: 47.0/255.0, green: 67.0/255.0, blue: 76.0/255.0, alpha: 1.0)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? RouteDetailTableViewCell else {
+            return UITableViewCell()
+        }
         if let step = seletedRoute?.legs?.steps[indexPath.row] {
             if step.travelMode == "TRANSIT", let transitDetails = step.transitDetail {
                 transitTag = transitTag < transitDetails.count ? transitTag : 0
                 let transitDetail = transitDetails[transitTag]
-                cell.textLabel?.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
+                cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
+                cell.busInfoButton.isHidden = false
             } else {
-                cell.textLabel?.text = seletedRoute?.legs?.steps[indexPath.row].instructions
+                cell.routeDetailLabel.text  = seletedRoute?.legs?.steps[indexPath.row].instructions
             }
         }
-        cell.textLabel?.textColor = UIColor.white
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -255,7 +258,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UITableViewHeaderFooterView()
-        headerView.frame = CGRect(x: 0, y: 0, width: routeInfoTableView.bounds.width, height: 30)
+        headerView.frame = CGRect(x: 0, y: 0, width: routeDetailTableView.bounds.width, height: 30)
         let headerButton = UIButton()
         headerButton.frame = headerView.bounds
         headerButton.layer.backgroundColor = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
@@ -266,6 +269,6 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     @objc func showOrHideTableView() {
         let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6)
         let hiddenState = CGRect(x: 0, y: view.bounds.height - 30, width: view.bounds.width, height: 30)
-        routeInfoTableView.frame = routeInfoTableView.frame.height == 30 ? normalState : hiddenState
+        routeDetailTableView.frame = routeDetailTableView.frame.height == 30 ? normalState : hiddenState
     }
 }

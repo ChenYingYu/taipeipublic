@@ -19,6 +19,8 @@
 		0A6EDBEA2096AE00004BBF3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A6EDBE82096AE00004BBF3C /* Main.storyboard */; };
 		0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A6EDBEB2096AE03004BBF3C /* Assets.xcassets */; };
 		0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A6EDBED2096AE03004BBF3C /* LaunchScreen.storyboard */; };
+		0A8AD1DA20AED52E00D91BE6 /* RouteDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AD1D820AED52D00D91BE6 /* RouteDetailTableViewCell.swift */; };
+		0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */; };
 		0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB819AB209AFB3700160842 /* RouteViewController.swift */; };
 		F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 534588B88CA253347B214A56 /* Pods_taipeipublic.framework */; };
 /* End PBXBuildFile section */
@@ -38,6 +40,8 @@
 		0A6EDBEB2096AE03004BBF3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A6EDBEE2096AE03004BBF3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A6EDBF02096AE03004BBF3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A8AD1D820AED52D00D91BE6 /* RouteDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailTableViewCell.swift; sourceTree = "<group>"; };
+		0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteDetailTableViewCell.xib; sourceTree = "<group>"; };
 		0AB819AB209AFB3700160842 /* RouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
 		1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taipeipublic.release.xcconfig"; path = "Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic.release.xcconfig"; sourceTree = "<group>"; };
 		534588B88CA253347B214A56 /* Pods_taipeipublic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_taipeipublic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +86,8 @@
 			children = (
 				0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */,
 				0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */,
+				0A8AD1D820AED52D00D91BE6 /* RouteDetailTableViewCell.swift */,
+				0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -200,6 +206,7 @@
 			files = (
 				0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */,
 				0A67E47C20A1511B00070EBD /* YouBikeStations.json in Resources */,
+				0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,
 				0A6EDBEA2096AE00004BBF3C /* Main.storyboard in Resources */,
 				0A09C40920AA90E1007D3EBE /* RouteTableViewCell.xib in Resources */,
@@ -291,6 +298,7 @@
 				0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */,
 				0A16D9EA2099C4BE00EEBB4F /* Route.swift in Sources */,
 				0A09C40820AA90E1007D3EBE /* RouteTableViewCell.swift in Sources */,
+				0A8AD1DA20AED52E00D91BE6 /* RouteDetailTableViewCell.swift in Sources */,
 				0A67E47E20A1519B00070EBD /* YoubikeManager.swift in Sources */,
 				0A16D9E82099A6D600EEBB4F /* RouteManager.swift in Sources */,
 			);
