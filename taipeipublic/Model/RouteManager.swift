@@ -60,6 +60,7 @@ class RouteManager {
                     guard let steps = leg["steps"] as? [[String: AnyObject]] else {
                         return
                     }
+                var transitDetail = [Transit]()
                 for step in steps {
                     guard let distance = step["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = step["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
                         return
@@ -76,11 +77,22 @@ class RouteManager {
                         return
                     }
                     var walkingDetail = [Step]()
-                    var transitDetail = [Transit]()
+                    var transit: Transit?
                     if travelMode == "WALKING" {
                         
                     } else if travelMode == "TRANSIT" {
-                        
+                        if let transitDetails = step["transit_details"] as? [String: AnyObject] {
+                            if let arrivalStop = transitDetails["arrival_stop"] as? [String: AnyObject], let arrivalLocation = arrivalStop["location"] as? [String: Double], let arrivalLatitude = arrivalLocation["lat"], let arrivalLongitude = arrivalLocation["lng"], let arricalName  = arrivalStop["name"] as? String {
+                                if let departureStop = transitDetails["departure_stop"] as? [String: AnyObject], let departureLocation = departureStop["location"] as? [String: Double], let departureLatitude = departureLocation["lat"], let departureLongitude = departureLocation["lng"], let departureName = departureStop["name"] as? String {
+                                    if let arrivalTimeDict = transitDetails["arrival_time"] as? [String: AnyObject], let arrivalTime = arrivalTimeDict["text"] as? String, let departureTimeDict = transitDetails["departure_time"] as? [String: AnyObject], let departureTime = departureTimeDict["text"] as? String, let line = transitDetails["line"] as? [String: AnyObject], let lineName = line["short_name"] as? String {
+                                        transit = Transit(arrivalStop: Stop(location: Location(lat: arrivalLatitude, lng: arrivalLongitude), name: arricalName), arrivalTime: arrivalTime, departureStop: Stop(location: Location(lat: departureLatitude, lng: departureLongitude), name: departureName), departureTime: departureTime, lineName: lineName)
+                                        if let newTransit = transit {
+                                            transitDetail.append(newTransit)
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                     let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
                     newSteps.append(newStep)

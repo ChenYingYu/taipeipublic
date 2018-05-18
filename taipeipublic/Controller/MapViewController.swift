@@ -25,6 +25,7 @@ class MapViewController: UIViewController {
     var selectedYoubikeRoute: Route?
     var selectedYoubikeStation = [YoubikeStation]()
     var routeInfoTableView = UITableView()
+    var transitTag = 0
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
@@ -174,6 +175,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         infoView.layer.shadowOpacity = 1.0
     }
     func setUpRouteInfoTableView() {
+        transitTag = 0
         routeInfoTableView.removeFromSuperview()
         routeInfoTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
         routeInfoTableView.backgroundColor = UIColor(red: 4.0/255.0, green: 52.0/255.0, blue: 76.0/255.0, alpha: 1.0)
@@ -231,7 +233,14 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         cell.backgroundColor = UIColor(red: 47.0/255.0, green: 67.0/255.0, blue: 76.0/255.0, alpha: 1.0)
-        cell.textLabel?.text = seletedRoute?.legs?.steps[indexPath.row].instructions
+        if let step = seletedRoute?.legs?.steps[indexPath.row] {
+            if step.travelMode == "TRANSIT", let transitdetail = step.transitDetail?[transitTag] {
+                cell.textLabel?.text = "搭乘 [\(transitdetail.lineName)] 從 [\(transitdetail.departureStop.name)] 到 [\(transitdetail.arrivalStop.name)]"
+                transitTag += 1
+            } else {
+                cell.textLabel?.text = seletedRoute?.legs?.steps[indexPath.row].instructions
+            }
+        }
         cell.textLabel?.textColor = UIColor.white
         return cell
     }

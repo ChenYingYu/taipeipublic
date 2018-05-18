@@ -60,9 +60,9 @@ struct Travel {
 struct Transit {
     let arrivalStop: Stop
     let arrivalTime: String
-    let departureStrop: Stop
+    let departureStop: Stop
     let departureTime: String
-    let line: Line
+    let lineName: String
 }
 
 struct Stop {
