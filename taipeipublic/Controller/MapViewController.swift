@@ -209,6 +209,9 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     }
     func updateLocationButton() {
     mapView.padding = infoView.isHidden ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 0, left: 0, bottom: infoView.bounds.height, right: 0)
+        if navigationMode {
+             mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+        }
     }
 }
 
