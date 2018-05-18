@@ -161,7 +161,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         mapView.delegate = self
     }
     func setupView() {
-        searchButton.layer.shadowColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0).cgColor
+        searchButton.layer.shadowColor = UIColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         searchButton.layer.shadowRadius = 4.0
         searchButton.layer.shadowOpacity = 1.0
@@ -176,6 +176,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     func setUpRouteInfoTableView() {
         routeInfoTableView.removeFromSuperview()
         routeInfoTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
+        routeInfoTableView.backgroundColor = UIColor(red: 4.0/255.0, green: 52.0/255.0, blue: 76.0/255.0, alpha: 1.0)
         routeInfoTableView.delegate = self
         routeInfoTableView.dataSource = self
         routeInfoTableView.isScrollEnabled = false
@@ -227,8 +228,9 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.backgroundColor = UIColor.lightGray
+        cell.backgroundColor = UIColor(red: 47.0/255.0, green: 67.0/255.0, blue: 76.0/255.0, alpha: 1.0)
         cell.textLabel?.text = seletedRoute?.legs?.steps[indexPath.row].instructions
+        cell.textLabel?.textColor = UIColor.white
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -242,6 +244,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         headerView.frame = CGRect(x: 0, y: 0, width: routeInfoTableView.bounds.width, height: 30)
         let headerButton = UIButton()
         headerButton.frame = headerView.bounds
+        headerButton.layer.backgroundColor = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
         headerButton.addTarget(self, action: #selector(showOrHideTableView), for: .touchUpInside)
         headerView.addSubview(headerButton)
         return headerView
