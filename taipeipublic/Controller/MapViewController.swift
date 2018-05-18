@@ -234,8 +234,10 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = UITableViewCell()
         cell.backgroundColor = UIColor(red: 47.0/255.0, green: 67.0/255.0, blue: 76.0/255.0, alpha: 1.0)
         if let step = seletedRoute?.legs?.steps[indexPath.row] {
-            if step.travelMode == "TRANSIT", let transitdetail = step.transitDetail?[transitTag] {
-                cell.textLabel?.text = "搭乘 [\(transitdetail.lineName)] 從 [\(transitdetail.departureStop.name)] 到 [\(transitdetail.arrivalStop.name)]"
+            if step.travelMode == "TRANSIT", let transitDetails = step.transitDetail {
+                transitTag = transitTag < transitDetails.count ? transitTag : 0
+                let transitDetail = transitDetails[transitTag]
+                cell.textLabel?.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
             } else {
                 cell.textLabel?.text = seletedRoute?.legs?.steps[indexPath.row].instructions
