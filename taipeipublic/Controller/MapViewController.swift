@@ -179,7 +179,6 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         routeInfoTableView.backgroundColor = UIColor(red: 4.0/255.0, green: 52.0/255.0, blue: 76.0/255.0, alpha: 1.0)
         routeInfoTableView.delegate = self
         routeInfoTableView.dataSource = self
-        routeInfoTableView.isScrollEnabled = false
         view.addSubview(routeInfoTableView)
         routeInfoTableView.reloadData()
     }
@@ -248,9 +247,6 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         headerButton.addTarget(self, action: #selector(showOrHideTableView), for: .touchUpInside)
         headerView.addSubview(headerButton)
         return headerView
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showOrHideTableView()
     }
     @objc func showOrHideTableView() {
         let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6)
