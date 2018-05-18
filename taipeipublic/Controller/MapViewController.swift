@@ -132,6 +132,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             mapView.addSubview(backButton)
             setUpRouteInfoTableView()
         } else if destinationMode {
+            routeInfoTableView.removeFromSuperview()
             self.infoView.isHidden = false
             self.searchButton.isHidden = false
             self.backButton.isHidden = true
