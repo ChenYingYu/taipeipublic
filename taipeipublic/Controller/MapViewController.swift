@@ -24,6 +24,7 @@ class MapViewController: UIViewController {
     var seletedRoute: Route?
     var selectedYoubikeRoute: Route?
     var selectedYoubikeStation = [YoubikeStation]()
+    var routeInfoTableView = UITableView()
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
@@ -128,6 +129,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             }
             self.backButton.isHidden = false
             mapView.addSubview(backButton)
+            setUpRouteInfoTableView()
         } else if destinationMode {
             self.infoView.isHidden = false
             self.searchButton.isHidden = false
@@ -171,6 +173,15 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         infoView.layer.shadowRadius = 4.0
         infoView.layer.shadowOpacity = 1.0
     }
+    func setUpRouteInfoTableView() {
+        routeInfoTableView.removeFromSuperview()
+        routeInfoTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
+        routeInfoTableView.delegate = self
+        routeInfoTableView.dataSource = self
+        routeInfoTableView.isScrollEnabled = false
+        view.addSubview(routeInfoTableView)
+        routeInfoTableView.reloadData()
+    }
     func addYoubikeMarker(of station: YoubikeStation) {
         if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
             let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
@@ -207,5 +218,40 @@ extension MapViewController: GMSMapViewDelegate {
             infoView.isHidden = infoView.isHidden ? false : true
             updateLocationButton()
         }
+    }
+}
+
+extension MapViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return seletedRoute?.legs?.steps.count ?? 2
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.backgroundColor = UIColor.lightGray
+        cell.textLabel?.text = seletedRoute?.legs?.steps[indexPath.row].instructions
+        return cell
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UITableViewHeaderFooterView()
+        headerView.frame = CGRect(x: 0, y: 0, width: routeInfoTableView.bounds.width, height: 30)
+        let headerButton = UIButton()
+        headerButton.frame = headerView.bounds
+        headerButton.addTarget(self, action: #selector(showOrHideTableView), for: .touchUpInside)
+        headerView.addSubview(headerButton)
+        return headerView
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showOrHideTableView()
+    }
+    @objc func showOrHideTableView() {
+        let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6)
+        let hiddenState = CGRect(x: 0, y: view.bounds.height - 30, width: view.bounds.width, height: 30)
+        routeInfoTableView.frame = routeInfoTableView.frame.height == 30 ? normalState : hiddenState
     }
 }
