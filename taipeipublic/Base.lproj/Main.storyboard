@@ -125,7 +125,7 @@
                     <connections>
                         <outlet property="addressLabel" destination="zgH-Qs-O7m" id="9RT-39-vSr"/>
                         <outlet property="backButton" destination="Zi8-If-Cm5" id="adQ-Oh-P5M"/>
-                        <outlet property="infoView" destination="Qle-93-xXK" id="aml-76-xXh"/>
+                        <outlet property="destinationInfoView" destination="Qle-93-xXK" id="aml-76-xXh"/>
                         <outlet property="mapView" destination="6qb-Ff-xfq" id="aAk-PJ-JMz"/>
                         <outlet property="searchButton" destination="ICl-re-SCB" id="ai7-Ul-rIZ"/>
                         <outlet property="showRouteButton" destination="nGZ-rB-NUK" id="60O-c3-7YP"/>

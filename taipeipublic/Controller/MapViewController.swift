@@ -14,156 +14,115 @@ import Foundation
 
 class MapViewController: UIViewController {
 
-    var navigationMode = false
-    var destinationMode = false
+    var isNavigationMode = false
+    var isDestinationMode = false
+    //搜尋目的地後使用的變數
     var destination: GMSPlace?
     var destinationId = ""
     var destinationName = ""
+    //進行導航時使用的變數
     var routes = [Route]()
     var youbikeRoute: Route?
-    var seletedRoute: Route?
+    var selectedRoute: Route?
     var selectedYoubikeRoute: Route?
     var selectedYoubikeStation = [YoubikeStation]()
     var routeDetailTableView = UITableView()
+    // 紀錄公車班次時使用的變數
     var transitTag = 0
     var transitInfoDictionary = [Int: String]()
+    
     @IBOutlet weak var searchButton: UIButton!
-    // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
-    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var destinationInfoView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var showRouteButton: UIButton!
+    @IBOutlet weak var backButton: UIButton!
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
         autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
     }
-    @IBOutlet weak var backButton: UIButton!
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let routeViewController = segue.destination as? RouteViewController {
-            routeViewController.destinationName = destinationName
-            routeViewController.destinationId = destinationId
-            routeViewController.routes = routes
-            routeViewController.passHandller = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode) in
-                    self?.seletedRoute = route
-                    self?.selectedYoubikeRoute = youbikeRoute
-                if let selectedYoubikeStation = youbikeStation {
-                    self?.selectedYoubikeStation = selectedYoubikeStation
-                }
-                self?.navigationMode = isNavigationMode
-            }
-        }
-    }
-}
-
-extension MapViewController: GMSAutocompleteViewControllerDelegate {
-
-    // Handle the user's selection.
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        print("Place name: \(place.name)")
-        print("Place address: \(String(describing: place.formattedAddress))")
-        print("Place attributions: \(String(describing: place.attributions))")
-        dismiss(animated: true, completion: nil)
-        destination = place
-        destinationId = place.placeID
-        destinationName = place.name
-        titleLabel.text = place.name
-        searchButton.setTitle("  \(place.name)", for: UIControlState.normal)
-        addressLabel.text = place.formattedAddress
-        destinationMode = true
-        view.addSubview(infoView)
-    }
-
-    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        print("Error: ", error.localizedDescription)
-    }
-
-    // User canceled the operation.
-    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        dismiss(animated: true, completion: nil)
-    }
-
-    // Turn the network activity indicator on and off again.
-    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-
-    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setUpView()
+        setUpMap()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        if navigationMode {
-            mapView.clear()
-            if let place = destination {
-                let marker = GMSMarker(position: place.coordinate)
-                marker.map = mapView
-                mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
-            }
-            self.infoView.isHidden = true
+        checkOutModeOfMap()
+    }
+    
+    func checkOutModeOfMap() {
+        mapView.clear()
+        self.backButton.isHidden = true
+        if isNavigationMode {
+            self.destinationInfoView.isHidden = true
             self.searchButton.isHidden = true
-            guard let legs = self.seletedRoute?.legs else {
-                return
-            }
-            for step in legs.steps {
-                let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng))
-                marker.title = step.instructions
-                marker.icon = UIImage(named: "icon_location")
-                marker.map = mapView
-            }
-            let path = GMSPath(fromEncodedPath: legs.points)
-            let polyline = GMSPolyline(path: path)
-            polyline.strokeColor = UIColor.blue
-            polyline.strokeWidth = 6.0
-            polyline.map = mapView
-            if let youbikeLegs = self.selectedYoubikeRoute?.legs {
-                let path = GMSPath(fromEncodedPath: youbikeLegs.points)
-                let polyline = GMSPolyline(path: path)
-                polyline.strokeColor = UIColor.yellow
-                polyline.strokeWidth = 6.0
-                polyline.map = mapView
-            }
-            let stations = selectedYoubikeStation
-            for station in stations {
-                addYoubikeMarker(of: station)
-            }
             self.backButton.isHidden = false
+            showDestination()
+            showRoutePolyline()
+            showYoubikeRoutePolyline()
+            showYoubikeStation()
             mapView.addSubview(backButton)
             setUpRouteInfoTableView()
-        } else if destinationMode {
+        } else if isDestinationMode {
             routeDetailTableView.removeFromSuperview()
-            self.infoView.isHidden = false
+            self.destinationInfoView.isHidden = false
             self.searchButton.isHidden = false
             self.backButton.isHidden = true
-            mapView.clear()
-            if let place = destination {
-                let marker = GMSMarker(position: place.coordinate)
-                marker.map = mapView
-                mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
-            }
-        } else {
-            mapView.clear()
-            self.backButton.isHidden = true
+            showDestination()
         }
         updateLocationButton()
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        infoView.isHidden = true
-        setupView()
-        setupMap()
+    
+    func showDestination() {
+        if let place = destination {
+            let marker = GMSMarker(position: place.coordinate)
+            marker.map = mapView
+            mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
+        }
     }
-    func setupMap() {
-        mapView.camera = GMSCameraPosition.camera(withLatitude: getUserLatitude(), longitude: getUserLongitude(), zoom: 15.0)
-        mapView.isMyLocationEnabled = true
-        mapView.addSubview(searchButton)
-        mapView.settings.myLocationButton = true
-        mapView.delegate = self
+    
+    func showRoutePolyline() {
+        guard let legs = self.selectedRoute?.legs else {
+            return
+        }
+        for step in legs.steps {
+            let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng))
+            marker.title = step.instructions
+            marker.icon = UIImage(named: "icon_location")
+            marker.map = mapView
+        }
+        let path = GMSPath(fromEncodedPath: legs.points)
+        let polyline = GMSPolyline(path: path)
+        polyline.strokeColor = UIColor.blue
+        polyline.strokeWidth = 6.0
+        polyline.map = mapView
     }
-    func setupView() {
+    
+    func showYoubikeRoutePolyline() {
+        if let youbikeLegs = self.selectedYoubikeRoute?.legs {
+            let path = GMSPath(fromEncodedPath: youbikeLegs.points)
+            let polyline = GMSPolyline(path: path)
+            polyline.strokeColor = UIColor.yellow
+            polyline.strokeWidth = 6.0
+            polyline.map = mapView
+        }
+    }
+    
+    func showYoubikeStation() {
+        let stations = selectedYoubikeStation
+        for station in stations {
+            addYoubikeMarker(of: station)
+        }
+    }
+    
+    func setUpView() {
+        destinationInfoView.isHidden = true
         searchButton.layer.shadowColor = UIColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         searchButton.layer.shadowRadius = 4.0
@@ -172,10 +131,19 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         backButton.backgroundColor = UIColor.white
         backButton.layer.cornerRadius = backButton.bounds.width / 2
         showRouteButton.layer.cornerRadius = showRouteButton.bounds.height / 2
-        infoView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        infoView.layer.shadowRadius = 4.0
-        infoView.layer.shadowOpacity = 1.0
+        destinationInfoView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        destinationInfoView.layer.shadowRadius = 4.0
+        destinationInfoView.layer.shadowOpacity = 1.0
     }
+    
+    func setUpMap() {
+        mapView.camera = GMSCameraPosition.camera(withLatitude: getUserLatitude(), longitude: getUserLongitude(), zoom: 15.0)
+        mapView.isMyLocationEnabled = true
+        mapView.addSubview(searchButton)
+        mapView.settings.myLocationButton = true
+        mapView.delegate = self
+    }
+    
     func setUpRouteInfoTableView() {
         transitTag = 0
         routeDetailTableView.removeFromSuperview()
@@ -188,6 +156,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         view.addSubview(routeDetailTableView)
         routeDetailTableView.reloadData()
     }
+    
     func addYoubikeMarker(of station: YoubikeStation) {
         if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
             let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
@@ -197,6 +166,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
             marker.map = mapView
         }
     }
+    
     func getUserLatitude() -> Double {
         let locationManager = CLLocationManager()
         guard let userLatitude = locationManager.location?.coordinate.latitude else {
@@ -205,6 +175,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         }
         return userLatitude
     }
+    
     func getUserLongitude() -> Double {
         let locationManager = CLLocationManager()
         guard let userLongitude = locationManager.location?.coordinate.longitude else {
@@ -213,18 +184,71 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         }
         return userLongitude
     }
+    
     func updateLocationButton() {
-    mapView.padding = infoView.isHidden ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 0, left: 0, bottom: infoView.bounds.height, right: 0)
-        if navigationMode {
-             mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+        mapView.padding = destinationInfoView.isHidden ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 0, left: 0, bottom: destinationInfoView.bounds.height, right: 0)
+        if isNavigationMode {
+            mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let routeViewController = segue.destination as? RouteViewController {
+            routeViewController.destinationName = destinationName
+            routeViewController.destinationId = destinationId
+            routeViewController.routes = routes
+            routeViewController.passHandller = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode) in
+                    self?.selectedRoute = route
+                    self?.selectedYoubikeRoute = youbikeRoute
+                if let selectedYoubikeStation = youbikeStation {
+                    self?.selectedYoubikeStation = selectedYoubikeStation
+                }
+                self?.isNavigationMode = isNavigationMode
+            }
         }
     }
 }
 
+// Google搜尋自動完成
+extension MapViewController: GMSAutocompleteViewControllerDelegate {
+
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        print("Place name: \(place.name)")
+        print("Place address: \(String(describing: place.formattedAddress))")
+        print("Place attributions: \(String(describing: place.attributions))")
+        dismiss(animated: true, completion: nil)
+        destination = place
+        destinationId = place.placeID
+        destinationName = place.name
+        titleLabel.text = place.name
+        searchButton.setTitle("  \(place.name)", for: UIControlState.normal)
+        addressLabel.text = place.formattedAddress
+        isDestinationMode = true
+        view.addSubview(destinationInfoView)
+    }
+
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        print("Error: ", error.localizedDescription)
+    }
+
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+}
+
 extension MapViewController: GMSMapViewDelegate {
+    // 當點擊地圖其他地方時，隱藏下方資料
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        if destinationMode && !navigationMode {
-            infoView.isHidden = infoView.isHidden ? false : true
+        if isDestinationMode && !isNavigationMode {
+            destinationInfoView.isHidden = destinationInfoView.isHidden ? false : true
             updateLocationButton()
         }
     }
@@ -232,13 +256,15 @@ extension MapViewController: GMSMapViewDelegate {
 
 extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return seletedRoute?.legs?.steps.count ?? 2
+        return selectedRoute?.legs?.steps.count ?? 2
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? RouteDetailTableViewCell else {
             return UITableViewCell()
         }
-        if let step = seletedRoute?.legs?.steps[indexPath.row] {
+        if let step = selectedRoute?.legs?.steps[indexPath.row] {
+            //顯示公車或捷運班次及起迄站
             if step.travelMode == "TRANSIT", let transitDetails = step.transitDetail {
                 transitTag = transitTag < transitDetails.count ? transitTag : 0
                 let transitDetail = transitDetails[transitTag]
@@ -249,26 +275,20 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
                 transitInfoDictionary.updateValue(transitDetail.lineName, forKey: indexPath.row)
             } else {
-                cell.routeDetailLabel.text  = seletedRoute?.legs?.steps[indexPath.row].instructions
+                cell.routeDetailLabel.text  = selectedRoute?.legs?.steps[indexPath.row].instructions
             }
         }
         return cell
     }
-    @objc func showBusInfo(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
-            if let busNumber = transitInfoDictionary[sender.tag] {
-                busInfoViewController.busNumber = busNumber
-            }
-            present(busInfoViewController, animated: true, completion: nil)
-        }
-    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UITableViewHeaderFooterView()
         headerView.frame = CGRect(x: 0, y: 0, width: routeDetailTableView.bounds.width, height: 30)
@@ -279,9 +299,20 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         headerView.addSubview(headerButton)
         return headerView
     }
+    
     @objc func showOrHideTableView() {
         let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6)
         let hiddenState = CGRect(x: 0, y: view.bounds.height - 30, width: view.bounds.width, height: 30)
         routeDetailTableView.frame = routeDetailTableView.frame.height == 30 ? normalState : hiddenState
+    }
+    
+    @objc func showBusInfo(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
+            if let busNumber = transitInfoDictionary[sender.tag] {
+                busInfoViewController.busNumber = busNumber
+            }
+            present(busInfoViewController, animated: true, completion: nil)
+        }
     }
 }
