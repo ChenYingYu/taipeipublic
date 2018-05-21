@@ -10,7 +10,7 @@ import Foundation
 import GoogleMaps
 
 struct YoubikeStation: Codable {
-    
+
     let name: String
     let latitude: String
     let longitude: String
@@ -22,18 +22,18 @@ struct YoubikeStation: Codable {
 }
 
 struct YoubikeManager: Codable {
-    
+
     var stations: [YoubikeStation]
     enum CodingKeys: String, CodingKey {
         case stations = "stations"
     }
-    
+
     static func getStationInfo() -> YoubikeManager? {
-        
+
         guard let path = Bundle.main.path(forResource: "YouBikeStations", ofType: "json") else {
             return nil
         }
-        
+
         let url = URL(fileURLWithPath: path)
         do {
             let data = try Data(contentsOf: url, options: .mappedIfSafe)
@@ -44,22 +44,22 @@ struct YoubikeManager: Codable {
             return nil
         }
     }
-    
+
     func getYoubikeLocation() -> [YoubikeStation]? {
-        
+
         guard let manager = YoubikeManager.getStationInfo(), manager.stations.count > 0 else {
             return nil
         }
-        
+
         var stations = [YoubikeStation]()
         for station in manager.stations {
             stations.append(station)
         }
         return stations
     }
-    
+
     func checkNearbyStation(position: CLLocationCoordinate2D) -> [YoubikeStation] {
-        
+
         var nearbyStations = [YoubikeStation]()
         if let youbikeManager = YoubikeManager.getStationInfo(), let stations = youbikeManager.getYoubikeLocation() {
             for index in stations.indices {
@@ -79,7 +79,7 @@ struct YoubikeManager: Codable {
         }
         return nearbyStations
     }
-    
+
     func getdistance(lng1: Double, lat1: Double, lng2: Double, lat2: Double) -> Double {
         //將角度轉為弧度
         let radLat1 = lat1 * Double.pi / 180

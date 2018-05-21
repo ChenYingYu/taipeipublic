@@ -79,7 +79,7 @@ class RouteManager {
                     var walkingDetail = [Step]()
                     var transit: Transit?
                     if travelMode == "WALKING" {
-                        
+
                     } else if travelMode == "TRANSIT" {
                         if let transitDetails = step["transit_details"] as? [String: AnyObject] {
                             if let arrivalStop = transitDetails["arrival_stop"] as? [String: AnyObject], let arrivalLocation = arrivalStop["location"] as? [String: Double], let arrivalLatitude = arrivalLocation["lat"], let arrivalLongitude = arrivalLocation["lng"], let arricalName  = arrivalStop["name"] as? String {

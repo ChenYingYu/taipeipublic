@@ -12,10 +12,10 @@ class RouteTableViewCell: UITableViewCell {
 
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var youbikeLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         youbikeLabel.isHidden = true
     }
 }

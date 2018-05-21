@@ -30,7 +30,7 @@ class MapViewController: UIViewController {
     // 紀錄公車班次時使用的變數
     var transitTag = 0
     var transitInfoDictionary = [Int: String]()
-    
+
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var destinationInfoView: UIView!
@@ -44,10 +44,10 @@ class MapViewController: UIViewController {
         autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setUpView()
         setUpMap()
     }
@@ -55,7 +55,7 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         checkOutModeOfMap()
     }
-    
+
     func checkOutModeOfMap() {
         mapView.clear()
         self.backButton.isHidden = true
@@ -78,7 +78,7 @@ class MapViewController: UIViewController {
         }
         updateLocationButton()
     }
-    
+
     func showDestination() {
         if let place = destination {
             let marker = GMSMarker(position: place.coordinate)
@@ -86,7 +86,7 @@ class MapViewController: UIViewController {
             mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
         }
     }
-    
+
     func showRoutePolyline() {
         guard let legs = self.selectedRoute?.legs else {
             return
@@ -103,7 +103,7 @@ class MapViewController: UIViewController {
         polyline.strokeWidth = 6.0
         polyline.map = mapView
     }
-    
+
     func showYoubikeRoutePolyline() {
         if let youbikeLegs = self.selectedYoubikeRoute?.legs {
             let path = GMSPath(fromEncodedPath: youbikeLegs.points)
@@ -113,14 +113,14 @@ class MapViewController: UIViewController {
             polyline.map = mapView
         }
     }
-    
+
     func showYoubikeStation() {
         let stations = selectedYoubikeStation
         for station in stations {
             addYoubikeMarker(of: station)
         }
     }
-    
+
     func setUpView() {
         destinationInfoView.isHidden = true
         searchButton.layer.shadowColor = UIColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor
@@ -135,7 +135,7 @@ class MapViewController: UIViewController {
         destinationInfoView.layer.shadowRadius = 4.0
         destinationInfoView.layer.shadowOpacity = 1.0
     }
-    
+
     func setUpMap() {
         mapView.camera = GMSCameraPosition.camera(withLatitude: getUserLatitude(), longitude: getUserLongitude(), zoom: 15.0)
         mapView.isMyLocationEnabled = true
@@ -143,7 +143,7 @@ class MapViewController: UIViewController {
         mapView.settings.myLocationButton = true
         mapView.delegate = self
     }
-    
+
     func setUpRouteInfoTableView() {
         transitTag = 0
         routeDetailTableView.removeFromSuperview()
@@ -156,7 +156,7 @@ class MapViewController: UIViewController {
         view.addSubview(routeDetailTableView)
         routeDetailTableView.reloadData()
     }
-    
+
     func addYoubikeMarker(of station: YoubikeStation) {
         if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
             let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
@@ -166,7 +166,7 @@ class MapViewController: UIViewController {
             marker.map = mapView
         }
     }
-    
+
     func getUserLatitude() -> Double {
         let locationManager = CLLocationManager()
         guard let userLatitude = locationManager.location?.coordinate.latitude else {
@@ -175,7 +175,7 @@ class MapViewController: UIViewController {
         }
         return userLatitude
     }
-    
+
     func getUserLongitude() -> Double {
         let locationManager = CLLocationManager()
         guard let userLongitude = locationManager.location?.coordinate.longitude else {
@@ -184,14 +184,14 @@ class MapViewController: UIViewController {
         }
         return userLongitude
     }
-    
+
     func updateLocationButton() {
         mapView.padding = destinationInfoView.isHidden ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 0, left: 0, bottom: destinationInfoView.bounds.height, right: 0)
         if isNavigationMode {
             mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let routeViewController = segue.destination as? RouteViewController {
             routeViewController.destinationName = destinationName
@@ -258,7 +258,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return selectedRoute?.legs?.steps.count ?? 2
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? RouteDetailTableViewCell else {
             return UITableViewCell()
@@ -280,15 +280,15 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UITableViewHeaderFooterView()
         headerView.frame = CGRect(x: 0, y: 0, width: routeDetailTableView.bounds.width, height: 30)
@@ -299,13 +299,13 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         headerView.addSubview(headerButton)
         return headerView
     }
-    
+
     @objc func showOrHideTableView() {
         let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6)
         let hiddenState = CGRect(x: 0, y: view.bounds.height - 30, width: view.bounds.width, height: 30)
         routeDetailTableView.frame = routeDetailTableView.frame.height == 30 ? normalState : hiddenState
     }
-    
+
     @objc func showBusInfo(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
