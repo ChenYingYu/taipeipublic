@@ -9,14 +9,20 @@
 import UIKit
 
 class RouteDetailTableViewCell: UITableViewCell {
+    
     @IBOutlet weak var routeDetailLabel: UILabel!
     @IBOutlet weak var busInfoButton: UIButton!
     @IBAction func busInfoButtonPress(_ sender: UIButton) {
         busInfoButton.setTitleColor(UIColor.white, for: .normal)
     }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        setUpBusInfoButton()
+    }
+    
+    func setUpBusInfoButton() {
         busInfoButton.layer.cornerRadius = busInfoButton.bounds.height / 2
         busInfoButton.layer.borderColor = busInfoButton.currentTitleColor.cgColor
         busInfoButton.layer.borderWidth = 2.0
