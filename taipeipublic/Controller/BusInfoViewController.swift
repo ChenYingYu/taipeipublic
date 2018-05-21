@@ -20,5 +20,6 @@ class BusInfoViewController: UIViewController {
         super.viewDidLoad()
 
         backButton.tintColor = UIColor.white
+        busNumberLabel.text = busNumber
     }
 }

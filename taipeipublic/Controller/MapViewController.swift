@@ -26,6 +26,7 @@ class MapViewController: UIViewController {
     var selectedYoubikeStation = [YoubikeStation]()
     var routeDetailTableView = UITableView()
     var transitTag = 0
+    var transitInfoDictionary = [Int: String]()
     @IBOutlet weak var searchButton: UIButton!
     // Present the Autocomplete view controller when the button is pressed.
     @IBOutlet weak var mapView: GMSMapView!
@@ -244,16 +245,21 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
                 cell.busInfoButton.isHidden = false
+                cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
+                transitInfoDictionary.updateValue(transitDetail.lineName, forKey: indexPath.row)
             } else {
                 cell.routeDetailLabel.text  = seletedRoute?.legs?.steps[indexPath.row].instructions
             }
         }
         return cell
     }
-    @objc func showBusInfo() {
+    @objc func showBusInfo(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
+            if let busNumber = transitInfoDictionary[sender.tag] {
+                busInfoViewController.busNumber = busNumber
+            }
             present(busInfoViewController, animated: true, completion: nil)
         }
     }
