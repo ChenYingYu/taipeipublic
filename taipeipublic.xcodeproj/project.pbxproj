@@ -22,6 +22,7 @@
 		0A8AD1DA20AED52E00D91BE6 /* RouteDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AD1D820AED52D00D91BE6 /* RouteDetailTableViewCell.swift */; };
 		0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */; };
 		0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB819AB209AFB3700160842 /* RouteViewController.swift */; };
+		0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */; };
 		F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 534588B88CA253347B214A56 /* Pods_taipeipublic.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		0A8AD1D820AED52D00D91BE6 /* RouteDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailTableViewCell.swift; sourceTree = "<group>"; };
 		0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteDetailTableViewCell.xib; sourceTree = "<group>"; };
 		0AB819AB209AFB3700160842 /* RouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
+		0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusInfoViewController.swift; sourceTree = "<group>"; };
 		1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taipeipublic.release.xcconfig"; path = "Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic.release.xcconfig"; sourceTree = "<group>"; };
 		534588B88CA253347B214A56 /* Pods_taipeipublic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_taipeipublic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AE4647D95EDEB0E4801DA3A /* Pods-taipeipublic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taipeipublic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic.debug.xcconfig"; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			children = (
 				0A6EDBE62096AE00004BBF3C /* MapViewController.swift */,
 				0AB819AB209AFB3700160842 /* RouteViewController.swift */,
+				0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A6EDBE72096AE00004BBF3C /* MapViewController.swift in Sources */,
+				0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */,
 				0A6EDBE52096AE00004BBF3C /* AppDelegate.swift in Sources */,
 				0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */,
 				0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */,

@@ -244,11 +244,18 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
                 cell.busInfoButton.isHidden = false
+                cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
             } else {
                 cell.routeDetailLabel.text  = seletedRoute?.legs?.steps[indexPath.row].instructions
             }
         }
         return cell
+    }
+    @objc func showBusInfo() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
+            present(busInfoViewController, animated: true, completion: nil)
+        }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80

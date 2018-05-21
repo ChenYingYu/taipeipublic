@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -217,7 +218,69 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Me-fE-fR0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="768.11594202898561" y="28.532608695652176"/>
+            <point key="canvasLocation" x="871" y="-161"/>
+        </scene>
+        <!--Bus Info View Controller-->
+        <scene sceneID="dF1-5F-CRT">
+            <objects>
+                <viewController storyboardIdentifier="BusInfoViewController" id="4YX-VU-g0U" customClass="BusInfoViewController" customModule="taipeipublic" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PJC-As-WDn">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dea-rj-Esc">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="130"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbE-eG-uGW">
+                                        <rect key="frame" x="10" y="30" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="Wmg-b3-Nv8"/>
+                                        </constraints>
+                                        <state key="normal" image="btn_back">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="back:" destination="4YX-VU-g0U" eventType="touchUpInside" id="GJK-Xo-UQp"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="公車號碼" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dGp-9G-8U9">
+                                        <rect key="frame" x="58" y="28" width="314" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="noW-eg-4HM"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="30"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.039215686270000001" green="0.54901960780000003" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="wbE-eG-uGW" firstAttribute="top" secondItem="dea-rj-Esc" secondAttribute="top" constant="30" id="1tw-qH-sOr"/>
+                                    <constraint firstAttribute="trailing" secondItem="dGp-9G-8U9" secondAttribute="trailing" constant="42" id="VkN-K7-ADs"/>
+                                    <constraint firstItem="dGp-9G-8U9" firstAttribute="leading" secondItem="wbE-eG-uGW" secondAttribute="trailing" constant="8" symbolic="YES" id="YLu-tX-wRt"/>
+                                    <constraint firstAttribute="bottom" secondItem="wbE-eG-uGW" secondAttribute="bottom" constant="60" id="a7I-NK-AOQ"/>
+                                    <constraint firstItem="dGp-9G-8U9" firstAttribute="top" secondItem="dea-rj-Esc" secondAttribute="topMargin" id="cFw-n8-GTr"/>
+                                    <constraint firstItem="wbE-eG-uGW" firstAttribute="leading" secondItem="dea-rj-Esc" secondAttribute="leading" constant="10" id="iPE-UP-qwJ"/>
+                                    <constraint firstAttribute="height" constant="130" id="zkY-dh-JfD"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="dea-rj-Esc" firstAttribute="top" secondItem="PJC-As-WDn" secondAttribute="top" id="6NP-TO-wJk"/>
+                            <constraint firstItem="dea-rj-Esc" firstAttribute="leading" secondItem="OvQ-bp-MBL" secondAttribute="leading" id="D7M-yz-TKp"/>
+                            <constraint firstItem="dea-rj-Esc" firstAttribute="trailing" secondItem="OvQ-bp-MBL" secondAttribute="trailing" id="OpX-wF-YaQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OvQ-bp-MBL"/>
+                    </view>
+                    <connections>
+                        <outlet property="backButton" destination="wbE-eG-uGW" id="1Iy-UT-uBz"/>
+                        <outlet property="busNumberLabel" destination="dGp-9G-8U9" id="Aew-lO-Kik"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gZv-vc-ntt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="870" y="555"/>
         </scene>
     </scenes>
     <resources>
