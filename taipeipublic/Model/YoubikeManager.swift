@@ -25,7 +25,7 @@ struct YoubikeManager: Codable {
 
     var stations: [YoubikeStation]
     enum CodingKeys: String, CodingKey {
-        case stations = "stations"
+        case stations
     }
 
     static func getStationInfo() -> YoubikeManager? {

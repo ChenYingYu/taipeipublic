@@ -23,6 +23,7 @@ class RouteManager {
     weak var delegate: RouteManagerDelegate?
     weak var youbikeDelegate: YoubikeRouteManagerDelegate?
     var myRoutes = [Route]()
+
     func requestRoute(originLatitude: Double, originLongitude: Double, destinationId: String) {
         let urlString = "https://maps.googleapis.com/maps/api/directions/json?origin=\(originLatitude),\(originLongitude)&destination=place_id:\(destinationId)&mode=transit&key=\(Constant.googlePlacesAPIKey)&alternatives=true"
         Alamofire.request(urlString).validate().responseJSON { response in
@@ -76,7 +77,7 @@ class RouteManager {
                     guard let travelMode = step["travel_mode"] as? String else {
                         return
                     }
-                    var walkingDetail = [Step]()
+                    let walkingDetail = [Step]()
                     var transit: Transit?
                     if travelMode == "WALKING" {
 
@@ -112,6 +113,7 @@ class RouteManager {
             }
         }
     }
+
     func requestYoubikeRoute(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double, through startYoubikeStation: YoubikeStation, and endYoubikeStation: YoubikeStation) {
         let urlString = "https://maps.googleapis.com/maps/api/directions/json?origin=\(originLatitude),\(originLongitude)&destination=\(destinationLatitude),\(destinationLongitude)&waypoints=via:\(startYoubikeStation.latitude)%2C\(startYoubikeStation.longitude)%7Cvia:\(endYoubikeStation.latitude)%2C\(endYoubikeStation.longitude)&mode=walking&key=\(Constant.googlePlacesAPIKey)"
         Alamofire.request(urlString).validate().responseJSON { response in
@@ -161,8 +163,8 @@ class RouteManager {
                         guard let travelMode = step["travel_mode"] as? String else {
                             return
                         }
-                        var walkingDetail = [Step]()
-                        var transitDetail = [Transit]()
+                        let walkingDetail = [Step]()
+                        let transitDetail = [Transit]()
                         let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
                         newSteps.append(newStep)
                     }
