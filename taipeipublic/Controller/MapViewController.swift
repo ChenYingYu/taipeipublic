@@ -66,7 +66,6 @@ class MapViewController: UIViewController {
             showDestination()
             showRoutePolyline()
             showYoubikeRoutePolyline()
-            showYoubikeStation()
             mapView.addSubview(backButton)
             setUpRouteInfoTableView()
         } else if isDestinationMode {
@@ -111,6 +110,7 @@ class MapViewController: UIViewController {
             polyline.strokeColor = UIColor.yellow
             polyline.strokeWidth = 6.0
             polyline.map = mapView
+            showYoubikeStation()
         }
     }
 
