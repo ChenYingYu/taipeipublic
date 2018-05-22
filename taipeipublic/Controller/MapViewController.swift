@@ -270,7 +270,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 let transitDetail = transitDetails[transitTag]
                 cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
-                cell.busInfoButton.isHidden = false
+//                cell.busInfoButton.isHidden = false
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
                 transitInfoDictionary.updateValue(transitDetail.lineName, forKey: indexPath.row)
