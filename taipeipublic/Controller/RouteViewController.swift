@@ -14,23 +14,26 @@ class RouteViewController: UIViewController {
 
     var destinationName = ""
     var destinationId = ""
+    var route: Route?
     var routes = [Route]()
     var youbikeRoute: Route?
-    var youbikeRoutes = [Route?]()
-    var youbikeStations = [[YoubikeStation]?]()
-    var haveYoubikeRoute = [Bool]()
-    var passHandller: ((Route?, Route?, [YoubikeStation]?, Bool) -> Void)?
+    var youbikeRoutes = [Route]()
+    var cellTag = -1
+    var youbikeRouteDictionary = [Int: [Route]]()
+    var youbikeStations = [YoubikeStation]()
+    var youbikeStationsDictionary = [Int: [YoubikeStation]]()
+    var passHandller: ((Route?, [Route]?, [YoubikeStation]?, Bool) -> Void)?
 
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var routeTableView: UITableView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var destinationLabel: UILabel!
     @IBAction func back(_ sender: UIButton) {
-        self.passHandller?(nil, nil, nil, false)
         dismiss(animated: true, completion: nil)
     }
 
     override func viewDidLoad() {
+        self.passHandller?(nil, nil, nil, false)
         resetRoutes()
         setUpTitleView()
         setUpRouteTableView()
@@ -42,9 +45,14 @@ class RouteViewController: UIViewController {
     }
 
     func resetRoutes() {
-        routes = [Route]()
-        youbikeRoutes = [Route]()
-        youbikeStations = [[YoubikeStation]]()
+        routes.removeAll()
+        youbikeRoute = nil
+        route = nil
+        cellTag = -1
+        youbikeRoutes.removeAll()
+        youbikeRouteDictionary.removeAll()
+        youbikeStations.removeAll()
+        youbikeStationsDictionary.removeAll()
     }
 
     func setUpTitleView() {
@@ -108,9 +116,9 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         guard routes.count > indexPath.row else {
             return cell
         }
-        let route = routes[indexPath.row]
+        route = routes[indexPath.row]
         var routeInfo = ""
-        if let legs = route.legs, let duration = legs.duration {
+        if let selectedRoute = route, let legs = selectedRoute.legs, let duration = legs.duration {
             //路線資訊格式
             routeInfo += "\(duration): \n" //總時間：
             for index in legs.steps.indices {
@@ -126,20 +134,20 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.subtitleLabel.numberOfLines = 0
         cell.subtitleLabel.text = routeInfo
-        if haveYoubikeRoute.count > indexPath.row {
-            cell.youbikeLabel.isHidden = haveYoubikeRoute[indexPath.row] ? false : true
+        if youbikeStationsDictionary[indexPath.row] != nil {
+            cell.youbikeLabel.isHidden = false
+        } else {
+            cell.youbikeLabel.isHidden = true
         }
         return cell
     }
 
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return indexPath
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let route = routes[indexPath.row]
-        let youbikeStations = self.youbikeStations[indexPath.row]
-        var youbikeRoute: Route?
-        if youbikeRoutes.count > indexPath.row {
-            youbikeRoute = youbikeRoutes[indexPath.row]
-        }
-        self.passHandller?(route, youbikeRoute, youbikeStations, true)
+        self.passHandller?(routes[indexPath.row], youbikeRouteDictionary[indexPath.row], youbikeStationsDictionary[indexPath.row], true)
         dismiss(animated: true, completion: nil)
     }
 
@@ -154,22 +162,22 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
 extension RouteViewController: RouteManagerDelegate {
     func manager(_ manager: RouteManager, didGet routes: [Route]) {
         self.routes += routes
-        for _ in routes.indices {
-            self.youbikeRoutes.append(nil)
-        }
-        for route in routes {
-            guard let legs = route.legs else {
+        for index in routes.indices {
+            guard let legs = routes[index].legs else {
                 return
             }
-            //取得起點附近 Youbike 路線
-            var firstYoubikeStation: YoubikeStation?
-            var secondYoubikeStation: YoubikeStation?
+            var firstYoubikeStation: YoubikeStation? = nil
+            var secondYoubikeStation: YoubikeStation? = nil
+            var thirdYoubikeStation: YoubikeStation? = nil
+            var finalYoubikeStation: YoubikeStation? = nil
+            //取得附近 Youbike 路線
             for index in legs.steps.indices {
-                let position = CLLocationCoordinate2D(latitude: legs.steps[index].startLocation.lat, longitude: legs.steps[index].startLocation.lng)
+                let startPosition = CLLocationCoordinate2D(latitude: legs.steps[index].startLocation.lat, longitude: legs.steps[index].startLocation.lng)
+                let endPosition = CLLocationCoordinate2D(latitude: legs.steps[index].endLocation.lat, longitude: legs.steps[index].endLocation.lng)
                 //起點 (index == 0) 及離起點最近的運輸站 (index == 1)
                 if index < 2 {
                     if let youbikeManager = YoubikeManager.getStationInfo() {
-                        let stations = youbikeManager.checkNearbyStation(position: position)
+                        let stations = youbikeManager.checkNearbyStation(position: startPosition)
                         if stations.count > 0 {
                             let station = stations[0]
                             if index == 0 {
@@ -180,30 +188,50 @@ extension RouteViewController: RouteManagerDelegate {
                         }
                     }
                 }
+                //終點 (index == legs.steps.count - 1) 及離終點最近的運輸站 (index == legs.steps.count - 2)
+                if index > legs.steps.count - 3 {
+                    if let youbikeManager = YoubikeManager.getStationInfo() {
+                        let stations = youbikeManager.checkNearbyStation(position: endPosition)
+                        if stations.count > 0 {
+                            let station = stations[0]
+                            if index == legs.steps.count - 2 {
+                                thirdYoubikeStation = station
+                            } else if index == legs.steps.count - 1 {
+                                finalYoubikeStation = station
+                            }
+                        }
+                    }
+                }
             }
-            if let youbikeStart = firstYoubikeStation, let youbikeEnd = secondYoubikeStation, youbikeStart.name != youbikeEnd.name {
-                print("= = = = = = = = = = = = = = = =")
-                print("AWESOME! WE FOUND A NEW ROUTE!")
-                print("= = = = = = = = = = = = = = = =")
-                var stations = [YoubikeStation]()
-                stations.append(youbikeStart)
-                stations.append(youbikeEnd)
-                youbikeStations.append(stations)
-                //加入 Youbike 租借站做為中途點並取得新路線
-                let startPoint = legs.steps[0].startLocation
-                let endPoint = legs.steps[0].endLocation
-                let routeManager = RouteManager()
-                routeManager.youbikeDelegate = self
-                routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: youbikeStart, and: youbikeEnd)
-                self.haveYoubikeRoute.append(true)
-            } else {
-                let routeManager = RouteManager()
-                routeManager.requestYoubikeRoute(originLatitude: 1000000.0, originLongitude: 1000000.0, destinationLatitude: 1000000.0, destinationLongitude: 1000000.0, through: YoubikeStation(name: "", latitude: "1000000.0", longitude: "1000000.0"), and: YoubikeStation(name: "", latitude: "1000000.0", longitude: "1000000.0"))
-                self.youbikeStations.append(nil)
-                self.haveYoubikeRoute.append(false)
-            }
+            cellTag = index
+            youbikeStations.removeAll()
+            youbikeRoutes.removeAll()
+            checkYoubikeStation(firstYoubikeStation, and: secondYoubikeStation, in: legs.steps[0], withRouteIndex: index)
+            checkYoubikeStation(thirdYoubikeStation, and: finalYoubikeStation, in: legs.steps[legs.steps.count - 1], withRouteIndex: index)
         }
         routeTableView.reloadData()
+    }
+
+    func checkYoubikeStation(_ start: YoubikeStation?, and end: YoubikeStation?, in step: Step, withRouteIndex index: Int) {
+        if let youbikeStart = start, let youbikeEnd = end, youbikeStart.name != youbikeEnd.name {
+            //加入 Youbike 租借站做為中途點並取得新路線
+            youbikeStations.append(youbikeStart)
+            youbikeStations.append(youbikeEnd)
+            youbikeStationsDictionary.updateValue(youbikeStations, forKey: cellTag)
+            checkOutYoubikeRoute(of: step, from: youbikeStart, to: youbikeEnd, withRouteIndex: index)
+        }
+    }
+
+    func checkOutYoubikeRoute(of step: Step, from start: YoubikeStation?, to destination: YoubikeStation?, withRouteIndex index: Int) {
+        let routeManager = RouteManager()
+        routeManager.youbikeDelegate = self
+        //取得附近 Youbike 路線
+        if let youbikeStart = start, let youbikeEnd = destination, youbikeStart.name != youbikeEnd.name {
+            //加入 Youbike 租借站做為中途點並取得新路線
+            let startPoint = step.startLocation
+            let endPoint = step.endLocation
+            routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: youbikeStart, and: youbikeEnd, withRouteIndex: index)
+        }
     }
 
     func manager(_ manager: RouteManager, didFailWith error: Error) {
@@ -212,13 +240,11 @@ extension RouteViewController: RouteManagerDelegate {
 }
 
 extension RouteViewController: YoubikeRouteManagerDelegate {
-    func youbikeManager(_ manager: RouteManager, didGet routes: [Route]) {
-        self.youbikeRoute = nil
+    func youbikeManager(_ manager: RouteManager, didGet routes: [Route], atRouteIndex index: Int) {
         if routes.count > 0 {
-            for index in haveYoubikeRoute.indices where self.haveYoubikeRoute[index] && self.youbikeRoutes[index] == nil {
-                    self.youbikeRoutes[index] = routes[0]
-                    return
-            }
+            self.youbikeRoutes.append(routes[0])
+            self.youbikeRouteDictionary.updateValue(youbikeRoutes, forKey: index)
+            return
         }
     }
 

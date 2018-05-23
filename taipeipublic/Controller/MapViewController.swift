@@ -24,7 +24,7 @@ class MapViewController: UIViewController {
     var routes = [Route]()
     var youbikeRoute: Route?
     var selectedRoute: Route?
-    var selectedYoubikeRoute: Route?
+    var selectedYoubikeRoutes: [Route]?
     var selectedYoubikeStation = [YoubikeStation]()
     var routeDetailTableView = UITableView()
     // 紀錄公車班次時使用的變數
@@ -104,13 +104,18 @@ class MapViewController: UIViewController {
     }
 
     func showYoubikeRoutePolyline() {
-        if let youbikeLegs = self.selectedYoubikeRoute?.legs {
-            let path = GMSPath(fromEncodedPath: youbikeLegs.points)
-            let polyline = GMSPolyline(path: path)
-            polyline.strokeColor = UIColor.yellow
-            polyline.strokeWidth = 6.0
-            polyline.map = mapView
-            showYoubikeStation()
+        guard let youbikeRoutes = self.selectedYoubikeRoutes else {
+            return
+        }
+        for youbikeRoute in youbikeRoutes {
+            if let youbikeLegs = youbikeRoute.legs {
+                let path = GMSPath(fromEncodedPath: youbikeLegs.points)
+                let polyline = GMSPolyline(path: path)
+                polyline.strokeColor = UIColor.yellow
+                polyline.strokeWidth = 6.0
+                polyline.map = mapView
+                showYoubikeStation()
+            }
         }
     }
 
@@ -199,7 +204,7 @@ class MapViewController: UIViewController {
             routeViewController.routes = routes
             routeViewController.passHandller = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode) in
                     self?.selectedRoute = route
-                    self?.selectedYoubikeRoute = youbikeRoute
+                    self?.selectedYoubikeRoutes = youbikeRoute
                 if let selectedYoubikeStation = youbikeStation {
                     self?.selectedYoubikeStation = selectedYoubikeStation
                 }

@@ -64,8 +64,8 @@ struct YoubikeManager: Codable {
         if let youbikeManager = YoubikeManager.getStationInfo(), let stations = youbikeManager.getYoubikeLocation() {
             for index in stations.indices {
                 if let latitude = Double(stations[index].latitude), let longitude = Double(stations[index].longitude) {
-                    //尋找附近 300 公尺內 Youbike 站點
-                    if self.getdistance(lng1: position.longitude, lat1: position.latitude, lng2: Double(longitude), lat2: Double(latitude)) < 300.0 {
+                    //尋找附近 200 公尺內 Youbike 站點
+                    if self.getdistance(lng1: position.longitude, lat1: position.latitude, lng2: Double(longitude), lat2: Double(latitude)) < 200.0 {
                         nearbyStations.append(stations[index])
                     }
                 } else {

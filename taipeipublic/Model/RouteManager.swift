@@ -15,7 +15,7 @@ protocol RouteManagerDelegate: class {
 }
 
 protocol YoubikeRouteManagerDelegate: class {
-    func youbikeManager(_ manager: RouteManager, didGet routes: [Route])
+    func youbikeManager(_ manager: RouteManager, didGet routes: [Route], atRouteIndex index: Int)
     func youbikeManager(_ manager: RouteManager, didFailWith error: Error)
 }
 
@@ -114,7 +114,7 @@ class RouteManager {
         }
     }
 
-    func requestYoubikeRoute(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double, through startYoubikeStation: YoubikeStation, and endYoubikeStation: YoubikeStation) {
+    func requestYoubikeRoute(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double, through startYoubikeStation: YoubikeStation, and endYoubikeStation: YoubikeStation, withRouteIndex index: Int) {
         let urlString = "https://maps.googleapis.com/maps/api/directions/json?origin=\(originLatitude),\(originLongitude)&destination=\(destinationLatitude),\(destinationLongitude)&waypoints=via:\(startYoubikeStation.latitude)%2C\(startYoubikeStation.longitude)%7Cvia:\(endYoubikeStation.latitude)%2C\(endYoubikeStation.longitude)&mode=walking&key=\(Constant.googlePlacesAPIKey)"
         Alamofire.request(urlString).validate().responseJSON { response in
             switch response.result {
@@ -174,10 +174,14 @@ class RouteManager {
                     let newLegs = Legs(arrivalTime: nil, departureTime: nil, distance: nil, duration: nil, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps, points: points)
                     let myRoute = Route(bounds: newBounds, legs: newLegs)
                     self.myRoutes.append(myRoute)
-                    self.youbikeDelegate?.youbikeManager(self, didGet: self.myRoutes)
+                    DispatchQueue.main.async {
+                        self.youbikeDelegate?.youbikeManager(self, didGet: self.myRoutes, atRouteIndex: index)
+                    }
                 }
             case .failure(let error):
-                self.youbikeDelegate?.youbikeManager(self, didFailWith: error)
+                DispatchQueue.main.async {
+                    self.youbikeDelegate?.youbikeManager(self, didFailWith: error)
+                }
             }
         }
     }
