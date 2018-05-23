@@ -177,9 +177,7 @@ extension RouteViewController: RouteManagerDelegate {
                 //起點 (index == 0) 及離起點最近的運輸站 (index == 1)
                 if index < 2 {
                     if let youbikeManager = YoubikeManager.getStationInfo() {
-                        let stations = youbikeManager.checkNearbyStation(position: startPosition)
-                        if stations.count > 0 {
-                            let station = stations[0]
+                        if let station = youbikeManager.checkNearbyStation(position: startPosition) {
                             if index == 0 {
                                 firstYoubikeStation = station
                             } else if index == 1 {
@@ -191,9 +189,7 @@ extension RouteViewController: RouteManagerDelegate {
                 //終點 (index == legs.steps.count - 1) 及離終點最近的運輸站 (index == legs.steps.count - 2)
                 if index > legs.steps.count - 3 {
                     if let youbikeManager = YoubikeManager.getStationInfo() {
-                        let stations = youbikeManager.checkNearbyStation(position: endPosition)
-                        if stations.count > 0 {
-                            let station = stations[0]
+                        if let station = youbikeManager.checkNearbyStation(position: endPosition) {
                             if index == legs.steps.count - 2 {
                                 thirdYoubikeStation = station
                             } else if index == legs.steps.count - 1 {
