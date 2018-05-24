@@ -154,6 +154,9 @@ class MapViewController: UIViewController {
         routeDetailTableView.removeFromSuperview()
         routeDetailTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
         routeDetailTableView.backgroundColor = UIColor(red: 4.0/255.0, green: 52.0/255.0, blue: 76.0/255.0, alpha: 1.0)
+        routeDetailTableView.clipsToBounds = true
+        routeDetailTableView.layer.cornerRadius = 20.0
+        routeDetailTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         routeDetailTableView.delegate = self
         routeDetailTableView.dataSource = self
         let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)
@@ -302,6 +305,8 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         headerButton.frame = headerView.bounds
         headerButton.layer.backgroundColor = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
         headerButton.addTarget(self, action: #selector(showOrHideTableView), for: .touchUpInside)
+        let image = UIImage(named: "icon_roundedRectangle")
+        headerButton.setImage(image, for: .normal)
         headerView.addSubview(headerButton)
         return headerView
     }
