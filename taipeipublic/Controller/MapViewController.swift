@@ -283,6 +283,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.routeDetailLabel.text  = selectedRoute?.legs?.steps[indexPath.row].instructions
             }
         }
+        cell.isUserInteractionEnabled = false
         return cell
     }
 
