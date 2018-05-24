@@ -30,6 +30,7 @@ class MapViewController: UIViewController {
     // 紀錄公車班次時使用的變數
     var transitTag = 0
     var transitInfoDictionary = [Int: String]()
+    var initialCenter = CGPoint()
 
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
@@ -304,17 +305,44 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         let headerButton = UIButton()
         headerButton.frame = headerView.bounds
         headerButton.layer.backgroundColor = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
-        headerButton.addTarget(self, action: #selector(showOrHideTableView), for: .touchUpInside)
         let image = UIImage(named: "icon_roundedRectangle")
         headerButton.setImage(image, for: .normal)
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(showOrHideTableView))
+        headerButton.addGestureRecognizer(panGesture)
         headerView.addSubview(headerButton)
         return headerView
     }
 
-    @objc func showOrHideTableView() {
-        let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6)
-        let hiddenState = CGRect(x: 0, y: view.bounds.height - 30, width: view.bounds.width, height: 30)
-        routeDetailTableView.frame = routeDetailTableView.frame.height == 30 ? normalState : hiddenState
+    @objc func showOrHideTableView(_ gestureRecognizer: UIPanGestureRecognizer) {
+        let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
+        let hiddenState = CGRect(x: 0, y: view.bounds.height - 30, width: view.bounds.width, height: view.bounds.height)
+        guard gestureRecognizer.view != nil else {return}
+        let piece = routeDetailTableView
+        let translation = gestureRecognizer.translation(in: piece.superview)
+        // 根據手勢拖動情形，更改tableView位置
+        if gestureRecognizer.state == .began {
+            initialCenter = piece.center
+        }
+        if gestureRecognizer.state != .cancelled {
+            let newCenter = CGPoint(x: initialCenter.x + translation.x, y: initialCenter.y + translation.y)
+            print(initialCenter)
+            if piece.frame.minY >= normalState.minY - 0.0000001 {
+                piece.center.y = newCenter.y
+            }
+        }
+        if gestureRecognizer.state == .ended {
+            if piece.center.y > initialCenter.y {
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.view.layoutIfNeeded()
+                    piece.frame = hiddenState
+                })
+            } else {
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.view.layoutIfNeeded()
+                    piece.frame = normalState
+                })
+            }
+        }
     }
 
     @objc func showBusInfo(_ sender: UIButton) {
