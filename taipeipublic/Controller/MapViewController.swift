@@ -65,10 +65,11 @@ class MapViewController: UIViewController {
             self.searchButton.isHidden = true
             self.backButton.isHidden = false
             showDestination()
+            updateCamera()
             showRoutePolyline()
             showYoubikeRoutePolyline()
             mapView.addSubview(backButton)
-            setUpRouteInfoTableView()
+            setUpRouteDetailTableView()
         } else if isDestinationMode {
             routeDetailTableView.removeFromSuperview()
             self.destinationInfoView.isHidden = false
@@ -84,6 +85,18 @@ class MapViewController: UIViewController {
             let marker = GMSMarker(position: place.coordinate)
             marker.map = mapView
             mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
+        }
+    }
+
+    func updateCamera() {
+        if let upperRight = selectedRoute?.bounds?.northeast, let bottomLeft = selectedRoute?.bounds?.southwest {
+            let northeast = CLLocationCoordinate2DMake(upperRight.lat, upperRight.lng)
+            let southwest = CLLocationCoordinate2DMake(bottomLeft.lat, bottomLeft.lng)
+            let bounds = GMSCoordinateBounds(coordinate: northeast, coordinate: southwest)
+            let update = GMSCameraUpdate.fit(bounds, with: UIEdgeInsets(top: 0, left: 0, bottom: self.view.frame.height - routeDetailTableView.frame.minY, right: 0))
+            UIView.animate(withDuration: 2.0, animations: {
+                self.mapView.moveCamera(update)
+            })
         }
     }
 
@@ -150,7 +163,7 @@ class MapViewController: UIViewController {
         mapView.delegate = self
     }
 
-    func setUpRouteInfoTableView() {
+    func setUpRouteDetailTableView() {
         transitTag = 0
         routeDetailTableView.removeFromSuperview()
         routeDetailTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
@@ -162,6 +175,7 @@ class MapViewController: UIViewController {
         routeDetailTableView.dataSource = self
         let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)
         routeDetailTableView.register(nib, forCellReuseIdentifier: "Cell")
+        updateCamera()
         view.addSubview(routeDetailTableView)
         routeDetailTableView.reloadData()
     }
@@ -325,7 +339,6 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         }
         if gestureRecognizer.state != .cancelled {
             let newCenter = CGPoint(x: initialCenter.x + translation.x, y: initialCenter.y + translation.y)
-            print(initialCenter)
             if piece.frame.minY >= normalState.minY - 0.0000001 {
                 piece.center.y = newCenter.y
             }
@@ -342,6 +355,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                     piece.frame = normalState
                 })
             }
+            updateCamera()
         }
     }
 
