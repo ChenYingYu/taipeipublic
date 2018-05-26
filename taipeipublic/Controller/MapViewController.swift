@@ -171,6 +171,7 @@ class MapViewController: UIViewController {
         routeDetailTableView.clipsToBounds = true
         routeDetailTableView.layer.cornerRadius = 20.0
         routeDetailTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        routeDetailTableView.separatorStyle = .none
         routeDetailTableView.delegate = self
         routeDetailTableView.dataSource = self
         let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)

@@ -74,6 +74,7 @@ class RouteViewController: UIViewController {
     func setUpRouteTableView() {
         let customTableViewCell = UINib(nibName: "RouteTableViewCell", bundle: nil)
         routeTableView.register(customTableViewCell, forCellReuseIdentifier: "Cell")
+        routeTableView.separatorStyle = .none
         routeTableView.delegate = self
         routeTableView.dataSource = self
     }
