@@ -49,7 +49,13 @@ class RouteManager {
                         return
                     }
                     let leg = legs[0]
-                    guard let arrival = leg["arrival_time"] as? [String: AnyObject], let arrivalTime = arrival["text"] as? String, let departure = leg["departure_time"] as? [String: AnyObject], let departureTime = departure["text"] as? String, let distance = leg["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = leg["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
+                    var arrival = ""
+                    var departure = ""
+                    if let newArrival = leg["arrival_time"] as? [String: AnyObject], let arrivalTime = newArrival["text"] as? String, let newDeparture = leg["departure_time"] as? [String: AnyObject], let departureTime = newDeparture["text"] as? String {
+                        arrival = arrivalTime
+                        departure = departureTime
+                    }
+                    guard let distance = leg["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = leg["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
                         return
                     }
                     guard let endAddress = leg["end_address"] as? String, let endLocation = leg["end_location"] as? [String: AnyObject], let endLocationlat = endLocation["lat"] as? Double, let endLocationLng = endLocation["lng"] as? Double, let startAddress = leg["start_address"] as? String, let startLocation = leg["start_location"] as? [String: AnyObject], let startLocationlat = startLocation["lat"] as? Double, let startLocationLng = startLocation["lng"] as? Double else {
@@ -101,7 +107,7 @@ class RouteManager {
                 guard let polyline = route["overview_polyline"] as? [String: String], let points = polyline["points"] else {
                     return
                 }
-                let newLegs = Legs(arrivalTime: arrivalTime, departureTime: departureTime, distance: distanceText, duration: durationText, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps, points: points)
+                let newLegs = Legs(arrivalTime: arrival, departureTime: departure, distance: distanceText, duration: durationText, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps, points: points)
                 let myRoute = Route(bounds: newBounds, legs: newLegs)
                     self.myRoutes.append(myRoute)
                 }
