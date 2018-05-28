@@ -330,7 +330,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
 
     @objc func showOrHideTableView(_ gestureRecognizer: UIPanGestureRecognizer) {
         let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
-        let hiddenState = CGRect(x: 0, y: view.bounds.height - 30, width: view.bounds.width, height: view.bounds.height)
+        let hiddenState = CGRect(x: 0, y: view.bounds.height - 50, width: view.bounds.width, height: view.bounds.height)
         guard gestureRecognizer.view != nil else {return}
         let piece = routeDetailTableView
         let translation = gestureRecognizer.translation(in: piece.superview)
