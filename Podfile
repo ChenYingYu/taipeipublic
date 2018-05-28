@@ -9,7 +9,8 @@ target 'taipeipublic' do
   pod 'GooglePlaces'
   pod 'Alamofire'
   pod 'SwiftLint'
-  
+  pod 'Fabric'
+  pod 'Crashlytics'
   # Pods for taipeipublic
 
 end
