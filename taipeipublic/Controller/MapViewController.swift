@@ -51,6 +51,8 @@ class MapViewController: UIViewController {
 
         setUpView()
         setUpMap()
+        let manager = RouteManager()
+        manager.requestBusRoute()
     }
 
     override func viewWillAppear(_ animated: Bool) {
