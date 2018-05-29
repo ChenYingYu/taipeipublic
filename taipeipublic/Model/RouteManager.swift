@@ -19,9 +19,15 @@ protocol YoubikeRouteManagerDelegate: class {
     func youbikeManager(_ manager: RouteManager, didFailWith error: Error)
 }
 
+protocol BusRouteManagerDelegate: class {
+    func busManager(_ manager: RouteManager, didGet routes: [BusRoute])
+    func busManager(_ manager: RouteManager, didFailWith error: Error)
+}
+
 class RouteManager {
     weak var delegate: RouteManagerDelegate?
     weak var youbikeDelegate: YoubikeRouteManagerDelegate?
+    weak var busDelegate: BusRouteManagerDelegate?
     var myRoutes = [Route]()
 
     func requestRoute(originLatitude: Double, originLongitude: Double, destinationId: String) {
@@ -220,7 +226,24 @@ class RouteManager {
             .validate()
             .responseJSON { response in
                 if response.result.error == nil {
-                    debugPrint("HTTP Response Body: \(response.result.value)")
+
+                    guard let value = response.result.value else {
+                        print("Value Not Found")
+                        return
+                    }
+
+                    guard let data = try? JSONSerialization.data(withJSONObject: value) else {
+                        print("Cannot parse data as JSON")
+                        return
+                    }
+
+                    do {
+                        let busRoutes = try JSONDecoder().decode([BusRoute].self, from: data)
+                        self.busDelegate?.busManager(self, didGet: busRoutes)
+                        print(busRoutes)
+                    } catch let error {
+                        print(error)
+                    }
                 } else {
                     debugPrint("HTTP Request failed: \(response.result.error)")
                 }
