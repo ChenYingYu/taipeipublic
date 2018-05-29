@@ -198,10 +198,10 @@ class RouteManager {
         dateFormater.timeZone = TimeZone(identifier: "GMT")
         let currentDate = Date()
         let customDate = dateFormater.string(from: currentDate)
-        let base64String = "x-date: \(customDate)".hmac(algorithm: HMACAlgorithm.SHA1, key: "-Fjkt5T-AtetVWGUIC6F1ZSngmI")
+        let base64String = "x-date: \(customDate)".hmac(algorithm: HMACAlgorithm.SHA1, key: Constant.PTXAppKey)
 
         let headers = [
-            "Authorization": "hmac username=\"6682cd802e7f48cb903f21ed478943e1\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"\(base64String)\"",
+            "Authorization": "hmac username=\"\(Constant.PTXAppID)\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"\(base64String)\"",
             "x-date": customDate
             ]
 
