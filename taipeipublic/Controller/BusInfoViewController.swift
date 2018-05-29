@@ -21,5 +21,8 @@ class BusInfoViewController: UIViewController {
 
         backButton.tintColor = UIColor.white
         busNumberLabel.text = busNumber
+
+        let manager = RouteManager()
+        manager.requestBusStopInfo(ofRouteName: busNumber)
     }
 }

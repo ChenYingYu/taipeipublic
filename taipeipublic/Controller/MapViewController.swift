@@ -51,8 +51,6 @@ class MapViewController: UIViewController {
 
         setUpView()
         setUpMap()
-        let manager = RouteManager()
-        manager.requestBusRoute()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -289,6 +287,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? RouteDetailTableViewCell else {
             return UITableViewCell()
         }
+        cell.isUserInteractionEnabled = false
         if let step = selectedRoute?.legs?.steps[indexPath.row] {
             //顯示公車或捷運班次及起迄站
             if step.travelMode == "TRANSIT", let transitDetails = step.transitDetail {
@@ -296,7 +295,8 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 let transitDetail = transitDetails[transitTag]
                 cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
-//                cell.busInfoButton.isHidden = false
+                cell.busInfoButton.isHidden = false
+                cell.isUserInteractionEnabled = true
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
                 transitInfoDictionary.updateValue(transitDetail.lineName, forKey: indexPath.row)
@@ -304,7 +304,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.routeDetailLabel.text  = selectedRoute?.legs?.steps[indexPath.row].instructions
             }
         }
-        cell.isUserInteractionEnabled = false
+
         return cell
     }
 

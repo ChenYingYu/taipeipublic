@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -21,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RouteDetail" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="uii-y3-fLU">
-                        <rect key="frame" x="20" y="11" width="375" height="127"/>
+                        <rect key="frame" x="20" y="11" width="300" height="127"/>
                         <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -41,7 +40,7 @@
                 </subviews>
                 <color key="backgroundColor" red="0.1843137255" green="0.26274509800000001" blue="0.29803921570000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="uii-y3-fLU" secondAttribute="trailing" constant="10" id="DmP-XL-X01"/>
+                    <constraint firstItem="fsQ-Pa-iX3" firstAttribute="leading" secondItem="uii-y3-fLU" secondAttribute="trailing" constant="5" id="B2T-LC-Qqa"/>
                     <constraint firstItem="uii-y3-fLU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="GRX-rr-ryJ"/>
                     <constraint firstItem="uii-y3-fLU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="bzr-kl-UDT"/>
                     <constraint firstAttribute="trailing" secondItem="fsQ-Pa-iX3" secondAttribute="trailing" constant="10" id="eVg-nE-Hkx"/>

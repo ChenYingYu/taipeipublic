@@ -192,7 +192,7 @@ class RouteManager {
         }
     }
 
-    func requestBusRoute() {
+    func requestBusStopInfo(ofRouteName routeName: String) {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
         dateFormater.timeZone = TimeZone(identifier: "GMT")
@@ -209,7 +209,14 @@ class RouteManager {
             "$format": "JSON"
             ]
 
-        Alamofire.request("http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/212%E7%9B%B4", method: .get, parameters: urlParams, headers: headers)
+        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/\(routeName)"
+
+        guard let URL = NSURL(string: urlString.addingPercentEncoding(withAllowedCharacters: (NSCharacterSet.urlQueryAllowed))!) else {
+            print("URL Encoding Fail")
+            return
+        }
+
+        Alamofire.request(URL.relativeString, method: .get, parameters: urlParams, headers: headers)
             .validate()
             .responseJSON { response in
                 if response.result.error == nil {
