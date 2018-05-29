@@ -193,11 +193,16 @@ class RouteManager {
     }
 
     func requestBusRoute() {
-        let base64String = "x-date: Tue, 29 May 2018 06:22:50 GMT".hmac(algorithm: HMACAlgorithm.SHA1, key: "-Fjkt5T-AtetVWGUIC6F1ZSngmI")
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
+        dateFormater.timeZone = TimeZone(identifier: "GMT")
+        let currentDate = Date()
+        let customDate = dateFormater.string(from: currentDate)
+        let base64String = "x-date: \(customDate)".hmac(algorithm: HMACAlgorithm.SHA1, key: "-Fjkt5T-AtetVWGUIC6F1ZSngmI")
 
         let headers = [
             "Authorization": "hmac username=\"6682cd802e7f48cb903f21ed478943e1\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"\(base64String)\"",
-            "x-date": "Tue, 29 May 2018 06:22:50 GMT"
+            "x-date": customDate
             ]
 
         let urlParams = [
