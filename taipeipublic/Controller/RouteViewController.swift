@@ -56,6 +56,7 @@ class RouteViewController: UIViewController {
     }
 
     func setUpTitleView() {
+        UIApplication.shared.statusBarStyle = .lightContent
         backButton.tintColor = UIColor.white
         destinationLabel.text = "  \(destinationName)"
         titleView.addGradient()

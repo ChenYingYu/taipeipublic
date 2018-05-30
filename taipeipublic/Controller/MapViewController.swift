@@ -142,6 +142,8 @@ class MapViewController: UIViewController {
 
     func setUpView() {
         destinationInfoView.isHidden = true
+        destinationInfoView.layer.cornerRadius = 10.0
+        destinationInfoView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         searchButton.layer.shadowColor = UIColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         searchButton.layer.shadowRadius = 4.0
@@ -212,7 +214,7 @@ class MapViewController: UIViewController {
     func updateLocationButton() {
         mapView.padding = destinationInfoView.isHidden ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 0, left: 0, bottom: destinationInfoView.bounds.height, right: 0)
         if isNavigationMode {
-            mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+            mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         }
     }
 
