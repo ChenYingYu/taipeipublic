@@ -30,6 +30,7 @@ class BusInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        UIApplication.shared.statusBarStyle = .lightContent
         backButton.tintColor = UIColor.white
         busNumberLabel.text = busNumber
         titleView.addGradient()
@@ -40,6 +41,10 @@ class BusInfoViewController: UIViewController {
         let manager = RouteManager()
         manager.busDelegate = self
         manager.requestBusStopInfo(ofRouteName: busNumber)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        UIApplication.shared.statusBarStyle = .default
     }
 }
 
