@@ -29,7 +29,7 @@ class MapViewController: UIViewController {
     var routeDetailTableView = UITableView()
     // 紀錄公車班次時使用的變數
     var transitTag = 0
-    var transitInfoDictionary = [Int: String]()
+    var transitInfoDictionary = [Int: [String: String]]()
     var initialCenter = CGPoint()
 
     @IBOutlet weak var searchButton: UIButton!
@@ -299,7 +299,11 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.isUserInteractionEnabled = true
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
-                transitInfoDictionary.updateValue(transitDetail.lineName, forKey: indexPath.row)
+                var dictionary = [String: String]()
+                dictionary.updateValue(transitDetail.lineName, forKey: "number")
+                dictionary.updateValue(transitDetail.departureStop.name, forKey: "departure")
+                dictionary.updateValue(transitDetail.arrivalStop.name, forKey: "arrival")
+                transitInfoDictionary.updateValue(dictionary, forKey: indexPath.row)
             } else {
                 cell.routeDetailLabel.text  = selectedRoute?.legs?.steps[indexPath.row].instructions
             }
@@ -365,8 +369,10 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     @objc func showBusInfo(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
-            if let busNumber = transitInfoDictionary[sender.tag] {
+            if let dictionary = transitInfoDictionary[sender.tag], let busNumber = dictionary["number"], let departure = dictionary["departure"], let arrival = dictionary["arrival"] {
                 busInfoViewController.busNumber = busNumber
+                busInfoViewController.departureStopName = departure
+                busInfoViewController.arrivalStopName = arrival
             }
             present(busInfoViewController, animated: true, completion: nil)
         }

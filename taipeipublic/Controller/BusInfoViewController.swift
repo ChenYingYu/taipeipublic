@@ -12,6 +12,8 @@ class BusInfoViewController: UIViewController {
 
     var busRoutes = [BusRoute]()
     var busNumber = ""
+    var departureStopName = ""
+    var arrivalStopName = ""
 
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var busNumberLabel: UILabel!
@@ -24,7 +26,7 @@ class BusInfoViewController: UIViewController {
     @IBAction func directionChange(_ sender: UISegmentedControl) {
         busStopInfoTableView.reloadData()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -59,6 +61,17 @@ extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
         let index = directionSegmentedControl.selectedSegmentIndex
         if busRoutes.count > index, busRoutes[index].stops.count > indexPath.row {
             cell.stopNameLabel.text = busRoutes[index].stops[indexPath.row].name.tw
+            if cell.stopNameLabel.text == departureStopName {
+                cell.departureOrArrivalTagLabel.text = "~搭車起點~"
+                cell.departureOrArrivalTagLabel.backgroundColor = cell.departureColor
+                cell.departureOrArrivalTagLabel.isHidden = false
+            } else if cell.stopNameLabel.text == arrivalStopName {
+                cell.departureOrArrivalTagLabel.text = "~搭車終點~"
+                cell.departureOrArrivalTagLabel.backgroundColor = cell.arrivalColor
+                cell.departureOrArrivalTagLabel.isHidden = false
+            } else {
+                cell.departureOrArrivalTagLabel.isHidden = true
+            }
         }
         return cell
     }
