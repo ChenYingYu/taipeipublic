@@ -243,7 +243,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="公車號碼" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dGp-9G-8U9">
-                                        <rect key="frame" x="58" y="28" width="314" height="40"/>
+                                        <rect key="frame" x="42" y="28" width="330" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="noW-eg-4HM"/>
                                         </constraints>
@@ -251,15 +251,27 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pzr-hV-5Gf">
+                                        <rect key="frame" x="10" y="85" width="394" height="31"/>
+                                        <segments>
+                                            <segment title="去程路線"/>
+                                            <segment title="回程路線"/>
+                                        </segments>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" red="0.039215686270000001" green="0.54901960780000003" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="wbE-eG-uGW" firstAttribute="top" secondItem="dea-rj-Esc" secondAttribute="top" constant="30" id="1tw-qH-sOr"/>
+                                    <constraint firstItem="dGp-9G-8U9" firstAttribute="centerX" secondItem="dea-rj-Esc" secondAttribute="centerX" id="AfL-zO-AMG"/>
                                     <constraint firstAttribute="trailing" secondItem="dGp-9G-8U9" secondAttribute="trailing" constant="42" id="VkN-K7-ADs"/>
-                                    <constraint firstItem="dGp-9G-8U9" firstAttribute="leading" secondItem="wbE-eG-uGW" secondAttribute="trailing" constant="8" symbolic="YES" id="YLu-tX-wRt"/>
+                                    <constraint firstAttribute="bottom" secondItem="pzr-hV-5Gf" secondAttribute="bottom" constant="15" id="W4Q-uW-06s"/>
                                     <constraint firstAttribute="bottom" secondItem="wbE-eG-uGW" secondAttribute="bottom" constant="60" id="a7I-NK-AOQ"/>
+                                    <constraint firstItem="pzr-hV-5Gf" firstAttribute="top" secondItem="wbE-eG-uGW" secondAttribute="bottom" constant="15" id="aCB-a9-hGt"/>
                                     <constraint firstItem="dGp-9G-8U9" firstAttribute="top" secondItem="dea-rj-Esc" secondAttribute="topMargin" id="cFw-n8-GTr"/>
                                     <constraint firstItem="wbE-eG-uGW" firstAttribute="leading" secondItem="dea-rj-Esc" secondAttribute="leading" constant="10" id="iPE-UP-qwJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="pzr-hV-5Gf" secondAttribute="trailing" constant="10" id="pfm-W6-3vc"/>
+                                    <constraint firstItem="pzr-hV-5Gf" firstAttribute="centerX" secondItem="dea-rj-Esc" secondAttribute="centerX" id="u61-gp-aYk"/>
                                     <constraint firstAttribute="height" constant="130" id="zkY-dh-JfD"/>
                                 </constraints>
                             </view>
@@ -284,6 +296,8 @@
                         <outlet property="backButton" destination="wbE-eG-uGW" id="1Iy-UT-uBz"/>
                         <outlet property="busNumberLabel" destination="dGp-9G-8U9" id="Aew-lO-Kik"/>
                         <outlet property="busStopInfoTableView" destination="B6I-oc-KhA" id="utk-N9-abW"/>
+                        <outlet property="directionSegmentedControl" destination="dea-rj-Esc" id="8oO-g1-fs5"/>
+                        <outlet property="titleView" destination="dea-rj-Esc" id="thh-ha-n49"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gZv-vc-ntt" userLabel="First Responder" sceneMemberID="firstResponder"/>

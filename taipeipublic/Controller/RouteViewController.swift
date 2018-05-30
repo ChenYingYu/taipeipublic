@@ -58,17 +58,7 @@ class RouteViewController: UIViewController {
     func setUpTitleView() {
         backButton.tintColor = UIColor.white
         destinationLabel.text = "  \(destinationName)"
-        // 漸層色彩
-        let colorLeft =  UIColor(red: 10.0/255.0, green: 140.0/255.0, blue: 204.0/255.0, alpha: 1.0).cgColor
-        let colorRight = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
-        let gradient = CAGradientLayer()
-        gradient.colors = [colorLeft, colorRight]
-        gradient.locations = [0.0, 1.0]
-        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
-        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-        gradient.frame = self.titleView.bounds
-        self.titleView.layer.insertSublayer(gradient, at: 0)
-        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
+        titleView.addGradient()
     }
 
     func setUpRouteTableView() {
@@ -247,5 +237,20 @@ extension RouteViewController: YoubikeRouteManagerDelegate {
 
     func youbikeManager(_ manager: RouteManager, didFailWith error: Error) {
         print("Found Error:\n\(error)\n")
+    }
+}
+
+extension UIView {
+    func addGradient() {
+        // 漸層色彩
+        let colorLeft =  UIColor(red: 10.0/255.0, green: 140.0/255.0, blue: 204.0/255.0, alpha: 1.0).cgColor
+        let colorRight = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
+        let gradient = CAGradientLayer()
+        gradient.colors = [colorLeft, colorRight]
+        gradient.locations = [0.0, 1.0]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        gradient.frame = self.bounds
+        self.layer.insertSublayer(gradient, at: 0)
     }
 }
