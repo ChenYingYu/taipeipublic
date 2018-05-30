@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -264,17 +263,26 @@
                                     <constraint firstAttribute="height" constant="130" id="zkY-dh-JfD"/>
                                 </constraints>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="B6I-oc-KhA">
+                                <rect key="frame" x="0.0" y="130" width="414" height="606"/>
+                                <color key="backgroundColor" red="0.015686274510000001" green="0.20392156859999999" blue="0.29803921570000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="dea-rj-Esc" firstAttribute="top" secondItem="PJC-As-WDn" secondAttribute="top" id="6NP-TO-wJk"/>
                             <constraint firstItem="dea-rj-Esc" firstAttribute="leading" secondItem="OvQ-bp-MBL" secondAttribute="leading" id="D7M-yz-TKp"/>
+                            <constraint firstItem="B6I-oc-KhA" firstAttribute="leading" secondItem="OvQ-bp-MBL" secondAttribute="leading" id="Enu-bv-7P2"/>
                             <constraint firstItem="dea-rj-Esc" firstAttribute="trailing" secondItem="OvQ-bp-MBL" secondAttribute="trailing" id="OpX-wF-YaQ"/>
+                            <constraint firstItem="B6I-oc-KhA" firstAttribute="top" secondItem="dea-rj-Esc" secondAttribute="bottom" id="qfN-aK-E8N"/>
+                            <constraint firstItem="OvQ-bp-MBL" firstAttribute="bottom" secondItem="B6I-oc-KhA" secondAttribute="bottom" id="uGc-5O-tEu"/>
+                            <constraint firstItem="OvQ-bp-MBL" firstAttribute="trailing" secondItem="B6I-oc-KhA" secondAttribute="trailing" id="vgk-kR-RMw"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="OvQ-bp-MBL"/>
                     </view>
                     <connections>
                         <outlet property="backButton" destination="wbE-eG-uGW" id="1Iy-UT-uBz"/>
+                        <outlet property="busInfoTableView" destination="B6I-oc-KhA" id="utk-N9-abW"/>
                         <outlet property="busNumberLabel" destination="dGp-9G-8U9" id="Aew-lO-Kik"/>
                     </connections>
                 </viewController>

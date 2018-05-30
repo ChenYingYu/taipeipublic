@@ -240,12 +240,11 @@ class RouteManager {
                     do {
                         let busRoutes = try JSONDecoder().decode([BusRoute].self, from: data)
                         self.busDelegate?.busManager(self, didGet: busRoutes)
-                        print(busRoutes)
                     } catch let error {
-                        print(error)
+                        self.busDelegate?.busManager(self, didFailWith: error)
                     }
                 } else {
-                    debugPrint("HTTP Request failed: \(response.result.error)")
+                    self.busDelegate?.busManager(self, didFailWith: response.result.error!)
                 }
         }
     }
