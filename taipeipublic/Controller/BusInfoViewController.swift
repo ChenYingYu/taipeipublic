@@ -18,6 +18,8 @@ class BusInfoViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     @IBOutlet weak var busStopInfoTableView: UITableView!
+    @IBOutlet weak var titleView: UIView!
+    @IBOutlet weak var directionSegmentedControl: UIView!
 
     var busNumber = ""
     override func viewDidLoad() {
@@ -25,6 +27,7 @@ class BusInfoViewController: UIViewController {
 
         backButton.tintColor = UIColor.white
         busNumberLabel.text = busNumber
+        titleView.addGradient()
         busStopInfoTableView.delegate = self
         busStopInfoTableView.dataSource = self
         let nib = UINib(nibName: "BusStopInfoTableViewCell", bundle: nil)
