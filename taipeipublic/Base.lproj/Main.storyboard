@@ -258,6 +258,9 @@
                                             <segment title="回程路線"/>
                                         </segments>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="directionChange:" destination="4YX-VU-g0U" eventType="valueChanged" id="cqP-bi-5XN"/>
+                                        </connections>
                                     </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" red="0.039215686270000001" green="0.54901960780000003" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -296,7 +299,7 @@
                         <outlet property="backButton" destination="wbE-eG-uGW" id="1Iy-UT-uBz"/>
                         <outlet property="busNumberLabel" destination="dGp-9G-8U9" id="Aew-lO-Kik"/>
                         <outlet property="busStopInfoTableView" destination="B6I-oc-KhA" id="utk-N9-abW"/>
-                        <outlet property="directionSegmentedControl" destination="dea-rj-Esc" id="8oO-g1-fs5"/>
+                        <outlet property="directionSegmentedControl" destination="pzr-hV-5Gf" id="iYn-Fs-Z2I"/>
                         <outlet property="titleView" destination="dea-rj-Esc" id="thh-ha-n49"/>
                     </connections>
                 </viewController>

@@ -11,6 +11,7 @@ import UIKit
 class BusInfoViewController: UIViewController {
 
     var busRoutes = [BusRoute]()
+    var busNumber = ""
 
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var busNumberLabel: UILabel!
@@ -19,9 +20,11 @@ class BusInfoViewController: UIViewController {
     }
     @IBOutlet weak var busStopInfoTableView: UITableView!
     @IBOutlet weak var titleView: UIView!
-    @IBOutlet weak var directionSegmentedControl: UIView!
-
-    var busNumber = ""
+    @IBOutlet weak var directionSegmentedControl: UISegmentedControl!
+    @IBAction func directionChange(_ sender: UISegmentedControl) {
+        busStopInfoTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -41,15 +44,20 @@ class BusInfoViewController: UIViewController {
 extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 40
+        let index = directionSegmentedControl.selectedSegmentIndex
+        if busRoutes.count > index {
+            return busRoutes[index].stops.count
+        }
+        return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? BusStopInfoTableViewCell else {
             return UITableViewCell()
         }
-        if busRoutes.count > 0, busRoutes[0].stops.count > indexPath.row {
-            cell.stopNameLabel.text = busRoutes[0].stops[indexPath.row].name.tw
+        let index = directionSegmentedControl.selectedSegmentIndex
+        if busRoutes.count > index, busRoutes[index].stops.count > indexPath.row {
+            cell.stopNameLabel.text = busRoutes[index].stops[indexPath.row].name.tw
         }
         return cell
     }
