@@ -282,8 +282,8 @@
                     </view>
                     <connections>
                         <outlet property="backButton" destination="wbE-eG-uGW" id="1Iy-UT-uBz"/>
-                        <outlet property="busInfoTableView" destination="B6I-oc-KhA" id="utk-N9-abW"/>
                         <outlet property="busNumberLabel" destination="dGp-9G-8U9" id="Aew-lO-Kik"/>
+                        <outlet property="busStopInfoTableView" destination="B6I-oc-KhA" id="utk-N9-abW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gZv-vc-ntt" userLabel="First Responder" sceneMemberID="firstResponder"/>

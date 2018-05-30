@@ -17,7 +17,7 @@ class BusInfoViewController: UIViewController {
     @IBAction func back(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
-    @IBOutlet weak var busInfoTableView: UITableView!
+    @IBOutlet weak var busStopInfoTableView: UITableView!
 
     var busNumber = ""
     override func viewDidLoad() {
@@ -25,8 +25,10 @@ class BusInfoViewController: UIViewController {
 
         backButton.tintColor = UIColor.white
         busNumberLabel.text = busNumber
-        busInfoTableView.delegate = self
-        busInfoTableView.dataSource = self
+        busStopInfoTableView.delegate = self
+        busStopInfoTableView.dataSource = self
+        let nib = UINib(nibName: "BusStopInfoTableViewCell", bundle: nil)
+        busStopInfoTableView.register(nib, forCellReuseIdentifier: "Cell")
         let manager = RouteManager()
         manager.busDelegate = self
         manager.requestBusStopInfo(ofRouteName: busNumber)
@@ -40,10 +42,11 @@ extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? BusStopInfoTableViewCell else {
+            return UITableViewCell()
+        }
         if busRoutes.count > 0, busRoutes[0].stops.count > indexPath.row {
-            cell.textLabel?.text = busRoutes[0].stops[indexPath.row].name.tw
-            cell.backgroundColor = .white
+            cell.stopNameLabel.text = busRoutes[0].stops[indexPath.row].name.tw
         }
         return cell
     }
@@ -52,7 +55,7 @@ extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
 extension BusInfoViewController: BusRouteManagerDelegate {
     func busManager(_ manager: RouteManager, didGet routes: [BusRoute]) {
         self.busRoutes = routes
-        self.busInfoTableView.reloadData()
+        self.busStopInfoTableView.reloadData()
     }
 
     func busManager(_ manager: RouteManager, didFailWith error: Error) {
