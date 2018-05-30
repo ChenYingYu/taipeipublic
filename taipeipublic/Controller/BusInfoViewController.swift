@@ -55,6 +55,7 @@ extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? BusStopInfoTableViewCell else {
             return UITableViewCell()
         }
+        cell.isUserInteractionEnabled = false
         let index = directionSegmentedControl.selectedSegmentIndex
         if busRoutes.count > index, busRoutes[index].stops.count > indexPath.row {
             cell.stopNameLabel.text = busRoutes[index].stops[indexPath.row].name.tw
