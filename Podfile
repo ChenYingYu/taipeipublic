@@ -11,6 +11,7 @@ target 'taipeipublic' do
   pod 'SwiftLint'
   pod 'Fabric'
   pod 'Crashlytics'
+  pod 'Firebase/Core'
   # Pods for taipeipublic
 
 end
