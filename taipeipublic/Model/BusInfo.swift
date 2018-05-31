@@ -93,3 +93,27 @@ struct Position: Codable {
         case longitude = "PositionLon"
     }
 }
+
+struct BusStatus: Codable {
+    let uId: String
+    let id: String
+    let name: StopName
+    let routeUID: String
+    let routeID: String
+    let routeName: RouteName
+    let direction: Int
+    let estimateTime: Int?
+    let updateTime: String
+
+    enum CodingKeys: String, CodingKey {
+        case uId = "StopUID"
+        case id = "StopID"
+        case name = "StopName"
+        case routeUID = "RouteUID"
+        case routeID = "RouteID"
+        case routeName = "RouteName"
+        case direction = "Direction"
+        case estimateTime = "EstimateTime"
+        case updateTime = "UpdateTime"
+    }
+}

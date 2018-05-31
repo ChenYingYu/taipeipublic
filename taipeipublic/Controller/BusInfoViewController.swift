@@ -41,6 +41,7 @@ class BusInfoViewController: UIViewController {
         let manager = RouteManager()
         manager.busDelegate = self
         manager.requestBusStopInfo(ofRouteName: busNumber)
+        manager.requestBusStatus(ofRouteName: busNumber)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

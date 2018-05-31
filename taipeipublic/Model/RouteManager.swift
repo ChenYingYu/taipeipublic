@@ -248,6 +248,59 @@ class RouteManager {
                 }
         }
     }
+
+    func requestBusStatus(ofRouteName routeName: String) {
+
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
+        dateFormater.timeZone = TimeZone(identifier: "GMT")
+        let currentDate = Date()
+        let customDate = dateFormater.string(from: currentDate)
+        let base64String = "x-date: \(customDate)".hmac(algorithm: HMACAlgorithm.SHA1, key: Constant.PTXAppKey)
+        let headers = [
+            "Authorization": "hmac username=\"\(Constant.PTXAppID)\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"\(base64String)\"",
+            "x-date": customDate
+            ]
+
+        let urlParams = [
+            "$format": "JSON"
+            ]
+
+        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/\(routeName)"
+
+        guard let URL = NSURL(string: urlString.addingPercentEncoding(withAllowedCharacters: (NSCharacterSet.urlQueryAllowed))!) else {
+            print("URL Encoding Fail")
+            return
+        }
+
+        Alamofire.request(URL.relativeString, method: .get, parameters: urlParams, headers: headers)
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                if response.result.error == nil {
+
+                    guard let value = response.result.value else {
+                        print("Value Not Found")
+                        return
+                    }
+
+                    guard let data = try? JSONSerialization.data(withJSONObject: value) else {
+                        print("Cannot parse data as JSON")
+                        return
+                    }
+
+                    do {
+                        let busStatus = try JSONDecoder().decode([BusStatus].self, from: data)
+                        print(busStatus)
+//                        self.busDelegate?.busManager(self, didGet: busRoutes)
+                    } catch let error {
+                        print(error)
+//                        self.busDelegate?.busManager(self, didFailWith: error)
+                    }
+                } else {
+//                    self.busDelegate?.busManager(self, didFailWith: response.result.error!)
+                }
+        }
+    }
 }
 
 enum HMACAlgorithm {
