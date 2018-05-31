@@ -30,7 +30,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="70" id="cyz-fa-SUU"/>
                         </constraints>
-                        <state key="normal" title="公車路況">
+                        <state key="normal" title="班次查詢">
                             <color key="titleColor" red="0.37647058820000001" green="0.68235294120000001" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
                         <connections>
