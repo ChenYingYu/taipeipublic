@@ -155,6 +155,9 @@ class MapViewController: UIViewController {
         destinationInfoView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         destinationInfoView.layer.shadowRadius = 4.0
         destinationInfoView.layer.shadowOpacity = 1.0
+        destinationInfoView.backgroundColor = UIColor(red: 47.0/255.0, green: 67.0/255.0, blue: 76.0/255.0, alpha: 1.0)
+        titleLabel.textColor = .white
+        addressLabel.textColor = .white
     }
 
     func setUpMap() {
