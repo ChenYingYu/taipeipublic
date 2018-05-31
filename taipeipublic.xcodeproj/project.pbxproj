@@ -224,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */,
+				0A90100520C000D000EA412E /* GoogleService-Info.plist in Resources */,
 				0A67E47C20A1511B00070EBD /* YouBikeStations.json in Resources */,
 				0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,
