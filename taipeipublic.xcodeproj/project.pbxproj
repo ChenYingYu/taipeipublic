@@ -24,7 +24,7 @@
 		0A900FFF20BD3E0700EA412E /* BusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A900FFE20BD3E0700EA412E /* BusInfo.swift */; };
 		0A90100220BE407B00EA412E /* BusStopInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */; };
 		0A90100320BE407B00EA412E /* BusStopInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */; };
-		0A90100520C000D000EA412E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100420C000D000EA412E /* GoogleService-Info.plist */; };
+		0A90100B20C0D21300EA412E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100A20C0D21200EA412E /* GoogleService-Info.plist */; };
 		0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB819AB209AFB3700160842 /* RouteViewController.swift */; };
 		0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */; };
 		F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 534588B88CA253347B214A56 /* Pods_taipeipublic.framework */; };
@@ -51,7 +51,7 @@
 		0A900FFE20BD3E0700EA412E /* BusInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusInfo.swift; sourceTree = "<group>"; };
 		0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopInfoTableViewCell.swift; sourceTree = "<group>"; };
 		0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusStopInfoTableViewCell.xib; sourceTree = "<group>"; };
-		0A90100420C000D000EA412E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0A90100A20C0D21200EA412E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0AB819AB209AFB3700160842 /* RouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
 		0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusInfoViewController.swift; sourceTree = "<group>"; };
 		1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taipeipublic.release.xcconfig"; path = "Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic.release.xcconfig"; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 				0A6EDBEB2096AE03004BBF3C /* Assets.xcassets */,
 				0A6EDBED2096AE03004BBF3C /* LaunchScreen.storyboard */,
 				0A6EDBF02096AE03004BBF3C /* Info.plist */,
-				0A90100420C000D000EA412E /* GoogleService-Info.plist */,
+				0A90100A20C0D21200EA412E /* GoogleService-Info.plist */,
 			);
 			path = taipeipublic;
 			sourceTree = "<group>";
@@ -224,7 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */,
-				0A90100520C000D000EA412E /* GoogleService-Info.plist in Resources */,
+				0A90100B20C0D21300EA412E /* GoogleService-Info.plist in Resources */,
 				0A67E47C20A1511B00070EBD /* YouBikeStations.json in Resources */,
 				0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,
