@@ -24,10 +24,16 @@ protocol BusRouteManagerDelegate: class {
     func busManager(_ manager: RouteManager, didFailWith error: Error)
 }
 
+protocol BusStatusManagerDelegate: class {
+    func busStatusManager(_ manager: RouteManager, didGet status: [BusStatus])
+    func busStatusManager(_ manager: RouteManager, didFailWith error: Error)
+}
+
 class RouteManager {
     weak var delegate: RouteManagerDelegate?
     weak var youbikeDelegate: YoubikeRouteManagerDelegate?
     weak var busDelegate: BusRouteManagerDelegate?
+    weak var busStatusDelegate: BusStatusManagerDelegate?
     var myRoutes = [Route]()
 
     func requestRoute(originLatitude: Double, originLongitude: Double, destinationId: String) {
@@ -290,14 +296,12 @@ class RouteManager {
 
                     do {
                         let busStatus = try JSONDecoder().decode([BusStatus].self, from: data)
-                        print(busStatus)
-//                        self.busDelegate?.busManager(self, didGet: busRoutes)
+                        self.busStatusDelegate?.busStatusManager(self, didGet: busStatus)
                     } catch let error {
-                        print(error)
-//                        self.busDelegate?.busManager(self, didFailWith: error)
+                        self.busStatusDelegate?.busStatusManager(self, didFailWith: error)
                     }
                 } else {
-//                    self.busDelegate?.busManager(self, didFailWith: response.result.error!)
+                    self.busStatusDelegate?.busStatusManager(self, didFailWith: response.result.error!)
                 }
         }
     }
