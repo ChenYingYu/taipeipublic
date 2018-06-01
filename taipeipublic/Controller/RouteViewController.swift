@@ -113,7 +113,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         var routeInfo = ""
         if let selectedRoute = route, let legs = selectedRoute.legs, let duration = legs.duration {
             //路線資訊格式
-            routeInfo += "\(duration): \n" //總時間：
+            routeInfo += "\(duration)： \n" //總時間：
             for index in legs.steps.indices {
                 if index != 0 {
                     routeInfo += " > "//更換交通工具
