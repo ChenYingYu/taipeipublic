@@ -15,6 +15,7 @@ class BusInfoViewController: UIViewController {
     var departureStopName = ""
     var arrivalStopName = ""
     var busStatus = [BusStatus]()
+    var busInfoUpdateCounter = 20
 
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var busNumberLabel: UILabel!
@@ -28,7 +29,7 @@ class BusInfoViewController: UIViewController {
         busStopInfoTableView.reloadData()
     }
     @IBOutlet weak var countdownLabel: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,10 +46,28 @@ class BusInfoViewController: UIViewController {
         manager.busStatusDelegate = self
         manager.requestBusStopInfo(ofRouteName: busNumber)
         manager.requestBusStatus(ofRouteName: busNumber)
+        runTimer()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         UIApplication.shared.statusBarStyle = .default
+    }
+
+    func runTimer() {
+        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+    }
+
+    @objc func updateTime() {
+        countdownLabel.text = "\(busInfoUpdateCounter) 秒後更新"
+        if busInfoUpdateCounter == 0 {
+            busInfoUpdateCounter = 20
+            let manager = RouteManager()
+            manager.busDelegate = self
+            manager.busStatusDelegate = self
+            manager.requestBusStatus(ofRouteName: busNumber)
+        } else {
+            busInfoUpdateCounter -= 1
+        }
     }
 }
 
