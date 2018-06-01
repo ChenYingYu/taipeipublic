@@ -29,7 +29,7 @@ class BusStopInfoTableViewCell: UITableViewCell {
 
     func reset() {
         tagImage.tintColor = originalTagColor
-        estimateTimeLabel.text = "3分"
+        estimateTimeLabel.text = "3 分"
         estimateTimeLabel.textColor = originalTagColor
     }
 }

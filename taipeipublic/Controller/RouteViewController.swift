@@ -27,6 +27,7 @@ class RouteViewController: UIViewController {
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var routeTableView: UITableView!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var originLabel: UILabel!
     @IBOutlet weak var destinationLabel: UILabel!
     @IBAction func back(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
@@ -121,7 +122,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
                 for (index, character) in instruction where index < 2 {
                         routeInfo += "\(character)"//交通工具
                 }
-                routeInfo += "\(legs.steps[index].duration)"//交通工具時程
+                routeInfo += " \(legs.steps[index].duration)"//交通工具時程
             }
         }
         cell.subtitleLabel.numberOfLines = 0
