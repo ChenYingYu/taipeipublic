@@ -27,7 +27,8 @@ class BusInfoViewController: UIViewController {
     @IBAction func directionChange(_ sender: UISegmentedControl) {
         busStopInfoTableView.reloadData()
     }
-
+    @IBOutlet weak var countdownLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
