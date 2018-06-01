@@ -300,7 +300,9 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 let transitDetail = transitDetails[transitTag]
                 cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
-                cell.busInfoButton.isHidden = false
+                if transitDetail.lineName != "板南線", transitDetail.lineName != "淡水信義線", transitDetail.lineName != "松山新店線", transitDetail.lineName != "文湖線", transitDetail.lineName != "中和新蘆線" {
+                    cell.busInfoButton.isHidden = false
+                }
                 cell.isUserInteractionEnabled = true
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
