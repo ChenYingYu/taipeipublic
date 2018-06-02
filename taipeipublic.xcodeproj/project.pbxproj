@@ -21,6 +21,10 @@
 		0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A6EDBED2096AE03004BBF3C /* LaunchScreen.storyboard */; };
 		0A8AD1DA20AED52E00D91BE6 /* RouteDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AD1D820AED52D00D91BE6 /* RouteDetailTableViewCell.swift */; };
 		0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */; };
+		0A900FFF20BD3E0700EA412E /* BusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A900FFE20BD3E0700EA412E /* BusInfo.swift */; };
+		0A90100220BE407B00EA412E /* BusStopInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */; };
+		0A90100320BE407B00EA412E /* BusStopInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */; };
+		0A90100B20C0D21300EA412E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100A20C0D21200EA412E /* GoogleService-Info.plist */; };
 		0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB819AB209AFB3700160842 /* RouteViewController.swift */; };
 		0AE5DEC920BBD88F006A56EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0AE5DEC820BBD88F006A56EC /* GoogleService-Info.plist */; };
 		0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */; };
@@ -44,6 +48,11 @@
 		0A6EDBF02096AE03004BBF3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A8AD1D820AED52D00D91BE6 /* RouteDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailTableViewCell.swift; sourceTree = "<group>"; };
 		0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteDetailTableViewCell.xib; sourceTree = "<group>"; };
+		0A900FFA20BD26B900EA412E /* taipeipublic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "taipeipublic-Bridging-Header.h"; sourceTree = "<group>"; };
+		0A900FFE20BD3E0700EA412E /* BusInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusInfo.swift; sourceTree = "<group>"; };
+		0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopInfoTableViewCell.swift; sourceTree = "<group>"; };
+		0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusStopInfoTableViewCell.xib; sourceTree = "<group>"; };
+		0A90100A20C0D21200EA412E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0AB819AB209AFB3700160842 /* RouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
 		0AE5DEC820BBD88F006A56EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusInfoViewController.swift; sourceTree = "<group>"; };
@@ -77,11 +86,13 @@
 		0A16D9E42099681300EEBB4F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0A900FFE20BD3E0700EA412E /* BusInfo.swift */,
 				0A33C0362096FC3D00C9ED7E /* Constant.swift */,
 				0A16D9E72099A6D600EEBB4F /* RouteManager.swift */,
 				0A16D9E92099C4BE00EEBB4F /* Route.swift */,
 				0A67E47B20A1511B00070EBD /* YouBikeStations.json */,
 				0A67E47D20A1519B00070EBD /* YoubikeManager.swift */,
+				0A900FFA20BD26B900EA412E /* taipeipublic-Bridging-Header.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -93,6 +104,8 @@
 				0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */,
 				0A8AD1D820AED52D00D91BE6 /* RouteDetailTableViewCell.swift */,
 				0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */,
+				0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */,
+				0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -185,6 +198,7 @@
 				TargetAttributes = {
 					0A6EDBE02096ADFF004BBF3C = {
 						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 0930;
 					};
 				};
 			};
@@ -212,9 +226,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */,
+				0A90100B20C0D21300EA412E /* GoogleService-Info.plist in Resources */,
 				0A67E47C20A1511B00070EBD /* YouBikeStations.json in Resources */,
 				0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,
+				0A90100320BE407B00EA412E /* BusStopInfoTableViewCell.xib in Resources */,
 				0A6EDBEA2096AE00004BBF3C /* Main.storyboard in Resources */,
 				0A09C40920AA90E1007D3EBE /* RouteTableViewCell.xib in Resources */,
 				0AE5DEC920BBD88F006A56EC /* GoogleService-Info.plist in Resources */,
@@ -317,6 +333,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A90100220BE407B00EA412E /* BusStopInfoTableViewCell.swift in Sources */,
+				0A900FFF20BD3E0700EA412E /* BusInfo.swift in Sources */,
 				0A6EDBE72096AE00004BBF3C /* MapViewController.swift in Sources */,
 				0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */,
 				0A6EDBE52096AE00004BBF3C /* AppDelegate.swift in Sources */,
@@ -471,6 +489,7 @@
 			baseConfigurationReference = 7AE4647D95EDEB0E4801DA3A /* Pods-taipeipublic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9VPGGN82CW;
 				INFOPLIST_FILE = taipeipublic/Info.plist;
@@ -481,6 +500,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChenAlan.taipeipublic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "taipeipublic/Model/taipeipublic-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -491,6 +512,7 @@
 			baseConfigurationReference = 1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9VPGGN82CW;
 				INFOPLIST_FILE = taipeipublic/Info.plist;
@@ -501,6 +523,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ChenAlan.taipeipublic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "taipeipublic/Model/taipeipublic-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

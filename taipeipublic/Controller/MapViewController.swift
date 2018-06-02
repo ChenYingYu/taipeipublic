@@ -29,7 +29,7 @@ class MapViewController: UIViewController {
     var routeDetailTableView = UITableView()
     // 紀錄公車班次時使用的變數
     var transitTag = 0
-    var transitInfoDictionary = [Int: String]()
+    var transitInfoDictionary = [Int: [String: String]]()
     var initialCenter = CGPoint()
 
     @IBOutlet weak var searchButton: UIButton!
@@ -142,6 +142,8 @@ class MapViewController: UIViewController {
 
     func setUpView() {
         destinationInfoView.isHidden = true
+        destinationInfoView.layer.cornerRadius = 10.0
+        destinationInfoView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         searchButton.layer.shadowColor = UIColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         searchButton.layer.shadowRadius = 4.0
@@ -153,6 +155,9 @@ class MapViewController: UIViewController {
         destinationInfoView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         destinationInfoView.layer.shadowRadius = 4.0
         destinationInfoView.layer.shadowOpacity = 1.0
+        destinationInfoView.backgroundColor = UIColor(red: 47.0/255.0, green: 67.0/255.0, blue: 76.0/255.0, alpha: 1.0)
+        titleLabel.textColor = .white
+        addressLabel.textColor = .white
     }
 
     func setUpMap() {
@@ -212,7 +217,7 @@ class MapViewController: UIViewController {
     func updateLocationButton() {
         mapView.padding = destinationInfoView.isHidden ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 0, left: 0, bottom: destinationInfoView.bounds.height, right: 0)
         if isNavigationMode {
-            mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+            mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         }
     }
 
@@ -287,6 +292,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? RouteDetailTableViewCell else {
             return UITableViewCell()
         }
+        cell.isUserInteractionEnabled = false
         if let step = selectedRoute?.legs?.steps[indexPath.row] {
             //顯示公車或捷運班次及起迄站
             if step.travelMode == "TRANSIT", let transitDetails = step.transitDetail {
@@ -294,15 +300,22 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 let transitDetail = transitDetails[transitTag]
                 cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
-//                cell.busInfoButton.isHidden = false
+                if transitDetail.lineName != "板南線", transitDetail.lineName != "淡水信義線", transitDetail.lineName != "松山新店線", transitDetail.lineName != "文湖線", transitDetail.lineName != "中和新蘆線" {
+                    cell.busInfoButton.isHidden = false
+                }
+                cell.isUserInteractionEnabled = true
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
-                transitInfoDictionary.updateValue(transitDetail.lineName, forKey: indexPath.row)
+                var dictionary = [String: String]()
+                dictionary.updateValue(transitDetail.lineName, forKey: "number")
+                dictionary.updateValue(transitDetail.departureStop.name, forKey: "departure")
+                dictionary.updateValue(transitDetail.arrivalStop.name, forKey: "arrival")
+                transitInfoDictionary.updateValue(dictionary, forKey: indexPath.row)
             } else {
                 cell.routeDetailLabel.text  = selectedRoute?.legs?.steps[indexPath.row].instructions
             }
         }
-        cell.isUserInteractionEnabled = false
+
         return cell
     }
 
@@ -363,8 +376,10 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     @objc func showBusInfo(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
-            if let busNumber = transitInfoDictionary[sender.tag] {
+            if let dictionary = transitInfoDictionary[sender.tag], let busNumber = dictionary["number"], let departure = dictionary["departure"], let arrival = dictionary["arrival"] {
                 busInfoViewController.busNumber = busNumber
+                busInfoViewController.departureStopName = departure
+                busInfoViewController.arrivalStopName = arrival
             }
             present(busInfoViewController, animated: true, completion: nil)
         }
