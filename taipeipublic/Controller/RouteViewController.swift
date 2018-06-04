@@ -72,27 +72,10 @@ class RouteViewController: UIViewController {
     }
 
     func getRoutes() {
+        let locationManager = CLLocationManager()
         let routeManager = RouteManager()
         routeManager.delegate = self
-        routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
-    }
-
-    func getUserLatitude() -> Double {
-        let locationmanager = CLLocationManager()
-        guard let userLatitude = locationmanager.location?.coordinate.latitude else {
-            print("Cannot find user's location")
-            return 25.042416
-        }
-        return userLatitude
-    }
-
-    func getUserLongitude() -> Double {
-        let locationmanager = CLLocationManager()
-        guard let userLongitude = locationmanager.location?.coordinate.longitude else {
-            print("Cannot find user's location")
-            return 121.564793
-        }
-        return userLongitude
+        routeManager.requestRoute(originLatitude: locationManager.getUserLatitude(), originLongitude: locationManager.getUserLongitude(), destinationId: destinationId)
     }
 }
 

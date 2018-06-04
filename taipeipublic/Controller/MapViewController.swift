@@ -149,7 +149,8 @@ class MapViewController: UIViewController {
     }
 
     func setUpMap() {
-        mapView.camera = GMSCameraPosition.camera(withLatitude: getUserLatitude(), longitude: getUserLongitude(), zoom: 15.0)
+        let locationManager = CLLocationManager()
+        mapView.camera = GMSCameraPosition.camera(withLatitude: locationManager.getUserLatitude(), longitude: locationManager.getUserLongitude(), zoom: 15.0)
         mapView.isMyLocationEnabled = true
         mapView.addSubview(searchButton)
         mapView.settings.myLocationButton = true
@@ -177,24 +178,6 @@ class MapViewController: UIViewController {
             marker.title = station.name
             marker.map = mapView
         }
-    }
-
-    func getUserLatitude() -> Double {
-        let locationManager = CLLocationManager()
-        guard let userLatitude = locationManager.location?.coordinate.latitude else {
-            print("Cannot find user's location")
-            return 25.042416
-        }
-        return userLatitude
-    }
-
-    func getUserLongitude() -> Double {
-        let locationManager = CLLocationManager()
-        guard let userLongitude = locationManager.location?.coordinate.longitude else {
-            print("Cannot find user's location")
-            return 121.564793
-        }
-        return userLongitude
     }
 
     func updateLocationButton() {
@@ -356,5 +339,24 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
             }
             present(busInfoViewController, animated: true, completion: nil)
         }
+    }
+}
+
+extension CLLocationManager {
+
+    func getUserLatitude() -> Double {
+        guard let userLatitude = self.location?.coordinate.latitude else {
+            print("Cannot find user's location")
+            return 25.042416
+        }
+        return userLatitude
+    }
+
+    func getUserLongitude() -> Double {
+        guard let userLongitude = self.location?.coordinate.longitude else {
+            print("Cannot find user's location")
+            return 121.564793
+        }
+        return userLongitude
     }
 }
