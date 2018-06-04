@@ -16,5 +16,6 @@ struct Constant {
     
     struct DefaultValue {
         static let emptyString = ""
+        static let zero = 0
     }
 }

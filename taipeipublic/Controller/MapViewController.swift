@@ -27,7 +27,7 @@ class MapViewController: UIViewController {
     var selectedYoubikeRoutes: [Route]?
     var selectedYoubikeStation = [YoubikeStation]()
     // 紀錄公車班次時使用的變數
-    var transitTag = 0
+    var transitTag = Constant.DefaultValue.zero
     var transitInfoDictionary = [Int: [String: String]]()
     var initialCenter = CGPoint()
 
@@ -157,7 +157,7 @@ class MapViewController: UIViewController {
     }
 
     func setUpRouteDetailTableView() {
-        transitTag = 0
+        transitTag = Constant.DefaultValue.zero
         routeDetailTableView.frame = CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
         routeDetailTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         routeDetailTableView.delegate = self
