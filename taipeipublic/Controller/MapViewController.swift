@@ -141,8 +141,6 @@ class MapViewController: UIViewController {
     }
 
     func setUpView() {
-        destinationInfoView.isHidden = true
-        destinationInfoView.layer.cornerRadius = 10.0
         destinationInfoView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         searchButton.layer.shadowColor = UIColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
@@ -151,13 +149,6 @@ class MapViewController: UIViewController {
         backButton.tintColor = UIColor.gray
         backButton.backgroundColor = UIColor.white
         backButton.layer.cornerRadius = backButton.bounds.width / 2
-        showRouteButton.layer.cornerRadius = showRouteButton.bounds.height / 2
-        destinationInfoView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        destinationInfoView.layer.shadowRadius = 4.0
-        destinationInfoView.layer.shadowOpacity = 1.0
-        destinationInfoView.backgroundColor = UIColor(red: 47.0/255.0, green: 67.0/255.0, blue: 76.0/255.0, alpha: 1.0)
-        titleLabel.textColor = .white
-        addressLabel.textColor = .white
     }
 
     func setUpMap() {
