@@ -40,7 +40,7 @@ class BusInfoViewController: UIViewController {
         busStopInfoTableView.delegate = self
         busStopInfoTableView.dataSource = self
         let nib = UINib(nibName: "BusStopInfoTableViewCell", bundle: nil)
-        busStopInfoTableView.register(nib, forCellReuseIdentifier: "Cell")
+        busStopInfoTableView.register(nib, forCellReuseIdentifier: Constant.Identifier.cell)
         let manager = RouteManager()
         manager.busDelegate = self
         manager.busStatusDelegate = self
@@ -82,7 +82,7 @@ extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? BusStopInfoTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifier.cell) as? BusStopInfoTableViewCell else {
             return UITableViewCell()
         }
         cell.isUserInteractionEnabled = false

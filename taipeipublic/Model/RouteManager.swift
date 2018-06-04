@@ -207,7 +207,7 @@ class RouteManager {
     func requestBusStopInfo(ofRouteName routeName: String) {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
-        dateFormater.timeZone = TimeZone(identifier: "GMT")
+        dateFormater.timeZone = TimeZone(identifier: Constant.Identifier.gmt)
         let currentDate = Date()
         let customDate = dateFormater.string(from: currentDate)
         let base64String = "x-date: \(customDate)".hmac(algorithm: HMACAlgorithm.SHA1, key: Constant.PTXAppKey)
@@ -259,7 +259,7 @@ class RouteManager {
 
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
-        dateFormater.timeZone = TimeZone(identifier: "GMT")
+        dateFormater.timeZone = TimeZone(identifier: Constant.Identifier.gmt)
         let currentDate = Date()
         let customDate = dateFormater.string(from: currentDate)
         let base64String = "x-date: \(customDate)".hmac(algorithm: HMACAlgorithm.SHA1, key: Constant.PTXAppKey)

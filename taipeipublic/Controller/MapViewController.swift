@@ -164,7 +164,7 @@ class MapViewController: UIViewController {
         routeDetailTableView.delegate = self
         routeDetailTableView.dataSource = self
         let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)
-        routeDetailTableView.register(nib, forCellReuseIdentifier: "Cell")
+        routeDetailTableView.register(nib, forCellReuseIdentifier: Constant.Identifier.cell)
         updateCameraToFitMapBounds()
         view.addSubview(routeDetailTableView)
         routeDetailTableView.reloadData()
@@ -255,7 +255,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? RouteDetailTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifier.cell) as? RouteDetailTableViewCell else {
             return UITableViewCell()
         }
         cell.isUserInteractionEnabled = false
@@ -331,7 +331,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
 
     @objc func showBusInfo(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
+        if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: Constant.Identifier.busInfoViewController) as? BusInfoViewController {
             if let dictionary = transitInfoDictionary[sender.tag], let busNumber = dictionary["number"], let departure = dictionary["departure"], let arrival = dictionary["arrival"] {
                 busInfoViewController.busName = busNumber
                 busInfoViewController.departureStopName = departure

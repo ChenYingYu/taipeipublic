@@ -64,8 +64,8 @@ class RouteViewController: UIViewController {
     }
 
     func setUpRouteTableView() {
-        let customTableViewCell = UINib(nibName: "RouteTableViewCell", bundle: nil)
-        routeTableView.register(customTableViewCell, forCellReuseIdentifier: "Cell")
+        let customTableViewCell = UINib(nibName: Constant.Identifier.routeTableViewCell, bundle: nil)
+        routeTableView.register(customTableViewCell, forCellReuseIdentifier: Constant.Identifier.cell)
         routeTableView.separatorStyle = .none
         routeTableView.delegate = self
         routeTableView.dataSource = self
@@ -85,7 +85,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? RouteTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifier.cell, for: indexPath) as? RouteTableViewCell else {
             return UITableViewCell()
         }
         setUpStyle(of: cell)
