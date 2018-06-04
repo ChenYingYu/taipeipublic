@@ -285,6 +285,8 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 transitTag += 1
                 if transitDetail.lineName != "板南線", transitDetail.lineName != "淡水信義線", transitDetail.lineName != "松山新店線", transitDetail.lineName != "文湖線", transitDetail.lineName != "中和新蘆線" {
                     cell.busInfoButton.isHidden = false
+                } else {
+                    cell.busInfoButton.isHidden = true
                 }
                 cell.isUserInteractionEnabled = true
                 cell.busInfoButton.tag = indexPath.row
