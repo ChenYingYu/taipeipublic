@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0A09C40820AA90E1007D3EBE /* RouteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */; };
 		0A09C40920AA90E1007D3EBE /* RouteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */; };
-		0A15FBFC20C4D70900ABFAAD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0A15FBFB20C4D70900ABFAAD /* GoogleService-Info.plist */; };
 		0A16D9E82099A6D600EEBB4F /* RouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E72099A6D600EEBB4F /* RouteManager.swift */; };
 		0A16D9EA2099C4BE00EEBB4F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E92099C4BE00EEBB4F /* Route.swift */; };
 		0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33C0362096FC3D00C9ED7E /* Constant.swift */; };
@@ -25,7 +24,6 @@
 		0A900FFF20BD3E0700EA412E /* BusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A900FFE20BD3E0700EA412E /* BusInfo.swift */; };
 		0A90100220BE407B00EA412E /* BusStopInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */; };
 		0A90100320BE407B00EA412E /* BusStopInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */; };
-		0A90100B20C0D21300EA412E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100A20C0D21200EA412E /* GoogleService-Info.plist */; };
 		0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB819AB209AFB3700160842 /* RouteViewController.swift */; };
 		0AE5DEC920BBD88F006A56EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0AE5DEC820BBD88F006A56EC /* GoogleService-Info.plist */; };
 		0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */; };
@@ -112,6 +110,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		0A4AF91E20C4D7E600B77824 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				0A90100A20C0D21200EA412E /* GoogleService-Info.plist */,
+				0A15FBFB20C4D70900ABFAAD /* GoogleService-Info.plist */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		0A6EDBD82096ADFF004BBF3C = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +126,7 @@
 				0A6EDBE22096ADFF004BBF3C /* Products */,
 				D3149E127504D6CEB898CCD3 /* Pods */,
 				B932BCB6D553A847A5CE8DB9 /* Frameworks */,
+				0A4AF91E20C4D7E600B77824 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -228,8 +236,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */,
-				0A90100B20C0D21300EA412E /* GoogleService-Info.plist in Resources */,
-				0A15FBFC20C4D70900ABFAAD /* GoogleService-Info.plist in Resources */,
 				0A67E47C20A1511B00070EBD /* YouBikeStations.json in Resources */,
 				0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,
