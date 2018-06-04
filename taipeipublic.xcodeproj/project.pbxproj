@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0A09C40820AA90E1007D3EBE /* RouteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */; };
 		0A09C40920AA90E1007D3EBE /* RouteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */; };
+		0A15FBFC20C4D70900ABFAAD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0A15FBFB20C4D70900ABFAAD /* GoogleService-Info.plist */; };
 		0A16D9E82099A6D600EEBB4F /* RouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E72099A6D600EEBB4F /* RouteManager.swift */; };
 		0A16D9EA2099C4BE00EEBB4F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A16D9E92099C4BE00EEBB4F /* Route.swift */; };
 		0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33C0362096FC3D00C9ED7E /* Constant.swift */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTableViewCell.swift; sourceTree = "<group>"; };
 		0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteTableViewCell.xib; sourceTree = "<group>"; };
+		0A15FBFB20C4D70900ABFAAD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0A16D9E72099A6D600EEBB4F /* RouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteManager.swift; sourceTree = "<group>"; };
 		0A16D9E92099C4BE00EEBB4F /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		0A33C0362096FC3D00C9ED7E /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 			files = (
 				0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */,
 				0A90100B20C0D21300EA412E /* GoogleService-Info.plist in Resources */,
+				0A15FBFC20C4D70900ABFAAD /* GoogleService-Info.plist in Resources */,
 				0A67E47C20A1511B00070EBD /* YouBikeStations.json in Resources */,
 				0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,
