@@ -61,8 +61,8 @@ class RouteManager {
                         return
                     }
                     let leg = legs[0]
-                    var arrival = ""
-                    var departure = ""
+                    var arrival = Constant.DefaultValue.emptyString
+                    var departure = Constant.DefaultValue.emptyString
                     if let newArrival = leg["arrival_time"] as? [String: AnyObject], let arrivalTime = newArrival["text"] as? String, let newDeparture = leg["departure_time"] as? [String: AnyObject], let departureTime = newDeparture["text"] as? String {
                         arrival = arrivalTime
                         departure = departureTime

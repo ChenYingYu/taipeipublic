@@ -12,8 +12,8 @@ import GoogleMaps
 
 class RouteViewController: UIViewController {
 
-    var destinationName = ""
-    var destinationId = ""
+    var destinationName = Constant.DefaultValue.emptyString
+    var destinationId = Constant.DefaultValue.emptyString
     var route: Route?
     var routes = [Route]()
     var youbikeRoute: Route?
@@ -110,7 +110,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
         route = routes[indexPath.row]
-        var routeInfo = ""
+        var routeInfo = Constant.DefaultValue.emptyString
         if let selectedRoute = route, let legs = selectedRoute.legs, let duration = legs.duration {
             //路線資訊格式
             routeInfo += "\(duration)： \n" //總時間：

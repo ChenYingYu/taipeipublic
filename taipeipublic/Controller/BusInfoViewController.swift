@@ -11,9 +11,9 @@ import UIKit
 class BusInfoViewController: UIViewController {
 
     var busRoutes = [BusRoute]()
-    var busNumber = ""
-    var departureStopName = ""
-    var arrivalStopName = ""
+    var busName = Constant.DefaultValue.emptyString
+    var departureStopName = Constant.DefaultValue.emptyString
+    var arrivalStopName = Constant.DefaultValue.emptyString
     var busStatus = [BusStatus]()
     var busInfoUpdateCounter = 20
 
@@ -35,7 +35,7 @@ class BusInfoViewController: UIViewController {
 
         UIApplication.shared.statusBarStyle = .lightContent
         backButton.tintColor = UIColor.white
-        busNumberLabel.text = busNumber
+        busNumberLabel.text = busName
         titleView.addGradient()
         busStopInfoTableView.delegate = self
         busStopInfoTableView.dataSource = self
@@ -44,8 +44,8 @@ class BusInfoViewController: UIViewController {
         let manager = RouteManager()
         manager.busDelegate = self
         manager.busStatusDelegate = self
-        manager.requestBusStopInfo(ofRouteName: busNumber)
-        manager.requestBusStatus(ofRouteName: busNumber)
+        manager.requestBusStopInfo(ofRouteName: busName)
+        manager.requestBusStatus(ofRouteName: busName)
         runTimer()
     }
 
@@ -64,7 +64,7 @@ class BusInfoViewController: UIViewController {
             let manager = RouteManager()
             manager.busDelegate = self
             manager.busStatusDelegate = self
-            manager.requestBusStatus(ofRouteName: busNumber)
+            manager.requestBusStatus(ofRouteName: busName)
         } else {
             busInfoUpdateCounter -= 1
         }

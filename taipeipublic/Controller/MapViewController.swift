@@ -18,8 +18,8 @@ class MapViewController: UIViewController {
     var isDestinationMode = false
     //搜尋目的地後使用的變數
     var destination: GMSPlace?
-    var destinationId = ""
-    var destinationName = ""
+    var destinationId = Constant.DefaultValue.emptyString
+    var destinationName = Constant.DefaultValue.emptyString
     //進行導航時使用的變數
     var routes = [Route]()
     var youbikeRoute: Route?
@@ -348,7 +348,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
             if let dictionary = transitInfoDictionary[sender.tag], let busNumber = dictionary["number"], let departure = dictionary["departure"], let arrival = dictionary["arrival"] {
-                busInfoViewController.busNumber = busNumber
+                busInfoViewController.busName = busNumber
                 busInfoViewController.departureStopName = departure
                 busInfoViewController.arrivalStopName = arrival
             }
