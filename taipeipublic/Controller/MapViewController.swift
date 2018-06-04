@@ -142,10 +142,6 @@ class MapViewController: UIViewController {
 
     func setUpView() {
         destinationInfoView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        searchButton.layer.shadowColor = UIColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor
-        searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        searchButton.layer.shadowRadius = 4.0
-        searchButton.layer.shadowOpacity = 1.0
     }
 
     func setUpMap() {
