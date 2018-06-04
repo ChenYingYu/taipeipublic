@@ -125,7 +125,6 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
                 routeInfo += " \(legs.steps[index].duration)"//交通工具時程
             }
         }
-        cell.subtitleLabel.numberOfLines = 0
         cell.subtitleLabel.text = routeInfo
         if youbikeStationsDictionary[indexPath.row] != nil {
             cell.youbikeLabel.isHidden = false
