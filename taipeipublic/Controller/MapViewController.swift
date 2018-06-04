@@ -65,7 +65,7 @@ class MapViewController: UIViewController {
             self.searchButton.isHidden = true
             self.backButton.isHidden = false
             showDestination()
-            updateCamera()
+            updateCameraToFitMapBounds()
             showRoutePolyline()
             showYoubikeRoutePolyline()
             mapView.addSubview(backButton)
@@ -88,7 +88,7 @@ class MapViewController: UIViewController {
         }
     }
 
-    func updateCamera() {
+    func updateCameraToFitMapBounds() {
         if let upperRight = selectedRoute?.bounds?.northeast, let bottomLeft = selectedRoute?.bounds?.southwest {
             let northeast = CLLocationCoordinate2DMake(upperRight.lat, upperRight.lng)
             let southwest = CLLocationCoordinate2DMake(bottomLeft.lat, bottomLeft.lng)
@@ -181,7 +181,7 @@ class MapViewController: UIViewController {
         routeDetailTableView.dataSource = self
         let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)
         routeDetailTableView.register(nib, forCellReuseIdentifier: "Cell")
-        updateCamera()
+        updateCameraToFitMapBounds()
         view.addSubview(routeDetailTableView)
         routeDetailTableView.reloadData()
     }
@@ -369,7 +369,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                     piece.frame = normalState
                 })
             }
-            updateCamera()
+            updateCameraToFitMapBounds()
         }
     }
 
