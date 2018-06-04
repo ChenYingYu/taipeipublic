@@ -160,13 +160,54 @@
                         <outlet property="addressLabel" destination="zgH-Qs-O7m" id="9RT-39-vSr"/>
                         <outlet property="backButton" destination="Zi8-If-Cm5" id="adQ-Oh-P5M"/>
                         <outlet property="destinationInfoView" destination="Qle-93-xXK" id="aml-76-xXh"/>
+                        <outlet property="headerButton" destination="so2-3V-HTn" id="6Ec-o4-Emc"/>
+                        <outlet property="headerView" destination="Vme-LQ-gC6" id="Jog-nX-yZe"/>
                         <outlet property="mapView" destination="6qb-Ff-xfq" id="aAk-PJ-JMz"/>
+                        <outlet property="routeDetailTableView" destination="1Bp-R6-cF7" id="vTM-2h-DbG"/>
                         <outlet property="searchButton" destination="ICl-re-SCB" id="ai7-Ul-rIZ"/>
                         <outlet property="showRouteButton" destination="nGZ-rB-NUK" id="60O-c3-7YP"/>
                         <outlet property="titleLabel" destination="oe1-tW-T4i" id="7Tz-Th-dCC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="1Bp-R6-cF7" userLabel="Route Detail TableView">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.015686274510000001" green="0.20392156859999999" blue="0.29803921570000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <view key="tableHeaderView" contentMode="scaleToFill" id="Vme-LQ-gC6" userLabel="Header">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="so2-3V-HTn">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+                                <color key="backgroundColor" red="0.031372549020000001" green="0.41176470590000003" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="icon_roundedRectangle"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="so2-3V-HTn" secondAttribute="bottom" id="RxQ-eV-EgC"/>
+                            <constraint firstAttribute="trailing" secondItem="so2-3V-HTn" secondAttribute="trailing" id="kTz-zJ-tRi"/>
+                            <constraint firstItem="so2-3V-HTn" firstAttribute="top" secondItem="Vme-LQ-gC6" secondAttribute="top" id="n7f-Zv-D5j"/>
+                            <constraint firstItem="so2-3V-HTn" firstAttribute="leading" secondItem="Vme-LQ-gC6" secondAttribute="leading" id="rrt-tK-gzz"/>
+                        </constraints>
+                    </view>
+                    <prototypes>
+                        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="yyj-Vi-U89">
+                            <rect key="frame" x="0.0" y="72" width="240" height="44"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yyj-Vi-U89" id="rJh-A1-CJx">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </tableViewCellContentView>
+                        </tableViewCell>
+                    </prototypes>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </tableView>
             </objects>
             <point key="canvasLocation" x="30.434782608695656" y="31.793478260869566"/>
         </scene>
@@ -407,6 +448,7 @@
     </scenes>
     <resources>
         <image name="btn_back" width="21" height="21"/>
+        <image name="icon_roundedRectangle" width="75" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="MPG-LA-hgk"/>

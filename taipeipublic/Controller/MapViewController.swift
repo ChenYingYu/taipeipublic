@@ -26,7 +26,6 @@ class MapViewController: UIViewController {
     var selectedRoute: Route?
     var selectedYoubikeRoutes: [Route]?
     var selectedYoubikeStation = [YoubikeStation]()
-    var routeDetailTableView = UITableView()
     // 紀錄公車班次時使用的變數
     var transitTag = 0
     var transitInfoDictionary = [Int: [String: String]]()
@@ -39,6 +38,9 @@ class MapViewController: UIViewController {
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var showRouteButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet var routeDetailTableView: UITableView!
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerButton: UIButton!
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
@@ -142,6 +144,8 @@ class MapViewController: UIViewController {
 
     func setUpView() {
         destinationInfoView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(showOrHideTableView))
+        headerButton.addGestureRecognizer(panGesture)
     }
 
     func setUpMap() {
@@ -154,13 +158,8 @@ class MapViewController: UIViewController {
 
     func setUpRouteDetailTableView() {
         transitTag = 0
-        routeDetailTableView.removeFromSuperview()
-        routeDetailTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
-        routeDetailTableView.backgroundColor = UIColor(red: 4.0/255.0, green: 52.0/255.0, blue: 76.0/255.0, alpha: 1.0)
-        routeDetailTableView.clipsToBounds = true
-        routeDetailTableView.layer.cornerRadius = 20.0
+        routeDetailTableView.frame = CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
         routeDetailTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        routeDetailTableView.separatorStyle = .none
         routeDetailTableView.delegate = self
         routeDetailTableView.dataSource = self
         let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)
@@ -307,53 +306,41 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         return 80
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UITableViewHeaderFooterView()
-        headerView.frame = CGRect(x: 0, y: 0, width: routeDetailTableView.bounds.width, height: 30)
-        let headerButton = UIButton()
-        headerButton.frame = headerView.bounds
-        headerButton.layer.backgroundColor = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
-        let image = UIImage(named: "icon_roundedRectangle")
-        headerButton.setImage(image, for: .normal)
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(showOrHideTableView))
-        headerButton.addGestureRecognizer(panGesture)
-        headerView.addSubview(headerButton)
-        return headerView
-    }
-
     @objc func showOrHideTableView(_ gestureRecognizer: UIPanGestureRecognizer) {
         let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
         let hiddenState = CGRect(x: 0, y: view.bounds.height - 50, width: view.bounds.width, height: view.bounds.height)
         guard gestureRecognizer.view != nil else {return}
         let piece = routeDetailTableView
-        let translation = gestureRecognizer.translation(in: piece.superview)
+        let translation = gestureRecognizer.translation(in: piece?.superview)
         // 根據手勢拖動情形，更改tableView位置
         if gestureRecognizer.state == .began {
-            initialCenter = piece.center
+            if let center = piece?.center {
+                initialCenter = center
+            }
         }
         if gestureRecognizer.state != .cancelled {
             let newCenter = CGPoint(x: initialCenter.x + translation.x, y: initialCenter.y + translation.y)
-            if piece.frame.minY >= normalState.minY - 0.0000001 {
-                piece.center.y = newCenter.y
+            if let minY = piece?.frame.minY {
+                if minY >= normalState.minY - 0.0000001 {
+                    piece?.center.y = newCenter.y
+                }
             }
         }
         if gestureRecognizer.state == .ended {
-            if piece.center.y > initialCenter.y {
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.view.layoutIfNeeded()
-                    piece.frame = hiddenState
-                })
-            } else {
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.view.layoutIfNeeded()
-                    piece.frame = normalState
-                })
+            if let centerY = piece?.center.y {
+                if centerY > initialCenter.y {
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.view.layoutIfNeeded()
+                        piece?.frame = hiddenState
+                    })
+                } else {
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.view.layoutIfNeeded()
+                        piece?.frame = normalState
+                    })
+                }
+                updateCameraToFitMapBounds()
             }
-            updateCameraToFitMapBounds()
         }
     }
 
