@@ -37,15 +37,20 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zi8-If-Cm5">
                                         <rect key="frame" x="15" y="32" width="40" height="40"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Fxy-xX-vTf"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="L6c-Xv-Zik"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="RbN-rr-RYl"/>
                                             <constraint firstAttribute="width" constant="40" id="hcw-NU-zzX"/>
                                         </constraints>
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="btn_back">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <segue destination="dxz-6K-g3o" kind="show" id="XLk-Xb-qJD"/>
                                         </connections>
@@ -152,7 +157,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="31.875" y="32.5"/>
+            <point key="canvasLocation" x="30.434782608695656" y="31.793478260869566"/>
         </scene>
         <!--Route View Controller-->
         <scene sceneID="WDw-NT-Zvu">

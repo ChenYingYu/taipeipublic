@@ -146,9 +146,6 @@ class MapViewController: UIViewController {
         searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         searchButton.layer.shadowRadius = 4.0
         searchButton.layer.shadowOpacity = 1.0
-        backButton.tintColor = UIColor.gray
-        backButton.backgroundColor = UIColor.white
-        backButton.layer.cornerRadius = backButton.bounds.width / 2
     }
 
     func setUpMap() {
