@@ -37,101 +37,42 @@ class RouteManager {
     var myRoutes = [Route]()
 
     func requestRoute(originLatitude: Double, originLongitude: Double, destinationId: String) {
-        let urlString = "https://maps.googleapis.com/maps/api/directions/json?origin=\(originLatitude),\(originLongitude)&destination=place_id:\(destinationId)&mode=transit&key=\(Constant.googlePlacesAPIKey)&alternatives=true"
-        Alamofire.request(urlString).validate().responseJSON { response in
-            switch response.result {
-            case .success:
-                self.myRoutes = [Route]()
-                guard let dictionary = response.result.value as? [String: Any] else {
-                    print("Cannot parse data as JSON: \(String(describing: response.result.value))")
-                    return
-                }
-                guard let routes = dictionary["routes"] as? [[String: Any]] else {
-                    print("Cannot find key 'routes' in data: \(dictionary)")
-                    return
-                }
-                for route in routes {
-                    guard let bounds = route["bounds"] as? [String: AnyObject], let northeast = bounds["northeast"] as? [String: Double], let northeastLat = northeast["lat"], let northeastLng = northeast["lng"], let southwest = bounds["southwest"] as? [String: Double], let southwestLat = southwest["lat"], let southwestLng = southwest["lng"] else {
-                        print("Cannot find key 'bounds' in routes: \(routes)")
-                        return
-                    }
-                    let newBounds = Bounds(northeast: Location(lat: northeastLat, lng: northeastLng), southwest: Location(lat: southwestLat, lng: southwestLng))
-                    guard let legs = route["legs"] as? [[String: AnyObject]], legs.count > 0 else {
-                        print("Cannot find key 'legs' in routes: \(routes)")
-                        return
-                    }
-                    let leg = legs[0]
-                    var arrival = Constant.DefaultValue.emptyString
-                    var departure = Constant.DefaultValue.emptyString
-                    if let newArrival = leg["arrival_time"] as? [String: AnyObject], let arrivalTime = newArrival["text"] as? String, let newDeparture = leg["departure_time"] as? [String: AnyObject], let departureTime = newDeparture["text"] as? String {
-                        arrival = arrivalTime
-                        departure = departureTime
-                    }
-                    guard let distance = leg["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = leg["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
-                        return
-                    }
-                    guard let endAddress = leg["end_address"] as? String, let endLocation = leg["end_location"] as? [String: AnyObject], let endLocationlat = endLocation["lat"] as? Double, let endLocationLng = endLocation["lng"] as? Double, let startAddress = leg["start_address"] as? String, let startLocation = leg["start_location"] as? [String: AnyObject], let startLocationlat = startLocation["lat"] as? Double, let startLocationLng = startLocation["lng"] as? Double else {
-                        return
-                    }
-                    let newEndLocation = Location(lat: endLocationlat, lng: endLocationLng)
-                    let newStartLocation = Location(lat: startLocationlat, lng: startLocationLng)
-                var newSteps = [Step]()
-                    guard let steps = leg["steps"] as? [[String: AnyObject]] else {
-                        return
-                    }
-                var transitDetail = [Transit]()
-                for step in steps {
-                    guard let distance = step["distance"] as? [String: AnyObject], let distanceText = distance["text"] as? String, let duration = step["duration"] as? [String: AnyObject], let durationText = duration["text"] as? String else {
-                        return
-                    }
-                    guard let endLocation = step["end_location"] as? [String: AnyObject], let endLocationlat = endLocation["lat"] as? Double, let endLocationLng = endLocation["lng"] as? Double, let startLocation = step["start_location"] as? [String: AnyObject], let startLocationlat = startLocation["lat"] as? Double, let startLocationLng = startLocation["lng"] as? Double else {
-                        return
-                    }
-                    let newEndLocation = Location(lat: endLocationlat, lng: endLocationLng)
-                    let newStartLocation = Location(lat: startLocationlat, lng: startLocationLng)
-                    guard let instructions = step["html_instructions"] as? String, let polyline = step["polyline"] as? [String: AnyObject], let points = polyline["points"] as? String else {
-                        return
-                    }
-                    guard let travelMode = step["travel_mode"] as? String else {
-                        return
-                    }
-                    let walkingDetail = [Step]()
-                    var transit: Transit?
-                    if travelMode == "WALKING" {
 
-                    } else if travelMode == "TRANSIT" {
-                        if let transitDetails = step["transit_details"] as? [String: AnyObject] {
-                            if let arrivalStop = transitDetails["arrival_stop"] as? [String: AnyObject], let arrivalLocation = arrivalStop["location"] as? [String: Double], let arrivalLatitude = arrivalLocation["lat"], let arrivalLongitude = arrivalLocation["lng"], let arricalName  = arrivalStop["name"] as? String {
-                                if let departureStop = transitDetails["departure_stop"] as? [String: AnyObject], let departureLocation = departureStop["location"] as? [String: Double], let departureLatitude = departureLocation["lat"], let departureLongitude = departureLocation["lng"], let departureName = departureStop["name"] as? String {
-                                    if let arrivalTimeDict = transitDetails["arrival_time"] as? [String: AnyObject], let arrivalTime = arrivalTimeDict["text"] as? String, let departureTimeDict = transitDetails["departure_time"] as? [String: AnyObject], let departureTime = departureTimeDict["text"] as? String, let line = transitDetails["line"] as? [String: AnyObject], let lineName = line["short_name"] as? String {
-                                        transit = Transit(arrivalStop: Stop(location: Location(lat: arrivalLatitude, lng: arrivalLongitude), name: arricalName), arrivalTime: arrivalTime, departureStop: Stop(location: Location(lat: departureLatitude, lng: departureLongitude), name: departureName), departureTime: departureTime, lineName: lineName)
-                                        if let newTransit = transit {
-                                            transitDetail.append(newTransit)
-                                        }
-                                    }
-                                }
-                            }
+            let urlParams = [
+                "origin": "\(originLatitude),\(originLongitude)",
+                "destination": "place_id:\(destinationId)",
+                "mode": "transit",
+                "key": Constant.googlePlacesAPIKey,
+                "alternatives": "true"
+                ]
+
+            Alamofire.request("https://maps.googleapis.com/maps/api/directions/json", method: .get, parameters: urlParams)
+                .validate(statusCode: 200..<300)
+                .responseJSON { response in
+                    if response.result.error == nil {
+                        guard let value = response.result.value else {
+                            print("Value Not Found")
+                            return
                         }
-                    }
-                    let newStep = Step(distance: distanceText, duration: durationText, endLocation: newEndLocation, instructions: instructions, startLocation: newStartLocation, polyline: points, walkingDetail: walkingDetail, transitDetail: transitDetail, travelMode: travelMode)
-                    newSteps.append(newStep)
-                }
-                guard let polyline = route["overview_polyline"] as? [String: String], let points = polyline["points"] else {
-                    return
-                }
-                let newLegs = Legs(arrivalTime: arrival, departureTime: departure, distance: distanceText, duration: durationText, endAddress: endAddress, endLocation: newEndLocation, startAddress: startAddress, startLocation: newStartLocation, steps: newSteps, points: points)
-                let myRoute = Route(bounds: newBounds, legs: newLegs)
-                    self.myRoutes.append(myRoute)
-                }
-                DispatchQueue.main.async {
-                    self.delegate?.manager(self, didGet: self.myRoutes)
-                }
-            case .failure(let error):
-                self.delegate?.manager(self, didFailWith: error)
-            }
-        }
-    }
 
+                        guard let data = try? JSONSerialization.data(withJSONObject: value) else {
+                            print("Cannot parse data as JSON")
+                            return
+                        }
+
+                        do {
+                            let root = try JSONDecoder().decode(Root.self, from: data)
+                            let routes = root.routes
+                            self.delegate?.manager(self, didGet: routes)
+                        } catch let error {
+                            self.delegate?.manager(self, didFailWith: error)
+                        }
+                    } else {
+                        self.delegate?.manager(self, didFailWith: response.result.error!)
+                    }
+            }
+    }
+/*
     func requestYoubikeRoute(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double, through startYoubikeStation: YoubikeStation, and endYoubikeStation: YoubikeStation, withRouteIndex index: Int) {
         let urlString = "https://maps.googleapis.com/maps/api/directions/json?origin=\(originLatitude),\(originLongitude)&destination=\(destinationLatitude),\(destinationLongitude)&waypoints=via:\(startYoubikeStation.latitude)%2C\(startYoubikeStation.longitude)%7Cvia:\(endYoubikeStation.latitude)%2C\(endYoubikeStation.longitude)&mode=walking&key=\(Constant.googlePlacesAPIKey)"
         Alamofire.request(urlString).validate().responseJSON { response in
@@ -203,6 +144,7 @@ class RouteManager {
             }
         }
     }
+    */
 
     func requestBusStopInfo(ofRouteName routeName: String) {
         let dateFormater = DateFormatter()

@@ -106,17 +106,18 @@ class MapViewController: UIViewController {
         guard let legs = self.selectedRoute?.legs else {
             return
         }
-        for step in legs.steps {
+        let leg = legs[0]
+        for step in leg.steps {
             let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng))
             marker.title = step.instructions
             marker.icon = UIImage(named: "icon_location")
             marker.map = mapView
+            let path = GMSPath(fromEncodedPath: step.polyline.points)
+            let polyline = GMSPolyline(path: path)
+            polyline.strokeColor = UIColor.blue
+            polyline.strokeWidth = 6.0
+            polyline.map = mapView
         }
-        let path = GMSPath(fromEncodedPath: legs.points)
-        let polyline = GMSPolyline(path: path)
-        polyline.strokeColor = UIColor.blue
-        polyline.strokeWidth = 6.0
-        polyline.map = mapView
     }
 
     func showYoubikeRoutePolyline() {
@@ -124,14 +125,15 @@ class MapViewController: UIViewController {
             return
         }
         for youbikeRoute in youbikeRoutes {
-            if let youbikeLegs = youbikeRoute.legs {
-                let path = GMSPath(fromEncodedPath: youbikeLegs.points)
+//            if let youbikeLegs = youbikeRoute.legs {
+//                let youbikeLeg = youbikeLegs[0]
+                let path = GMSPath(fromEncodedPath: youbikeRoute.polyline.points)
                 let polyline = GMSPolyline(path: path)
                 polyline.strokeColor = UIColor.yellow
                 polyline.strokeWidth = 6.0
                 polyline.map = mapView
                 showYoubikeStation()
-            }
+//            }
         }
     }
 
@@ -251,7 +253,7 @@ extension MapViewController: GMSMapViewDelegate {
 
 extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedRoute?.legs?.steps.count ?? 2
+        return selectedRoute?.legs?[0].steps.count ?? 2
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -259,14 +261,17 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.isUserInteractionEnabled = false
-        if let step = selectedRoute?.legs?.steps[indexPath.row] {
+        if let legs = selectedRoute?.legs {
+            let leg = legs[0]
+            let step = leg.steps[indexPath.row]
             //顯示公車或捷運班次及起迄站
-            if step.travelMode == "TRANSIT", let transitDetails = step.transitDetail {
-                transitTag = transitTag < transitDetails.count ? transitTag : 0
-                let transitDetail = transitDetails[transitTag]
-                cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
+            if step.travelMode == "TRANSIT", let transitDetail = step.transitDetail {
+//                transitTag = transitTag < transitDetails.count ? transitTag : 0
+//                let transitDetail = transitDetails[transitTag]
+                let lineName = transitDetail.lineDetails.shortName
+                cell.routeDetailLabel.text = "搭乘 [\(lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
-                if transitDetail.lineName != "板南線", transitDetail.lineName != "淡水信義線", transitDetail.lineName != "松山新店線", transitDetail.lineName != "文湖線", transitDetail.lineName != "中和新蘆線" {
+                if lineName != "板南線", lineName != "淡水信義線", lineName != "松山新店線", lineName != "文湖線", lineName != "中和新蘆線" {
                     cell.busInfoButton.isHidden = false
                 } else {
                     cell.busInfoButton.isHidden = true
@@ -275,12 +280,12 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
                 var dictionary = [String: String]()
-                dictionary.updateValue(transitDetail.lineName, forKey: "number")
+                dictionary.updateValue(lineName, forKey: "number")
                 dictionary.updateValue(transitDetail.departureStop.name, forKey: "departure")
                 dictionary.updateValue(transitDetail.arrivalStop.name, forKey: "arrival")
                 transitInfoDictionary.updateValue(dictionary, forKey: indexPath.row)
             } else {
-                cell.routeDetailLabel.text  = selectedRoute?.legs?.steps[indexPath.row].instructions
+                cell.routeDetailLabel.text = selectedRoute?.legs?[0].steps[indexPath.row].instructions
             }
         }
 

@@ -94,18 +94,21 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         }
         route = routes[indexPath.row]
         var routeInfo = Constant.DefaultValue.emptyString
-        if let selectedRoute = route, let legs = selectedRoute.legs, let duration = legs.duration {
+        if let selectedRoute = route, let legs = selectedRoute.legs {
+            let leg = legs[0]
+            let duration = leg.duration?.durationText
             //路線資訊格式
-            routeInfo += "\(duration)： \n" //總時間：
-            for index in legs.steps.indices {
+            routeInfo += "\(duration ?? "")： \n" //總時間：
+            for index in leg.steps.indices {
                 if index != 0 {
                     routeInfo += " > "//更換交通工具
                 }
-                let instruction = legs.steps[index].instructions.enumerated()
-                for (index, character) in instruction where index < 2 {
+                if let instruction = leg.steps[index].instructions?.enumerated() {
+                    for (index, character) in instruction where index < 2 {
                         routeInfo += "\(character)"//交通工具
+                    }
+                    routeInfo += " \(leg.steps[index].duration.durationText)"//交通工具時程
                 }
-                routeInfo += " \(legs.steps[index].duration)"//交通工具時程
             }
         }
         cell.subtitleLabel.text = routeInfo
@@ -141,14 +144,15 @@ extension RouteViewController: RouteManagerDelegate {
             guard let legs = routes[index].legs else {
                 return
             }
+            let leg = legs[0]
             var firstYoubikeStation: YoubikeStation? = nil
             var secondYoubikeStation: YoubikeStation? = nil
             var thirdYoubikeStation: YoubikeStation? = nil
             var finalYoubikeStation: YoubikeStation? = nil
             //取得附近 Youbike 路線
-            for index in legs.steps.indices {
-                let startPosition = CLLocationCoordinate2D(latitude: legs.steps[index].startLocation.lat, longitude: legs.steps[index].startLocation.lng)
-                let endPosition = CLLocationCoordinate2D(latitude: legs.steps[index].endLocation.lat, longitude: legs.steps[index].endLocation.lng)
+            for index in leg.steps.indices {
+                let startPosition = CLLocationCoordinate2D(latitude: leg.steps[index].startLocation.lat, longitude: leg.steps[index].startLocation.lng)
+                let endPosition = CLLocationCoordinate2D(latitude: leg.steps[index].endLocation.lat, longitude: leg.steps[index].endLocation.lng)
                 //起點 (index == 0) 及離起點最近的運輸站 (index == 1)
                 if index < 2 {
                     if let youbikeManager = YoubikeManager.getStationInfo() {
@@ -161,13 +165,13 @@ extension RouteViewController: RouteManagerDelegate {
                         }
                     }
                 }
-                //終點 (index == legs.steps.count - 1) 及離終點最近的運輸站 (index == legs.steps.count - 2)
-                if index > legs.steps.count - 3 {
+                //終點 (index == leg.steps.count - 1) 及離終點最近的運輸站 (index == leg.steps.count - 2)
+                if index > leg.steps.count - 3 {
                     if let youbikeManager = YoubikeManager.getStationInfo() {
                         if let station = youbikeManager.checkNearbyStation(position: endPosition) {
-                            if index == legs.steps.count - 2 {
+                            if index == leg.steps.count - 2 {
                                 thirdYoubikeStation = station
-                            } else if index == legs.steps.count - 1 {
+                            } else if index == leg.steps.count - 1 {
                                 finalYoubikeStation = station
                             }
                         }
@@ -177,8 +181,8 @@ extension RouteViewController: RouteManagerDelegate {
             cellTag = index
             youbikeStations.removeAll()
             youbikeRoutes.removeAll()
-            checkYoubikeStation(firstYoubikeStation, and: secondYoubikeStation, in: legs.steps[0], withRouteIndex: index)
-            checkYoubikeStation(thirdYoubikeStation, and: finalYoubikeStation, in: legs.steps[legs.steps.count - 1], withRouteIndex: index)
+            checkYoubikeStation(firstYoubikeStation, and: secondYoubikeStation, in: leg.steps[0], withRouteIndex: index)
+            checkYoubikeStation(thirdYoubikeStation, and: finalYoubikeStation, in: leg.steps[leg.steps.count - 1], withRouteIndex: index)
         }
         routeTableView.reloadData()
     }
@@ -201,7 +205,7 @@ extension RouteViewController: RouteManagerDelegate {
             //加入 Youbike 租借站做為中途點並取得新路線
             let startPoint = step.startLocation
             let endPoint = step.endLocation
-            routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: youbikeStart, and: youbikeEnd, withRouteIndex: index)
+//            routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: youbikeStart, and: youbikeEnd, withRouteIndex: index)
         }
     }
 
