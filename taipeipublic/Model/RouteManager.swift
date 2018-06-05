@@ -24,10 +24,16 @@ protocol BusRouteManagerDelegate: class {
     func busManager(_ manager: RouteManager, didFailWith error: Error)
 }
 
+protocol BusStatusManagerDelegate: class {
+    func busStatusManager(_ manager: RouteManager, didGet status: [BusStatus])
+    func busStatusManager(_ manager: RouteManager, didFailWith error: Error)
+}
+
 class RouteManager {
     weak var delegate: RouteManagerDelegate?
     weak var youbikeDelegate: YoubikeRouteManagerDelegate?
     weak var busDelegate: BusRouteManagerDelegate?
+    weak var busStatusDelegate: BusStatusManagerDelegate?
     var myRoutes = [Route]()
 
     func requestRoute(originLatitude: Double, originLongitude: Double, destinationId: String) {
@@ -55,8 +61,8 @@ class RouteManager {
                         return
                     }
                     let leg = legs[0]
-                    var arrival = ""
-                    var departure = ""
+                    var arrival = Constant.DefaultValue.emptyString
+                    var departure = Constant.DefaultValue.emptyString
                     if let newArrival = leg["arrival_time"] as? [String: AnyObject], let arrivalTime = newArrival["text"] as? String, let newDeparture = leg["departure_time"] as? [String: AnyObject], let departureTime = newDeparture["text"] as? String {
                         arrival = arrivalTime
                         departure = departureTime
@@ -201,7 +207,7 @@ class RouteManager {
     func requestBusStopInfo(ofRouteName routeName: String) {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
-        dateFormater.timeZone = TimeZone(identifier: "GMT")
+        dateFormater.timeZone = TimeZone(identifier: Constant.Identifier.gmt)
         let currentDate = Date()
         let customDate = dateFormater.string(from: currentDate)
         let base64String = "x-date: \(customDate)".hmac(algorithm: HMACAlgorithm.SHA1, key: Constant.PTXAppKey)
@@ -253,7 +259,7 @@ class RouteManager {
 
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
-        dateFormater.timeZone = TimeZone(identifier: "GMT")
+        dateFormater.timeZone = TimeZone(identifier: Constant.Identifier.gmt)
         let currentDate = Date()
         let customDate = dateFormater.string(from: currentDate)
         let base64String = "x-date: \(customDate)".hmac(algorithm: HMACAlgorithm.SHA1, key: Constant.PTXAppKey)
@@ -290,14 +296,12 @@ class RouteManager {
 
                     do {
                         let busStatus = try JSONDecoder().decode([BusStatus].self, from: data)
-                        print(busStatus)
-//                        self.busDelegate?.busManager(self, didGet: busRoutes)
+                        self.busStatusDelegate?.busStatusManager(self, didGet: busStatus)
                     } catch let error {
-                        print(error)
-//                        self.busDelegate?.busManager(self, didFailWith: error)
+                        self.busStatusDelegate?.busStatusManager(self, didFailWith: error)
                     }
                 } else {
-//                    self.busDelegate?.busManager(self, didFailWith: response.result.error!)
+                    self.busStatusDelegate?.busStatusManager(self, didFailWith: response.result.error!)
                 }
         }
     }

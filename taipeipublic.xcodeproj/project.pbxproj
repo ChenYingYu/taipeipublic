@@ -33,6 +33,7 @@
 /* Begin PBXFileReference section */
 		0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTableViewCell.swift; sourceTree = "<group>"; };
 		0A09C40720AA90E1007D3EBE /* RouteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteTableViewCell.xib; sourceTree = "<group>"; };
+		0A15FBFB20C4D70900ABFAAD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0A16D9E72099A6D600EEBB4F /* RouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteManager.swift; sourceTree = "<group>"; };
 		0A16D9E92099C4BE00EEBB4F /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		0A33C0362096FC3D00C9ED7E /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
@@ -108,6 +109,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		0A4AF91E20C4D7E600B77824 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				0A90100A20C0D21200EA412E /* GoogleService-Info.plist */,
+				0A15FBFB20C4D70900ABFAAD /* GoogleService-Info.plist */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		0A6EDBD82096ADFF004BBF3C = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +125,7 @@
 				0A6EDBE22096ADFF004BBF3C /* Products */,
 				D3149E127504D6CEB898CCD3 /* Pods */,
 				B932BCB6D553A847A5CE8DB9 /* Frameworks */,
+				0A4AF91E20C4D7E600B77824 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -224,7 +235,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A6EDBEF2096AE03004BBF3C /* LaunchScreen.storyboard in Resources */,
-				0A90100520C000D000EA412E /* GoogleService-Info.plist in Resources */,
 				0A67E47C20A1511B00070EBD /* YouBikeStations.json in Resources */,
 				0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,

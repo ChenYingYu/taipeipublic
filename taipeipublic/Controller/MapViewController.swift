@@ -18,17 +18,16 @@ class MapViewController: UIViewController {
     var isDestinationMode = false
     //搜尋目的地後使用的變數
     var destination: GMSPlace?
-    var destinationId = ""
-    var destinationName = ""
+    var destinationId = Constant.DefaultValue.emptyString
+    var destinationName = Constant.DefaultValue.emptyString
     //進行導航時使用的變數
     var routes = [Route]()
     var youbikeRoute: Route?
     var selectedRoute: Route?
     var selectedYoubikeRoutes: [Route]?
     var selectedYoubikeStation = [YoubikeStation]()
-    var routeDetailTableView = UITableView()
     // 紀錄公車班次時使用的變數
-    var transitTag = 0
+    var transitTag = Constant.DefaultValue.zero
     var transitInfoDictionary = [Int: [String: String]]()
     var initialCenter = CGPoint()
 
@@ -39,6 +38,9 @@ class MapViewController: UIViewController {
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var showRouteButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet var routeDetailTableView: UITableView!
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerButton: UIButton!
     @IBAction func autocompleteClicked(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
@@ -65,7 +67,7 @@ class MapViewController: UIViewController {
             self.searchButton.isHidden = true
             self.backButton.isHidden = false
             showDestination()
-            updateCamera()
+            updateCameraToFitMapBounds()
             showRoutePolyline()
             showYoubikeRoutePolyline()
             mapView.addSubview(backButton)
@@ -88,7 +90,7 @@ class MapViewController: UIViewController {
         }
     }
 
-    func updateCamera() {
+    func updateCameraToFitMapBounds() {
         if let upperRight = selectedRoute?.bounds?.northeast, let bottomLeft = selectedRoute?.bounds?.southwest {
             let northeast = CLLocationCoordinate2DMake(upperRight.lat, upperRight.lng)
             let southwest = CLLocationCoordinate2DMake(bottomLeft.lat, bottomLeft.lng)
@@ -141,27 +143,14 @@ class MapViewController: UIViewController {
     }
 
     func setUpView() {
-        destinationInfoView.isHidden = true
-        destinationInfoView.layer.cornerRadius = 10.0
         destinationInfoView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        searchButton.layer.shadowColor = UIColor(red: 100.0/255.0, green: 100.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor
-        searchButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        searchButton.layer.shadowRadius = 4.0
-        searchButton.layer.shadowOpacity = 1.0
-        backButton.tintColor = UIColor.gray
-        backButton.backgroundColor = UIColor.white
-        backButton.layer.cornerRadius = backButton.bounds.width / 2
-        showRouteButton.layer.cornerRadius = showRouteButton.bounds.height / 2
-        destinationInfoView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        destinationInfoView.layer.shadowRadius = 4.0
-        destinationInfoView.layer.shadowOpacity = 1.0
-        destinationInfoView.backgroundColor = UIColor(red: 47.0/255.0, green: 67.0/255.0, blue: 76.0/255.0, alpha: 1.0)
-        titleLabel.textColor = .white
-        addressLabel.textColor = .white
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(showOrHideTableView))
+        headerButton.addGestureRecognizer(panGesture)
     }
 
     func setUpMap() {
-        mapView.camera = GMSCameraPosition.camera(withLatitude: getUserLatitude(), longitude: getUserLongitude(), zoom: 15.0)
+        let locationManager = CLLocationManager()
+        mapView.camera = GMSCameraPosition.camera(withLatitude: locationManager.getUserLatitude(), longitude: locationManager.getUserLongitude(), zoom: 15.0)
         mapView.isMyLocationEnabled = true
         mapView.addSubview(searchButton)
         mapView.settings.myLocationButton = true
@@ -169,19 +158,14 @@ class MapViewController: UIViewController {
     }
 
     func setUpRouteDetailTableView() {
-        transitTag = 0
-        routeDetailTableView.removeFromSuperview()
-        routeDetailTableView = UITableView(frame: CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6))
-        routeDetailTableView.backgroundColor = UIColor(red: 4.0/255.0, green: 52.0/255.0, blue: 76.0/255.0, alpha: 1.0)
-        routeDetailTableView.clipsToBounds = true
-        routeDetailTableView.layer.cornerRadius = 20.0
+        transitTag = Constant.DefaultValue.zero
+        routeDetailTableView.frame = CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
         routeDetailTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        routeDetailTableView.separatorStyle = .none
         routeDetailTableView.delegate = self
         routeDetailTableView.dataSource = self
         let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)
-        routeDetailTableView.register(nib, forCellReuseIdentifier: "Cell")
-        updateCamera()
+        routeDetailTableView.register(nib, forCellReuseIdentifier: Constant.Identifier.cell)
+        updateCameraToFitMapBounds()
         view.addSubview(routeDetailTableView)
         routeDetailTableView.reloadData()
     }
@@ -194,24 +178,6 @@ class MapViewController: UIViewController {
             marker.title = station.name
             marker.map = mapView
         }
-    }
-
-    func getUserLatitude() -> Double {
-        let locationManager = CLLocationManager()
-        guard let userLatitude = locationManager.location?.coordinate.latitude else {
-            print("Cannot find user's location")
-            return 25.042416
-        }
-        return userLatitude
-    }
-
-    func getUserLongitude() -> Double {
-        let locationManager = CLLocationManager()
-        guard let userLongitude = locationManager.location?.coordinate.longitude else {
-            print("Cannot find user's location")
-            return 121.564793
-        }
-        return userLongitude
     }
 
     func updateLocationButton() {
@@ -289,7 +255,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? RouteDetailTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifier.cell) as? RouteDetailTableViewCell else {
             return UITableViewCell()
         }
         cell.isUserInteractionEnabled = false
@@ -300,7 +266,11 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 let transitDetail = transitDetails[transitTag]
                 cell.routeDetailLabel.text = "搭乘 [\(transitDetail.lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
-                cell.busInfoButton.isHidden = false
+                if transitDetail.lineName != "板南線", transitDetail.lineName != "淡水信義線", transitDetail.lineName != "松山新店線", transitDetail.lineName != "文湖線", transitDetail.lineName != "中和新蘆線" {
+                    cell.busInfoButton.isHidden = false
+                } else {
+                    cell.busInfoButton.isHidden = true
+                }
                 cell.isUserInteractionEnabled = true
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
@@ -321,65 +291,72 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         return 80
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UITableViewHeaderFooterView()
-        headerView.frame = CGRect(x: 0, y: 0, width: routeDetailTableView.bounds.width, height: 30)
-        let headerButton = UIButton()
-        headerButton.frame = headerView.bounds
-        headerButton.layer.backgroundColor = UIColor(red: 8.0/255.0, green: 105.0/255.0, blue: 153.0/255.0, alpha: 1.0).cgColor
-        let image = UIImage(named: "icon_roundedRectangle")
-        headerButton.setImage(image, for: .normal)
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(showOrHideTableView))
-        headerButton.addGestureRecognizer(panGesture)
-        headerView.addSubview(headerButton)
-        return headerView
-    }
-
     @objc func showOrHideTableView(_ gestureRecognizer: UIPanGestureRecognizer) {
         let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
         let hiddenState = CGRect(x: 0, y: view.bounds.height - 50, width: view.bounds.width, height: view.bounds.height)
         guard gestureRecognizer.view != nil else {return}
         let piece = routeDetailTableView
-        let translation = gestureRecognizer.translation(in: piece.superview)
+        let translation = gestureRecognizer.translation(in: piece?.superview)
         // 根據手勢拖動情形，更改tableView位置
         if gestureRecognizer.state == .began {
-            initialCenter = piece.center
+            if let center = piece?.center {
+                initialCenter = center
+            }
         }
         if gestureRecognizer.state != .cancelled {
             let newCenter = CGPoint(x: initialCenter.x + translation.x, y: initialCenter.y + translation.y)
-            if piece.frame.minY >= normalState.minY - 0.0000001 {
-                piece.center.y = newCenter.y
+            if let minY = piece?.frame.minY {
+                if minY >= normalState.minY - 0.0000001 {
+                    piece?.center.y = newCenter.y
+                }
             }
         }
         if gestureRecognizer.state == .ended {
-            if piece.center.y > initialCenter.y {
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.view.layoutIfNeeded()
-                    piece.frame = hiddenState
-                })
-            } else {
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.view.layoutIfNeeded()
-                    piece.frame = normalState
-                })
+            if let centerY = piece?.center.y {
+                if centerY > initialCenter.y {
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.view.layoutIfNeeded()
+                        piece?.frame = hiddenState
+                    })
+                } else {
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.view.layoutIfNeeded()
+                        piece?.frame = normalState
+                    })
+                }
+                updateCameraToFitMapBounds()
             }
-            updateCamera()
         }
     }
 
     @objc func showBusInfo(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: "BusInfoViewController") as? BusInfoViewController {
+        if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: Constant.Identifier.busInfoViewController) as? BusInfoViewController {
             if let dictionary = transitInfoDictionary[sender.tag], let busNumber = dictionary["number"], let departure = dictionary["departure"], let arrival = dictionary["arrival"] {
-                busInfoViewController.busNumber = busNumber
+                busInfoViewController.busName = busNumber
                 busInfoViewController.departureStopName = departure
                 busInfoViewController.arrivalStopName = arrival
             }
             present(busInfoViewController, animated: true, completion: nil)
         }
+    }
+}
+
+extension CLLocationManager {
+
+    func getUserLatitude() -> Double {
+        guard let userLatitude = self.location?.coordinate.latitude else {
+            print("Cannot find user's location")
+            return 25.042416
+        }
+        return userLatitude
+    }
+
+    func getUserLongitude() -> Double {
+        guard let userLongitude = self.location?.coordinate.longitude else {
+            print("Cannot find user's location")
+            return 121.564793
+        }
+        return userLongitude
     }
 }

@@ -12,8 +12,8 @@ import GoogleMaps
 
 class RouteViewController: UIViewController {
 
-    var destinationName = ""
-    var destinationId = ""
+    var destinationName = Constant.DefaultValue.emptyString
+    var destinationId = Constant.DefaultValue.emptyString
     var route: Route?
     var routes = [Route]()
     var youbikeRoute: Route?
@@ -27,6 +27,7 @@ class RouteViewController: UIViewController {
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var routeTableView: UITableView!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var originLabel: UILabel!
     @IBOutlet weak var destinationLabel: UILabel!
     @IBAction func back(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
@@ -63,35 +64,18 @@ class RouteViewController: UIViewController {
     }
 
     func setUpRouteTableView() {
-        let customTableViewCell = UINib(nibName: "RouteTableViewCell", bundle: nil)
-        routeTableView.register(customTableViewCell, forCellReuseIdentifier: "Cell")
+        let customTableViewCell = UINib(nibName: Constant.Identifier.routeTableViewCell, bundle: nil)
+        routeTableView.register(customTableViewCell, forCellReuseIdentifier: Constant.Identifier.cell)
         routeTableView.separatorStyle = .none
         routeTableView.delegate = self
         routeTableView.dataSource = self
     }
 
     func getRoutes() {
+        let locationManager = CLLocationManager()
         let routeManager = RouteManager()
         routeManager.delegate = self
-        routeManager.requestRoute(originLatitude: getUserLatitude(), originLongitude: getUserLongitude(), destinationId: destinationId)
-    }
-
-    func getUserLatitude() -> Double {
-        let locationmanager = CLLocationManager()
-        guard let userLatitude = locationmanager.location?.coordinate.latitude else {
-            print("Cannot find user's location")
-            return 25.042416
-        }
-        return userLatitude
-    }
-
-    func getUserLongitude() -> Double {
-        let locationmanager = CLLocationManager()
-        guard let userLongitude = locationmanager.location?.coordinate.longitude else {
-            print("Cannot find user's location")
-            return 121.564793
-        }
-        return userLongitude
+        routeManager.requestRoute(originLatitude: locationManager.getUserLatitude(), originLongitude: locationManager.getUserLongitude(), destinationId: destinationId)
     }
 }
 
@@ -101,7 +85,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? RouteTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifier.cell, for: indexPath) as? RouteTableViewCell else {
             return UITableViewCell()
         }
         setUpStyle(of: cell)
@@ -109,10 +93,10 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
         route = routes[indexPath.row]
-        var routeInfo = ""
+        var routeInfo = Constant.DefaultValue.emptyString
         if let selectedRoute = route, let legs = selectedRoute.legs, let duration = legs.duration {
             //路線資訊格式
-            routeInfo += "\(duration): \n" //總時間：
+            routeInfo += "\(duration)： \n" //總時間：
             for index in legs.steps.indices {
                 if index != 0 {
                     routeInfo += " > "//更換交通工具
@@ -121,10 +105,9 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
                 for (index, character) in instruction where index < 2 {
                         routeInfo += "\(character)"//交通工具
                 }
-                routeInfo += "\(legs.steps[index].duration)"//交通工具時程
+                routeInfo += " \(legs.steps[index].duration)"//交通工具時程
             }
         }
-        cell.subtitleLabel.numberOfLines = 0
         cell.subtitleLabel.text = routeInfo
         if youbikeStationsDictionary[indexPath.row] != nil {
             cell.youbikeLabel.isHidden = false
