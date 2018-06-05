@@ -9,8 +9,6 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
-import Alamofire
-import Foundation
 
 class MapViewController: UIViewController {
 
