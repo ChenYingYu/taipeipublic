@@ -39,7 +39,7 @@ class MapViewController: UIViewController {
     @IBOutlet var routeDetailTableView: UITableView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerButton: UIButton!
-    @IBAction func autocompleteClicked(_ sender: UIButton) {
+    @IBAction func showGoogleSearchController(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
         autocompleteController.delegate = self
@@ -49,38 +49,42 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpView()
-        setUpMap()
+        setUpMapView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        resetMapView()
         checkOutModeOfMap()
     }
 
-    func checkOutModeOfMap() {
+    func resetMapView() {
         mapView.clear()
         self.backButton.isHidden = true
+        self.destinationInfoView.isHidden = true
+        self.searchButton.isHidden = true
+    }
+
+    func checkOutModeOfMap() {
         if isNavigationMode {
-            self.destinationInfoView.isHidden = true
-            self.searchButton.isHidden = true
-            self.backButton.isHidden = false
-            showDestination()
+            showDestinationMarker()
             updateCameraToFitMapBounds()
-            showRoutePolyline()
-            showYoubikeRoutePolyline()
-            mapView.addSubview(backButton)
+            drawRoutePolyline()
+            drawYoubikeRoutePolyline()
             setUpRouteDetailTableView()
+            mapView.addSubview(backButton)
+            self.backButton.isHidden = false
         } else if isDestinationMode {
+            showDestinationMarker()
             routeDetailTableView.removeFromSuperview()
             self.destinationInfoView.isHidden = false
             self.searchButton.isHidden = false
-            self.backButton.isHidden = true
-            showDestination()
+        } else {
+            self.searchButton.isHidden = false
         }
-        updateLocationButton()
+        updateMapPadding()
     }
 
-    func showDestination() {
+    func showDestinationMarker() {
         if let place = destination {
             let marker = GMSMarker(position: place.coordinate)
             marker.map = mapView
@@ -100,7 +104,7 @@ class MapViewController: UIViewController {
         }
     }
 
-    func showRoutePolyline() {
+    func drawRoutePolyline() {
         guard let legs = self.selectedRoute?.legs else {
             return
         }
@@ -108,30 +112,27 @@ class MapViewController: UIViewController {
         for step in leg.steps {
             let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: step.startLocation.lat, longitude: step.startLocation.lng))
             marker.title = step.instructions
-            marker.icon = UIImage(named: "icon_location")
+            marker.icon = UIImage(named: Constant.Icon.location)
             marker.map = mapView
             let path = GMSPath(fromEncodedPath: step.polyline.points)
             let polyline = GMSPolyline(path: path)
             polyline.strokeColor = UIColor.blue
-            polyline.strokeWidth = 6.0
+            polyline.strokeWidth = CGFloat(Constant.Polyline.width)
             polyline.map = mapView
         }
     }
 
-    func showYoubikeRoutePolyline() {
+    func drawYoubikeRoutePolyline() {
         guard let youbikeRoutes = self.selectedYoubikeRoutes else {
             return
         }
         for youbikeRoute in youbikeRoutes {
-//            if let youbikeLegs = youbikeRoute.legs {
-//                let youbikeLeg = youbikeLegs[0]
-                let path = GMSPath(fromEncodedPath: youbikeRoute.polyline.points)
-                let polyline = GMSPolyline(path: path)
-                polyline.strokeColor = UIColor.yellow
-                polyline.strokeWidth = 6.0
-                polyline.map = mapView
-                showYoubikeStation()
-//            }
+            let path = GMSPath(fromEncodedPath: youbikeRoute.polyline.points)
+            let polyline = GMSPolyline(path: path)
+            polyline.strokeColor = UIColor.yellow
+            polyline.strokeWidth = CGFloat(Constant.Polyline.width)
+            polyline.map = mapView
+            showYoubikeStation()
         }
     }
 
@@ -142,13 +143,17 @@ class MapViewController: UIViewController {
         }
     }
 
-    func setUpView() {
-        destinationInfoView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(showOrHideTableView))
-        headerButton.addGestureRecognizer(panGesture)
+    func addYoubikeMarker(of station: YoubikeStation) {
+        if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
+            let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
+            let marker = GMSMarker(position: position)
+            marker.icon = UIImage(named: Constant.Icon.bicycle)
+            marker.title = station.name
+            marker.map = mapView
+        }
     }
 
-    func setUpMap() {
+    func setUpMapView() {
         let locationManager = CLLocationManager()
         mapView.camera = GMSCameraPosition.camera(withLatitude: locationManager.getUserLatitude(), longitude: locationManager.getUserLongitude(), zoom: 15.0)
         mapView.isMyLocationEnabled = true
@@ -160,27 +165,18 @@ class MapViewController: UIViewController {
     func setUpRouteDetailTableView() {
         transitTag = Constant.DefaultValue.zero
         routeDetailTableView.frame = CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
-        routeDetailTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         routeDetailTableView.delegate = self
         routeDetailTableView.dataSource = self
-        let nib = UINib(nibName: "RouteDetailTableViewCell", bundle: nil)
+        let nib = UINib(nibName: String(describing: RouteDetailTableViewCell.self), bundle: nil)
         routeDetailTableView.register(nib, forCellReuseIdentifier: Constant.Identifier.cell)
         updateCameraToFitMapBounds()
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(showOrHideTableView))
+        headerButton.addGestureRecognizer(panGesture)
         view.addSubview(routeDetailTableView)
         routeDetailTableView.reloadData()
     }
 
-    func addYoubikeMarker(of station: YoubikeStation) {
-        if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
-            let position = CLLocationCoordinate2D(latitude: stationLatitude, longitude: stationLongitude)
-            let marker = GMSMarker(position: position)
-            marker.icon = UIImage(named: "icon_bicycle")
-            marker.title = station.name
-            marker.map = mapView
-        }
-    }
-
-    func updateLocationButton() {
+    func updateMapPadding() {
         mapView.padding = destinationInfoView.isHidden ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 0, left: 0, bottom: destinationInfoView.bounds.height, right: 0)
         if isNavigationMode {
             mapView.padding = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
@@ -193,8 +189,8 @@ class MapViewController: UIViewController {
             routeViewController.destinationId = destinationId
             routeViewController.routes = routes
             routeViewController.passHandller = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode) in
-                    self?.selectedRoute = route
-                    self?.selectedYoubikeRoutes = youbikeRoute
+                self?.selectedRoute = route
+                self?.selectedYoubikeRoutes = youbikeRoute
                 if let selectedYoubikeStation = youbikeStation {
                     self?.selectedYoubikeStation = selectedYoubikeStation
                 }
@@ -208,9 +204,6 @@ class MapViewController: UIViewController {
 extension MapViewController: GMSAutocompleteViewControllerDelegate {
 
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        print("Place name: \(place.name)")
-        print("Place address: \(String(describing: place.formattedAddress))")
-        print("Place attributions: \(String(describing: place.attributions))")
         dismiss(animated: true, completion: nil)
         destination = place
         destinationId = place.placeID
@@ -244,7 +237,7 @@ extension MapViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         if isDestinationMode && !isNavigationMode {
             destinationInfoView.isHidden = destinationInfoView.isHidden ? false : true
-            updateLocationButton()
+            updateMapPadding()
         }
     }
 }
@@ -264,8 +257,6 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
             let step = leg.steps[indexPath.row]
             //顯示公車或捷運班次及起迄站
             if step.travelMode == "TRANSIT", let transitDetail = step.transitDetail {
-//                transitTag = transitTag < transitDetails.count ? transitTag : 0
-//                let transitDetail = transitDetails[transitTag]
                 let lineName = transitDetail.lineDetails.shortName
                 cell.routeDetailLabel.text = "搭乘 [\(lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
                 transitTag += 1
@@ -286,7 +277,6 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.routeDetailLabel.text = selectedRoute?.legs?[0].steps[indexPath.row].instructions
             }
         }
-
         return cell
     }
 

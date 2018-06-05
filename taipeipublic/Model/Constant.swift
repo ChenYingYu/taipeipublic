@@ -18,11 +18,20 @@ struct Constant {
         static let emptyString = ""
         static let zero = 0
     }
-    
+
     struct Identifier {
         static let routeTableViewCell = "RouteTableViewCell"
         static let cell = "Cell"
         static let gmt = "GMT"
         static let busInfoViewController = "BusInfoViewController"
+    }
+
+    struct Icon {
+        static let location = "icon_location"
+        static let bicycle = "icon_bicycle"
+    }
+
+    struct Polyline {
+        static let width = 6.0
     }
 }

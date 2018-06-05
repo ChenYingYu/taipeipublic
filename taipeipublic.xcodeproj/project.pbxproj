@@ -112,7 +112,6 @@
 		0A4AF91E20C4D7E600B77824 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				0A90100A20C0D21200EA412E /* GoogleService-Info.plist */,
 				0A15FBFB20C4D70900ABFAAD /* GoogleService-Info.plist */,
 			);
 			name = "Recovered References";
