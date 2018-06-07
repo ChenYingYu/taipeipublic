@@ -54,7 +54,7 @@ class MapViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         resetMapView()
-        checkOutModeOfMap()
+        startNavigating()
     }
 
     func resetMapView() {
@@ -64,7 +64,7 @@ class MapViewController: UIViewController {
         self.searchButton.isHidden = true
     }
 
-    func checkOutModeOfMap() {
+    func startNavigating() {
         if isNavigationMode {
             showDestinationMarker()
             updateCameraToFitMapBounds()
@@ -114,11 +114,7 @@ class MapViewController: UIViewController {
             marker.title = step.instructions
             marker.icon = UIImage(named: Constant.Icon.location)
             marker.map = mapView
-            let path = GMSPath(fromEncodedPath: step.polyline.points)
-            let polyline = GMSPolyline(path: path)
-            polyline.strokeColor = UIColor.blue
-            polyline.strokeWidth = CGFloat(Constant.Polyline.width)
-            polyline.map = mapView
+            drawPath(of: step.polyline.points, withColor: .blue)
         }
     }
 
@@ -127,11 +123,7 @@ class MapViewController: UIViewController {
             return
         }
         for youbikeRoute in youbikeRoutes {
-            let path = GMSPath(fromEncodedPath: youbikeRoute.polyline.points)
-            let polyline = GMSPolyline(path: path)
-            polyline.strokeColor = UIColor.yellow
-            polyline.strokeWidth = CGFloat(Constant.Polyline.width)
-            polyline.map = mapView
+            drawPath(of: youbikeRoute.polyline.points, withColor: .yellow)
             showYoubikeStation()
         }
     }
@@ -141,6 +133,14 @@ class MapViewController: UIViewController {
         for station in stations {
             addYoubikeMarker(of: station)
         }
+    }
+
+    func drawPath(of points: String, withColor color: UIColor) {
+        let path = GMSPath(fromEncodedPath: points)
+        let polyline = GMSPolyline(path: path)
+        polyline.strokeColor = color
+        polyline.strokeWidth = CGFloat(Constant.Polyline.width)
+        polyline.map = mapView
     }
 
     func addYoubikeMarker(of station: YoubikeStation) {
@@ -200,7 +200,7 @@ class MapViewController: UIViewController {
     }
 }
 
-// Google搜尋自動完成
+// Google 搜尋自動完成
 extension MapViewController: GMSAutocompleteViewControllerDelegate {
 
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
@@ -216,7 +216,7 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
     }
 
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        print("Error: ", error.localizedDescription)
+        print(Constant.ErrorMessage.errorPrefix, error.localizedDescription)
     }
 
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
@@ -256,11 +256,12 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
             let leg = legs[0]
             let step = leg.steps[indexPath.row]
             //顯示公車或捷運班次及起迄站
-            if step.travelMode == "TRANSIT", let transitDetail = step.transitDetail {
+            if step.travelMode == Constant.TravelMode.transit, let transitDetail = step.transitDetail {
                 let lineName = transitDetail.lineDetails.shortName
-                cell.routeDetailLabel.text = "搭乘 [\(lineName)] 從 [\(transitDetail.departureStop.name)] 到 [\(transitDetail.arrivalStop.name)]"
+                let transitMessage = Constant.TransitMessage.take + lineName + Constant.TransitMessage.from + transitDetail.departureStop.name + Constant.TransitMessage.to + transitDetail.arrivalStop.name + "]"
+                cell.routeDetailLabel.text = transitMessage
                 transitTag += 1
-                if lineName != "板南線", lineName != "淡水信義線", lineName != "松山新店線", lineName != "文湖線", lineName != "中和新蘆線" {
+                if transitDetail.lineDetails.vehicle.type == Constant.Vehicle.bus {
                     cell.busInfoButton.isHidden = false
                 } else {
                     cell.busInfoButton.isHidden = true
@@ -269,9 +270,9 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
                 var dictionary = [String: String]()
-                dictionary.updateValue(lineName, forKey: "number")
-                dictionary.updateValue(transitDetail.departureStop.name, forKey: "departure")
-                dictionary.updateValue(transitDetail.arrivalStop.name, forKey: "arrival")
+                dictionary.updateValue(lineName, forKey: Constant.BusInfoKey.busName)
+                dictionary.updateValue(transitDetail.departureStop.name, forKey: Constant.BusInfoKey.departureStop)
+                dictionary.updateValue(transitDetail.arrivalStop.name, forKey: Constant.BusInfoKey.arrivalStop)
                 transitInfoDictionary.updateValue(dictionary, forKey: indexPath.row)
             } else {
                 cell.routeDetailLabel.text = selectedRoute?.legs?[0].steps[indexPath.row].instructions
@@ -290,7 +291,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         guard gestureRecognizer.view != nil else {return}
         let piece = routeDetailTableView
         let translation = gestureRecognizer.translation(in: piece?.superview)
-        // 根據手勢拖動情形，更改tableView位置
+        // 根據手勢拖動情形，更改 routeDetailTableView 垂直位置
         if gestureRecognizer.state == .began {
             if let center = piece?.center {
                 initialCenter = center
@@ -323,10 +324,10 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     @objc func showBusInfo(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: Constant.Storyboard.main, bundle: nil)
         if let busInfoViewController = storyboard.instantiateViewController(withIdentifier: Constant.Identifier.busInfoViewController) as? BusInfoViewController {
-            if let dictionary = transitInfoDictionary[sender.tag], let busNumber = dictionary["number"], let departure = dictionary["departure"], let arrival = dictionary["arrival"] {
-                busInfoViewController.busName = busNumber
+            if let dictionary = transitInfoDictionary[sender.tag], let busName = dictionary[Constant.BusInfoKey.busName], let departure = dictionary[Constant.BusInfoKey.departureStop], let arrival = dictionary[Constant.BusInfoKey.arrivalStop] {
+                busInfoViewController.busName = busName
                 busInfoViewController.departureStopName = departure
                 busInfoViewController.arrivalStopName = arrival
             }
@@ -339,7 +340,7 @@ extension CLLocationManager {
 
     func getUserLatitude() -> Double {
         guard let userLatitude = self.location?.coordinate.latitude else {
-            print("Cannot find user's location")
+            print(Constant.ErrorMessage.userLocationNotFound)
             return 25.042416
         }
         return userLatitude
@@ -347,7 +348,7 @@ extension CLLocationManager {
 
     func getUserLongitude() -> Double {
         guard let userLongitude = self.location?.coordinate.longitude else {
-            print("Cannot find user's location")
+            print(Constant.ErrorMessage.userLocationNotFound)
             return 121.564793
         }
         return userLongitude

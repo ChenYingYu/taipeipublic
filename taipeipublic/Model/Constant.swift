@@ -34,4 +34,33 @@ struct Constant {
     struct Polyline {
         static let width = 6.0
     }
+
+    struct TravelMode {
+        static let transit = "TRANSIT"
+    }
+
+    struct Vehicle {
+        static let bus = "BUS"
+    }
+
+    struct BusInfoKey {
+        static let busName = "name"
+        static let departureStop = "departure"
+        static let arrivalStop = "arrival"
+    }
+
+    struct Storyboard {
+        static let main = "Main"
+    }
+
+    struct ErrorMessage {
+        static let errorPrefix = "Error: "
+        static let userLocationNotFound = "Cannot find user's location"
+    }
+
+    struct TransitMessage {
+        static let take = "搭乘 ["
+        static let from = "] 從 ["
+        static let to = "] 到 ["
+    }
 }
