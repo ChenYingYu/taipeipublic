@@ -22,7 +22,8 @@ class RouteViewController: UIViewController {
     var youbikeRouteDictionary = [Int: [Route]]()
     var youbikeStations = [YoubikeStation]()
     var youbikeStationsDictionary = [Int: [YoubikeStation]]()
-    var passHandller: ((Route?, [Route]?, [YoubikeStation]?, Bool) -> Void)?
+    var passHandler: ((Route?, [Route]?, [YoubikeStation]?, Bool) -> Void)?
+    weak var navigationDelegate: NavigationDelegate?
 
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var routeTableView: UITableView!
@@ -31,10 +32,12 @@ class RouteViewController: UIViewController {
     @IBOutlet weak var destinationLabel: UILabel!
     @IBAction func back(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
+        navigationDelegate?.stopNavigation()
+        navigationDelegate?.showDestination()
     }
 
     override func viewDidLoad() {
-        self.passHandller?(nil, nil, nil, false)
+        self.passHandler?(nil, nil, nil, false)
         resetRoutes()
         setUpTitleView()
         setUpRouteTableView()
@@ -125,7 +128,9 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.passHandller?(routes[indexPath.row], youbikeRouteDictionary[indexPath.row], youbikeStationsDictionary[indexPath.row], true)
+        self.passHandler?(routes[indexPath.row], youbikeRouteDictionary[indexPath.row], youbikeStationsDictionary[indexPath.row], true)
+        navigationDelegate?.hideDestination()
+        navigationDelegate?.startNavigation()
         dismiss(animated: true, completion: nil)
     }
 

@@ -73,7 +73,7 @@
                                     <constraint firstItem="Zi8-If-Cm5" firstAttribute="top" secondItem="6qb-Ff-xfq" secondAttribute="top" constant="32" id="yNe-yC-aba"/>
                                 </constraints>
                             </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6dM-OV-MDn" customClass="DestinationInfoView" customModule="taipeipublic" customModuleProvider="target">
+                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6dM-OV-MDn" customClass="DestinationInfoView" customModule="taipeipublic" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="586" width="414" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>

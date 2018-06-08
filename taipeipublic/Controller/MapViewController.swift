@@ -50,36 +50,6 @@ class MapViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        resetMapView()
-        startNavigating()
-    }
-
-    func resetMapView() {
-        mapView.clear()
-        self.backButton.isHidden = true
-        self.destinationInfoView.isHidden = true
-        self.searchButton.isHidden = true
-    }
-
-    func startNavigating() {
-        if isNavigationMode {
-            showDestinationMarker()
-            updateCameraToFitMapBounds()
-            drawRoutePolyline()
-            drawYoubikeRoutePolyline()
-            setUpRouteDetailTableView()
-            backButton.addTarget(self, action: #selector(showRoute), for: .touchUpInside)
-            mapView.addSubview(backButton)
-            self.backButton.isHidden = false
-        } else if isDestinationMode {
-            showDestinationMarker()
-            routeDetailTableView.removeFromSuperview()
-            destinationInfoView.showRouteButton.addTarget(self, action: #selector(showRoute), for: .touchUpInside)
-            self.destinationInfoView.isHidden = false
-            self.searchButton.isHidden = false
-        } else {
-            self.searchButton.isHidden = false
-        }
         updateMapPadding()
     }
 
@@ -156,9 +126,9 @@ class MapViewController: UIViewController {
         let locationManager = CLLocationManager()
         mapView.camera = GMSCameraPosition.camera(withLatitude: locationManager.getUserLatitude(), longitude: locationManager.getUserLongitude(), zoom: 15.0)
         mapView.isMyLocationEnabled = true
-        mapView.addSubview(searchButton)
         mapView.settings.myLocationButton = true
         mapView.delegate = self
+        mapView.addSubview(searchButton)
     }
 
     func setUpRouteDetailTableView() {
@@ -182,13 +152,32 @@ class MapViewController: UIViewController {
         }
     }
 
+    func startNavigating() {
+        mapView.clear()
+        showDestinationMarker()
+        updateCameraToFitMapBounds()
+        drawRoutePolyline()
+        drawYoubikeRoutePolyline()
+        setUpRouteDetailTableView()
+        backButton.addTarget(self, action: #selector(showRoute), for: .touchUpInside)
+        mapView.addSubview(backButton)
+        self.backButton.isHidden = false
+    }
+
+    func stopNavigating() {
+        mapView.clear()
+        routeDetailTableView.removeFromSuperview()
+    }
+
     @objc func showRoute(_ sender: UIButton) {
+        hideDestinaitonInfo()
         let storyboard = UIStoryboard(name: Constant.Storyboard.main, bundle: nil)
         if let routeViewController = storyboard.instantiateViewController(withIdentifier: Constant.Identifier.routeViewController) as? RouteViewController {
+            routeViewController.navigationDelegate = self
             routeViewController.destinationName = destinationName
             routeViewController.destinationId = destinationId
             routeViewController.routes = routes
-            routeViewController.passHandller = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode) in
+            routeViewController.passHandler = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode) in
                 self?.selectedRoute = route
                 self?.selectedYoubikeRoutes = youbikeRoute
                 if let selectedYoubikeStation = youbikeStation {
@@ -213,7 +202,20 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         searchButton.setTitle("  \(place.name)", for: UIControlState.normal)
         destinationInfoView.addressLabel.text = place.formattedAddress
         isDestinationMode = true
-        view.addSubview(destinationInfoView)
+        showDestinationInfo()
+    }
+
+    func showDestinationInfo() {
+        showDestinationMarker()
+        destinationInfoView.showRouteButton.addTarget(self, action: #selector(showRoute), for: .touchUpInside)
+        self.destinationInfoView.isHidden = false
+        self.searchButton.isHidden = false
+    }
+
+    func hideDestinaitonInfo() {
+        self.destinationInfoView.isHidden = true
+        self.searchButton.isHidden = true
+        self.backButton.isHidden = true
     }
 
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
@@ -360,5 +362,33 @@ extension CLLocationManager {
             return 121.564793
         }
         return userLongitude
+    }
+}
+
+protocol NavigationDelegate: class {
+    func showDestination()
+
+    func hideDestination()
+
+    func startNavigation()
+
+    func stopNavigation()
+}
+
+extension MapViewController: NavigationDelegate {
+    func showDestination() {
+        showDestinationInfo()
+    }
+
+    func hideDestination() {
+        hideDestinaitonInfo()
+    }
+
+    func startNavigation() {
+        startNavigating()
+    }
+
+    func stopNavigation() {
+        stopNavigating()
     }
 }
