@@ -31,10 +31,7 @@ class MapViewController: UIViewController {
 
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
-    @IBOutlet weak var destinationInfoView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var showRouteButton: UIButton!
+    @IBOutlet weak var destinationInfoView: DestinationInfoView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet var routeDetailTableView: UITableView!
     @IBOutlet weak var headerView: UIView!
@@ -71,11 +68,13 @@ class MapViewController: UIViewController {
             drawRoutePolyline()
             drawYoubikeRoutePolyline()
             setUpRouteDetailTableView()
+            backButton.addTarget(self, action: #selector(showRoute), for: .touchUpInside)
             mapView.addSubview(backButton)
             self.backButton.isHidden = false
         } else if isDestinationMode {
             showDestinationMarker()
             routeDetailTableView.removeFromSuperview()
+            destinationInfoView.showRouteButton.addTarget(self, action: #selector(showRoute), for: .touchUpInside)
             self.destinationInfoView.isHidden = false
             self.searchButton.isHidden = false
         } else {
@@ -183,8 +182,9 @@ class MapViewController: UIViewController {
         }
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let routeViewController = segue.destination as? RouteViewController {
+    @objc func showRoute(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: Constant.Storyboard.main, bundle: nil)
+        if let routeViewController = storyboard.instantiateViewController(withIdentifier: Constant.Identifier.routeViewController) as? RouteViewController {
             routeViewController.destinationName = destinationName
             routeViewController.destinationId = destinationId
             routeViewController.routes = routes
@@ -196,6 +196,7 @@ class MapViewController: UIViewController {
                 }
                 self?.isNavigationMode = isNavigationMode
             }
+            present(routeViewController, animated: true, completion: nil)
         }
     }
 }
@@ -208,9 +209,9 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
         destination = place
         destinationId = place.placeID
         destinationName = place.name
-        titleLabel.text = place.name
+        destinationInfoView.titleLabel.text = place.name
         searchButton.setTitle("  \(place.name)", for: UIControlState.normal)
-        addressLabel.text = place.formattedAddress
+        destinationInfoView.addressLabel.text = place.formattedAddress
         isDestinationMode = true
         view.addSubview(destinationInfoView)
     }
@@ -279,6 +280,13 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifier.cell) as? RouteDetailTableViewCell else {
+            return
+        }
+        cell.busInfoButton.isHidden = true
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

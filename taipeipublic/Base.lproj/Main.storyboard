@@ -62,9 +62,6 @@
                                                 <integer key="value" value="20"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <segue destination="dxz-6K-g3o" kind="show" id="XLk-Xb-qJD"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -76,57 +73,11 @@
                                     <constraint firstItem="Zi8-If-Cm5" firstAttribute="top" secondItem="6qb-Ff-xfq" secondAttribute="top" constant="32" id="yNe-yC-aba"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qle-93-xXK">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6dM-OV-MDn" customClass="DestinationInfoView" customModule="taipeipublic" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="586" width="414" height="150"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oe1-tW-T4i">
-                                        <rect key="frame" x="30" y="10" width="354" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="74I-aq-AI0"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="25"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="zgH-Qs-O7m">
-                                        <rect key="frame" x="30" y="50" width="354" height="50"/>
-                                        <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="18"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nGZ-rB-NUK">
-                                        <rect key="frame" x="30" y="110" width="354" height="30"/>
-                                        <color key="backgroundColor" red="0.039215686270000001" green="0.54901960780000003" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="aZX-B5-Uh9"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="18"/>
-                                        <state key="normal" title="規劃路線">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="15"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <segue destination="dxz-6K-g3o" kind="show" id="MPG-LA-hgk"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="0.18431372549019609" green="0.2627450980392157" blue="0.29803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="2YK-Sy-Li4"/>
-                                    <constraint firstItem="zgH-Qs-O7m" firstAttribute="top" secondItem="oe1-tW-T4i" secondAttribute="bottom" constant="10" id="70j-Pb-3h9"/>
-                                    <constraint firstItem="oe1-tW-T4i" firstAttribute="top" secondItem="Qle-93-xXK" secondAttribute="top" constant="10" id="8Eo-PA-Wg5"/>
-                                    <constraint firstItem="nGZ-rB-NUK" firstAttribute="top" secondItem="zgH-Qs-O7m" secondAttribute="bottom" constant="10" id="9Au-H8-fSS"/>
-                                    <constraint firstItem="nGZ-rB-NUK" firstAttribute="centerX" secondItem="Qle-93-xXK" secondAttribute="centerX" id="DVl-LW-maj"/>
-                                    <constraint firstItem="oe1-tW-T4i" firstAttribute="leading" secondItem="Qle-93-xXK" secondAttribute="leading" constant="30" id="FHx-km-Dk3"/>
-                                    <constraint firstAttribute="bottom" secondItem="nGZ-rB-NUK" secondAttribute="bottom" constant="10" id="UzP-Ge-dMU"/>
-                                    <constraint firstItem="nGZ-rB-NUK" firstAttribute="leading" secondItem="Qle-93-xXK" secondAttribute="leading" constant="30" id="lta-lJ-6Wi"/>
-                                    <constraint firstItem="oe1-tW-T4i" firstAttribute="centerX" secondItem="Qle-93-xXK" secondAttribute="centerX" id="noQ-hY-Szm"/>
-                                    <constraint firstItem="zgH-Qs-O7m" firstAttribute="leading" secondItem="Qle-93-xXK" secondAttribute="leading" constant="30" id="pBh-XQ-Zp0"/>
-                                    <constraint firstItem="zgH-Qs-O7m" firstAttribute="centerX" secondItem="Qle-93-xXK" secondAttribute="centerX" id="yDr-9a-rsK"/>
+                                    <constraint firstAttribute="height" constant="150" id="Gx6-Qs-Z2W"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -150,26 +101,23 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="6qb-Ff-xfq" secondAttribute="bottom" id="Bh4-cb-w25"/>
-                            <constraint firstItem="Qle-93-xXK" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Sna-FI-4UY"/>
                             <constraint firstItem="6qb-Ff-xfq" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="VxX-is-DvC"/>
+                            <constraint firstItem="6dM-OV-MDn" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="WK9-IB-GA8"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6dM-OV-MDn" secondAttribute="bottom" id="WWl-t4-RzG"/>
                             <constraint firstItem="6qb-Ff-xfq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gKx-yF-U2D"/>
-                            <constraint firstItem="Qle-93-xXK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="nCa-wL-axB"/>
-                            <constraint firstItem="Qle-93-xXK" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="oY6-ue-abH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6qb-Ff-xfq" secondAttribute="trailing" id="sw4-vv-HHk"/>
+                            <constraint firstItem="6dM-OV-MDn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="t6U-xu-MGx"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="addressLabel" destination="zgH-Qs-O7m" id="9RT-39-vSr"/>
                         <outlet property="backButton" destination="Zi8-If-Cm5" id="adQ-Oh-P5M"/>
-                        <outlet property="destinationInfoView" destination="Qle-93-xXK" id="aml-76-xXh"/>
+                        <outlet property="destinationInfoView" destination="6dM-OV-MDn" id="Tda-J2-V5m"/>
                         <outlet property="headerButton" destination="so2-3V-HTn" id="6Ec-o4-Emc"/>
                         <outlet property="headerView" destination="Vme-LQ-gC6" id="Jog-nX-yZe"/>
                         <outlet property="mapView" destination="6qb-Ff-xfq" id="aAk-PJ-JMz"/>
                         <outlet property="routeDetailTableView" destination="1Bp-R6-cF7" id="vTM-2h-DbG"/>
                         <outlet property="searchButton" destination="ICl-re-SCB" id="ai7-Ul-rIZ"/>
-                        <outlet property="showRouteButton" destination="nGZ-rB-NUK" id="60O-c3-7YP"/>
-                        <outlet property="titleLabel" destination="oe1-tW-T4i" id="7Tz-Th-dCC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -220,7 +168,7 @@
         <!--Route View Controller-->
         <scene sceneID="WDw-NT-Zvu">
             <objects>
-                <viewController id="dxz-6K-g3o" customClass="RouteViewController" customModule="taipeipublic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RouteViewController" id="dxz-6K-g3o" customClass="RouteViewController" customModule="taipeipublic" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fOK-b3-Mcb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -456,7 +404,4 @@
         <image name="btn_back" width="21" height="21"/>
         <image name="icon_roundedRectangle" width="75" height="15"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="MPG-LA-hgk"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -25,6 +25,8 @@
 		0A90100220BE407B00EA412E /* BusStopInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */; };
 		0A90100320BE407B00EA412E /* BusStopInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */; };
 		0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB819AB209AFB3700160842 /* RouteViewController.swift */; };
+		0AD7231520C8C506003892B5 /* DestinationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD7231420C8C506003892B5 /* DestinationInfoView.swift */; };
+		0AD7231720C8CDE3003892B5 /* DestinationInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AD7231620C8CDE3003892B5 /* DestinationInfoView.xib */; };
 		0AE5DEC920BBD88F006A56EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0AE5DEC820BBD88F006A56EC /* GoogleService-Info.plist */; };
 		0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */; };
 		F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 534588B88CA253347B214A56 /* Pods_taipeipublic.framework */; };
@@ -53,6 +55,8 @@
 		0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopInfoTableViewCell.swift; sourceTree = "<group>"; };
 		0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusStopInfoTableViewCell.xib; sourceTree = "<group>"; };
 		0AB819AB209AFB3700160842 /* RouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
+		0AD7231420C8C506003892B5 /* DestinationInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationInfoView.swift; sourceTree = "<group>"; };
+		0AD7231620C8CDE3003892B5 /* DestinationInfoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DestinationInfoView.xib; sourceTree = "<group>"; };
 		0AE5DEC820BBD88F006A56EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusInfoViewController.swift; sourceTree = "<group>"; };
 		1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taipeipublic.release.xcconfig"; path = "Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic.release.xcconfig"; sourceTree = "<group>"; };
@@ -105,6 +109,8 @@
 				0A8AD1D920AED52D00D91BE6 /* RouteDetailTableViewCell.xib */,
 				0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */,
 				0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */,
+				0AD7231420C8C506003892B5 /* DestinationInfoView.swift */,
+				0AD7231620C8CDE3003892B5 /* DestinationInfoView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -238,6 +244,7 @@
 				0A8AD1DB20AED52E00D91BE6 /* RouteDetailTableViewCell.xib in Resources */,
 				0A6EDBEC2096AE03004BBF3C /* Assets.xcassets in Resources */,
 				0A90100320BE407B00EA412E /* BusStopInfoTableViewCell.xib in Resources */,
+				0AD7231720C8CDE3003892B5 /* DestinationInfoView.xib in Resources */,
 				0A6EDBEA2096AE00004BBF3C /* Main.storyboard in Resources */,
 				0A09C40920AA90E1007D3EBE /* RouteTableViewCell.xib in Resources */,
 				0AE5DEC920BBD88F006A56EC /* GoogleService-Info.plist in Resources */,
@@ -352,6 +359,7 @@
 				0A8AD1DA20AED52E00D91BE6 /* RouteDetailTableViewCell.swift in Sources */,
 				0A67E47E20A1519B00070EBD /* YoubikeManager.swift in Sources */,
 				0A16D9E82099A6D600EEBB4F /* RouteManager.swift in Sources */,
+				0AD7231520C8C506003892B5 /* DestinationInfoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

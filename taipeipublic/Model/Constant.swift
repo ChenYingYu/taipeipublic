@@ -24,6 +24,7 @@ struct Constant {
         static let cell = "Cell"
         static let gmt = "GMT"
         static let busInfoViewController = "BusInfoViewController"
+        static let routeViewController = "RouteViewController"
     }
 
     struct Icon {
