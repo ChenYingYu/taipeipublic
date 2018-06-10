@@ -27,6 +27,7 @@
 		0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB819AB209AFB3700160842 /* RouteViewController.swift */; };
 		0AD7231520C8C506003892B5 /* DestinationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD7231420C8C506003892B5 /* DestinationInfoView.swift */; };
 		0AD7231720C8CDE3003892B5 /* DestinationInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AD7231620C8CDE3003892B5 /* DestinationInfoView.xib */; };
+		0AD7235B20CA43CE003892B5 /* RouteDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD7235A20CA43CE003892B5 /* RouteDetailTableViewController.swift */; };
 		0AE5DEC920BBD88F006A56EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0AE5DEC820BBD88F006A56EC /* GoogleService-Info.plist */; };
 		0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */; };
 		F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 534588B88CA253347B214A56 /* Pods_taipeipublic.framework */; };
@@ -57,6 +58,7 @@
 		0AB819AB209AFB3700160842 /* RouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
 		0AD7231420C8C506003892B5 /* DestinationInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationInfoView.swift; sourceTree = "<group>"; };
 		0AD7231620C8CDE3003892B5 /* DestinationInfoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DestinationInfoView.xib; sourceTree = "<group>"; };
+		0AD7235A20CA43CE003892B5 /* RouteDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailTableViewController.swift; sourceTree = "<group>"; };
 		0AE5DEC820BBD88F006A56EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusInfoViewController.swift; sourceTree = "<group>"; };
 		1AE896B634DFA14F06023127 /* Pods-taipeipublic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-taipeipublic.release.xcconfig"; path = "Pods/Target Support Files/Pods-taipeipublic/Pods-taipeipublic.release.xcconfig"; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				0A6EDBE62096AE00004BBF3C /* MapViewController.swift */,
+				0AD7235A20CA43CE003892B5 /* RouteDetailTableViewController.swift */,
 				0AB819AB209AFB3700160842 /* RouteViewController.swift */,
 				0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */,
 			);
@@ -351,6 +354,7 @@
 				0A900FFF20BD3E0700EA412E /* BusInfo.swift in Sources */,
 				0A6EDBE72096AE00004BBF3C /* MapViewController.swift in Sources */,
 				0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */,
+				0AD7235B20CA43CE003892B5 /* RouteDetailTableViewController.swift in Sources */,
 				0A6EDBE52096AE00004BBF3C /* AppDelegate.swift in Sources */,
 				0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */,
 				0A33C0372096FC3D00C9ED7E /* Constant.swift in Sources */,
