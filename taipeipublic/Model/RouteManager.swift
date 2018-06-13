@@ -113,7 +113,7 @@ class RouteManager {
         }
     }
 
-    func requestBusStopInfo(ofRouteName routeName: String) {
+    func requestBusStopInfo(inCity city: String, ofRouteName routeName: String) {
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
         dateFormater.timeZone = TimeZone(identifier: Constant.Identifier.gmt)
@@ -130,7 +130,7 @@ class RouteManager {
             "$format": "JSON"
             ]
 
-        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/\(routeName)"
+        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/\(city)/\(routeName)"
 
         guard let URL = NSURL(string: urlString.addingPercentEncoding(withAllowedCharacters: (NSCharacterSet.urlQueryAllowed))!) else {
             print("URL Encoding Fail")
@@ -164,7 +164,7 @@ class RouteManager {
         }
     }
 
-    func requestBusStatus(ofRouteName routeName: String) {
+    func requestBusStatus(inCity city: String, ofRouteName routeName: String) {
 
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "EE, dd MMM YYYY HH:mm:ss zzz"
@@ -181,7 +181,7 @@ class RouteManager {
             "$format": "JSON"
             ]
 
-        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/\(routeName)"
+        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/\(city)/\(routeName)"
 
         guard let URL = NSURL(string: urlString.addingPercentEncoding(withAllowedCharacters: (NSCharacterSet.urlQueryAllowed))!) else {
             print("URL Encoding Fail")

@@ -44,8 +44,8 @@ class BusInfoViewController: UIViewController {
         let manager = RouteManager()
         manager.busDelegate = self
         manager.busStatusDelegate = self
-        manager.requestBusStopInfo(ofRouteName: busName)
-        manager.requestBusStatus(ofRouteName: busName)
+        manager.requestBusStopInfo(inCity: Constant.City.taipei, ofRouteName: busName)
+        manager.requestBusStatus(inCity: Constant.City.taipei, ofRouteName: busName)
         runTimer()
     }
 
@@ -64,7 +64,7 @@ class BusInfoViewController: UIViewController {
             let manager = RouteManager()
             manager.busDelegate = self
             manager.busStatusDelegate = self
-            manager.requestBusStatus(ofRouteName: busName)
+            manager.requestBusStatus(inCity: Constant.City.taipei, ofRouteName: busName)
         } else {
             busInfoUpdateCounter -= 1
         }

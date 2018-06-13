@@ -34,4 +34,9 @@ struct Constant {
     struct Polyline {
         static let width = 6.0
     }
+
+    struct City {
+        static let taipei = "Taipei"
+        static let newTaipei = "NewTaipei"
+    }
 }
