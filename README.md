@@ -20,8 +20,7 @@
   * 若詳細路線資訊內有公車路線，則提供該公車班次的即時動態，讓使用者導航體驗不中斷
   
 # Screenshot
-<img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/Routepage.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/Youbike路線特寫.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/詳細路線資訊.png" width="270" height="480">
-<img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/公車動態.png" width="270" height="480"> 
+<img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/RoutePage.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/Youbike路線特寫.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/詳細路線資訊.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/公車動態.png" width="270" height="480"> 
 
 # Library
 * SwiftLint
