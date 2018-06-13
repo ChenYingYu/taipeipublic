@@ -24,5 +24,6 @@ class RouteDetailTableViewCell: UITableViewCell {
         busInfoButton.layer.borderColor = busInfoButton.currentTitleColor.cgColor
         busInfoButton.layer.borderWidth = 2.0
         busInfoButton.isHidden = true
+        self.selectionStyle = .none
     }
 }

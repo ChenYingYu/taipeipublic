@@ -254,7 +254,6 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.Identifier.cell) as? RouteDetailTableViewCell else {
             return UITableViewCell()
         }
-        cell.isUserInteractionEnabled = false
         if let legs = selectedRoute?.legs {
             let leg = legs[0]
             let step = leg.steps[indexPath.row]
@@ -269,7 +268,6 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
                 } else {
                     cell.busInfoButton.isHidden = true
                 }
-                cell.isUserInteractionEnabled = true
                 cell.busInfoButton.tag = indexPath.row
                 cell.busInfoButton.addTarget(self, action: #selector(showBusInfo), for: .touchUpInside)
                 var dictionary = [String: String]()
