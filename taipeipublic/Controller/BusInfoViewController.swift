@@ -46,7 +46,9 @@ class BusInfoViewController: UIViewController {
         manager.busDelegate = self
         manager.busStatusDelegate = self
         manager.requestBusStopInfo(inCity: Constant.City.taipei, ofRouteName: busName)
+        manager.requestBusStopInfo(inCity: Constant.City.newTaipei, ofRouteName: busName)
         manager.requestBusStatus(inCity: Constant.City.taipei, ofRouteName: busName)
+        manager.requestBusStatus(inCity: Constant.City.newTaipei, ofRouteName: busName)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -134,12 +136,10 @@ extension BusInfoViewController: BusRouteManagerDelegate {
             runTimer()
             return
         }
-        busInfoNotFoundAlert()
     }
 
     func busManager(_ manager: RouteManager, didFailWith error: Error) {
         print(error)
-        busInfoNotFoundAlert()
     }
 }
 
