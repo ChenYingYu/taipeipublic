@@ -133,7 +133,7 @@ class MapViewController: UIViewController {
 
     func setUpRouteDetailTableView() {
         transitTag = Constant.DefaultValue.zero
-        routeDetailTableView.frame = CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
+        routeDetailTableView.frame = CGRect(x: 0.0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6)
         routeDetailTableView.delegate = self
         routeDetailTableView.dataSource = self
         let nib = UINib(nibName: String(describing: RouteDetailTableViewCell.self), bundle: nil)
@@ -296,7 +296,7 @@ extension MapViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     @objc func showOrHideTableView(_ gestureRecognizer: UIPanGestureRecognizer) {
-        let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height)
+        let normalState = CGRect(x: 0, y: view.bounds.height * 0.4, width: view.bounds.width, height: view.bounds.height * 0.6)
         let hiddenState = CGRect(x: 0, y: view.bounds.height - 50, width: view.bounds.width, height: view.bounds.height)
         guard gestureRecognizer.view != nil else {return}
         let piece = routeDetailTableView
