@@ -127,10 +127,11 @@ class RouteManager {
             ]
 
         let urlParams = [
+            "$filter": "RouteName/Zh_tw eq '\(routeName)'",
             "$format": "JSON"
             ]
 
-        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/\(city)/\(routeName)"
+        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/\(city)"
 
         guard let URL = NSURL(string: urlString.addingPercentEncoding(withAllowedCharacters: (NSCharacterSet.urlQueryAllowed))!) else {
             print("URL Encoding Fail")
@@ -178,10 +179,11 @@ class RouteManager {
             ]
 
         let urlParams = [
+            "$filter": "RouteName/Zh_tw eq '\(routeName)'",
             "$format": "JSON"
             ]
 
-        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/\(city)/\(routeName)"
+        let urlString = "http://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/\(city)"
 
         guard let URL = NSURL(string: urlString.addingPercentEncoding(withAllowedCharacters: (NSCharacterSet.urlQueryAllowed))!) else {
             print("URL Encoding Fail")
