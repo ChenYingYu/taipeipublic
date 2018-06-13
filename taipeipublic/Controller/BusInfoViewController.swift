@@ -16,6 +16,7 @@ class BusInfoViewController: UIViewController {
     var arrivalStopName = Constant.DefaultValue.emptyString
     var busStatus = [BusStatus]()
     var busInfoUpdateCounter = 20
+    var timer = Timer()
 
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var busNumberLabel: UILabel!
@@ -46,15 +47,15 @@ class BusInfoViewController: UIViewController {
         manager.busStatusDelegate = self
         manager.requestBusStopInfo(inCity: Constant.City.taipei, ofRouteName: busName)
         manager.requestBusStatus(inCity: Constant.City.taipei, ofRouteName: busName)
-        runTimer()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         UIApplication.shared.statusBarStyle = .default
+        timer.invalidate()
     }
 
     func runTimer() {
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
 
     @objc func updateTime() {
@@ -78,7 +79,7 @@ extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
         if busRoutes.count > index {
             return busRoutes[index].stops.count
         }
-        return 1
+        return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -119,16 +120,26 @@ extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
+
+    func busInfoNotFoundAlert() {
+        showAlert(title: Constant.AlertMessage.dataNotFound, message: Constant.AlertMessage.busInfoNotFound)
+    }
 }
 
 extension BusInfoViewController: BusRouteManagerDelegate {
     func busManager(_ manager: RouteManager, didGet routes: [BusRoute]) {
-        self.busRoutes = routes
-        self.busStopInfoTableView.reloadData()
+        if routes.count != 0 {
+            self.busRoutes = routes
+            self.busStopInfoTableView.reloadData()
+            runTimer()
+            return
+        }
+        busInfoNotFoundAlert()
     }
 
     func busManager(_ manager: RouteManager, didFailWith error: Error) {
         print(error)
+        busInfoNotFoundAlert()
     }
 }
 
@@ -140,5 +151,17 @@ extension BusInfoViewController: BusStatusManagerDelegate {
 
     func busStatusManager(_ manager: RouteManager, didFailWith error: Error) {
         print(error)
+    }
+}
+
+extension UIViewController {
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: Constant.AlertMessage.okTitle, style: .default, handler: {
+            (action: UIAlertAction) -> Void in
+        })
+        alertController.addAction(okAction)
+
+        self.present(alertController, animated: true)
     }
 }
