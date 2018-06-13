@@ -34,4 +34,15 @@ struct Constant {
     struct Polyline {
         static let width = 6.0
     }
+
+    struct City {
+        static let taipei = "Taipei"
+        static let newTaipei = "NewTaipei"
+    }
+
+    struct AlertMessage {
+        static let dataNotFound = "找不到資料"
+        static let busInfoNotFound = "抱歉，未找到該班公車的詳細資訊\n請將螢幕截圖並寄至\n\"alan831007@gmail.com\"\n我們會盡快找出原因並處理"
+        static let okTitle = "好的"
+    }
 }

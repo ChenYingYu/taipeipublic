@@ -69,7 +69,7 @@ struct BusStop: Codable {
 
 struct StopName: Codable {
     let tw: String
-    let en: String
+    let en: String?
     enum CodingKeys: String, CodingKey {
         case tw = "Zh_tw"
         case en = "En"
@@ -78,7 +78,7 @@ struct StopName: Codable {
 
 struct RouteName: Codable {
     let tw: String
-    let en: String
+    let en: String?
     enum CodingKeys: String, CodingKey {
         case tw = "Zh_tw"
         case en = "En"
