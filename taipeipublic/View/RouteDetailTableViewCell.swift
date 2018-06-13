@@ -12,9 +12,6 @@ class RouteDetailTableViewCell: UITableViewCell {
 
     @IBOutlet weak var routeDetailLabel: UILabel!
     @IBOutlet weak var busInfoButton: UIButton!
-    @IBAction func busInfoButtonPress(_ sender: UIButton) {
-        busInfoButton.setTitleColor(UIColor.white, for: .normal)
-    }
 
     override func awakeFromNib() {
         super.awakeFromNib()

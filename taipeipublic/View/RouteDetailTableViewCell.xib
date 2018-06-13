@@ -33,9 +33,6 @@
                         <state key="normal" title="班次查詢">
                             <color key="titleColor" red="0.37647058820000001" green="0.68235294120000001" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
-                        <connections>
-                            <action selector="busInfoButtonPress:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Nlj-pj-sOf"/>
-                        </connections>
                     </button>
                 </subviews>
                 <color key="backgroundColor" red="0.1843137255" green="0.26274509800000001" blue="0.29803921570000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
