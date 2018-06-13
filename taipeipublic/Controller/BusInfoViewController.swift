@@ -157,9 +157,7 @@ extension BusInfoViewController: BusStatusManagerDelegate {
 extension UIViewController {
     func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: Constant.AlertMessage.okTitle, style: .default, handler: {
-            (action: UIAlertAction) -> Void in
-        })
+        let okAction = UIAlertAction(title: Constant.AlertMessage.okTitle, style: .default)
         alertController.addAction(okAction)
 
         self.present(alertController, animated: true)
