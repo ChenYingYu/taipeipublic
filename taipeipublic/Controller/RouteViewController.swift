@@ -26,6 +26,7 @@ class RouteViewController: UIViewController {
     var youbikeStationsDictionary = [Int: [YoubikeStation]]()
     var passHandler: ((Route?, [Route]?, [YoubikeStation]?, Bool, GMSPlace) -> Void)?
     weak var navigationDelegate: NavigationDelegate?
+    let spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
 
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var routeTableView: UITableView!
@@ -55,6 +56,10 @@ class RouteViewController: UIViewController {
         setUpTitleView()
         setUpRouteTableView()
         getRoutes()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        runSpinner(spinner, in: self.view)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -205,6 +210,7 @@ extension RouteViewController: RouteManagerDelegate {
             checkYoubikeStation(thirdYoubikeStation, and: finalYoubikeStation, in: leg.steps[leg.steps.count - 1], withRouteIndex: index)
         }
         routeTableView.reloadData()
+        spinner.stopAnimating()
     }
 
     func checkYoubikeStation(_ start: YoubikeStation?, and end: YoubikeStation?, in step: Step, withRouteIndex index: Int) {
@@ -231,6 +237,7 @@ extension RouteViewController: RouteManagerDelegate {
 
     func manager(_ manager: RouteManager, didFailWith error: Error) {
         print("Found Error:\n\(error)\n")
+        spinner.stopAnimating()
     }
 }
 
@@ -283,5 +290,13 @@ extension RouteViewController: GMSAutocompleteViewControllerDelegate {
 
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension UIViewController {
+    func runSpinner(_ spinner: UIActivityIndicatorView, in view: UIView) {
+        spinner.center = view.center
+        view.addSubview(spinner)
+        spinner.startAnimating()
     }
 }
