@@ -174,16 +174,20 @@ class MapViewController: UIViewController {
         let storyboard = UIStoryboard(name: Constant.Storyboard.main, bundle: nil)
         if let routeViewController = storyboard.instantiateViewController(withIdentifier: Constant.Identifier.routeViewController) as? RouteViewController {
             routeViewController.navigationDelegate = self
-            routeViewController.destinationName = destinationName
-            routeViewController.destinationId = destinationId
+            if let place = destination {
+                routeViewController.destination = place
+                routeViewController.destinationName = place.name
+                routeViewController.destinationId = place.placeID
+            }
             routeViewController.routes = routes
-            routeViewController.passHandler = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode) in
+            routeViewController.passHandler = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode, destination) in
                 self?.selectedRoute = route
                 self?.selectedYoubikeRoutes = youbikeRoute
                 if let selectedYoubikeStation = youbikeStation {
                     self?.selectedYoubikeStation = selectedYoubikeStation
                 }
                 self?.isNavigationMode = isNavigationMode
+                self?.destination = destination
             }
             present(routeViewController, animated: true, completion: nil)
         }

@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 import GoogleMaps
+import GooglePlaces
 
 class RouteViewController: UIViewController {
 
+    var destination: GMSPlace?
     var destinationName = Constant.DefaultValue.emptyString
     var destinationId = Constant.DefaultValue.emptyString
     var route: Route?
@@ -22,7 +24,7 @@ class RouteViewController: UIViewController {
     var youbikeRouteDictionary = [Int: [Route]]()
     var youbikeStations = [YoubikeStation]()
     var youbikeStationsDictionary = [Int: [YoubikeStation]]()
-    var passHandler: ((Route?, [Route]?, [YoubikeStation]?, Bool) -> Void)?
+    var passHandler: ((Route?, [Route]?, [YoubikeStation]?, Bool, GMSPlace) -> Void)?
     weak var navigationDelegate: NavigationDelegate?
 
     @IBOutlet weak var titleView: UIView!
@@ -30,6 +32,15 @@ class RouteViewController: UIViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var originLabel: UILabel!
     @IBOutlet weak var destinationLabel: UILabel!
+    @IBOutlet weak var originButton: UIButton!
+    @IBOutlet weak var destinationButton: UIButton!
+    @IBAction func showGoogleSearchController(_ sender: UIButton) {
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.tintColor = .blue
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
+    }
+
     @IBAction func back(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
         navigationDelegate?.stopNavigation()
@@ -37,7 +48,9 @@ class RouteViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        self.passHandler?(nil, nil, nil, false)
+        if let place = destination {
+            self.passHandler?(nil, nil, nil, false, place)
+        }
         resetRoutes()
         setUpTitleView()
         setUpRouteTableView()
@@ -62,7 +75,7 @@ class RouteViewController: UIViewController {
     func setUpTitleView() {
         UIApplication.shared.statusBarStyle = .lightContent
         backButton.tintColor = UIColor.white
-        destinationLabel.text = "  \(destinationName)"
+        destinationButton.setTitle("  \(destinationName)", for: .normal)
         titleView.addGradient()
     }
 
@@ -128,7 +141,9 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.passHandler?(routes[indexPath.row], youbikeRouteDictionary[indexPath.row], youbikeStationsDictionary[indexPath.row], true)
+        if let place = destination {
+            self.passHandler?(routes[indexPath.row], youbikeRouteDictionary[indexPath.row], youbikeStationsDictionary[indexPath.row], true, place)
+        }
         navigationDelegate?.hideDestination()
         navigationDelegate?.startNavigation()
         dismiss(animated: true, completion: nil)
@@ -144,7 +159,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension RouteViewController: RouteManagerDelegate {
     func manager(_ manager: RouteManager, didGet routes: [Route]) {
-        self.routes += routes
+        self.routes = routes
         for index in routes.indices {
             guard let legs = routes[index].legs else {
                 return
@@ -249,5 +264,24 @@ extension UIView {
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
         gradient.frame = self.bounds
         self.layer.insertSublayer(gradient, at: 0)
+    }
+}
+
+extension RouteViewController: GMSAutocompleteViewControllerDelegate {
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        dismiss(animated: true, completion: nil)
+        destination = place
+        destinationId = place.placeID
+        destinationName = place.name
+        destinationButton.setTitle("  \(place.name)", for: .normal)
+        getRoutes()
+    }
+
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        print(Constant.ErrorMessage.errorPrefix, error.localizedDescription)
+    }
+
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
     }
 }
