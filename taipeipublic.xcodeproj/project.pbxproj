@@ -24,6 +24,7 @@
 		0A900FFF20BD3E0700EA412E /* BusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A900FFE20BD3E0700EA412E /* BusInfo.swift */; };
 		0A90100220BE407B00EA412E /* BusStopInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */; };
 		0A90100320BE407B00EA412E /* BusStopInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */; };
+		0A9E256520D2082B009CC5E7 /* YoubikeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9E256420D2082B009CC5E7 /* YoubikeManagerTests.swift */; };
 		0AB819AC209AFB3700160842 /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB819AB209AFB3700160842 /* RouteViewController.swift */; };
 		0AD7231520C8C506003892B5 /* DestinationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD7231420C8C506003892B5 /* DestinationInfoView.swift */; };
 		0AD7231720C8CDE3003892B5 /* DestinationInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AD7231620C8CDE3003892B5 /* DestinationInfoView.xib */; };
@@ -32,6 +33,16 @@
 		0AEBDA2A20B25042005AD454 /* BusInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEBDA2920B25042005AD454 /* BusInfoViewController.swift */; };
 		F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 534588B88CA253347B214A56 /* Pods_taipeipublic.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0A9E255D20D11755009CC5E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A6EDBD92096ADFF004BBF3C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A6EDBE02096ADFF004BBF3C;
+			remoteInfo = taipeipublic;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0A09C40620AA90E1007D3EBE /* RouteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTableViewCell.swift; sourceTree = "<group>"; };
@@ -55,6 +66,9 @@
 		0A900FFE20BD3E0700EA412E /* BusInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusInfo.swift; sourceTree = "<group>"; };
 		0A90100020BE407A00EA412E /* BusStopInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopInfoTableViewCell.swift; sourceTree = "<group>"; };
 		0A90100120BE407A00EA412E /* BusStopInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusStopInfoTableViewCell.xib; sourceTree = "<group>"; };
+		0A9E255820D11754009CC5E7 /* taipeipublicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = taipeipublicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A9E255C20D11755009CC5E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A9E256420D2082B009CC5E7 /* YoubikeManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoubikeManagerTests.swift; sourceTree = "<group>"; };
 		0AB819AB209AFB3700160842 /* RouteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
 		0AD7231420C8C506003892B5 /* DestinationInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationInfoView.swift; sourceTree = "<group>"; };
 		0AD7231620C8CDE3003892B5 /* DestinationInfoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DestinationInfoView.xib; sourceTree = "<group>"; };
@@ -72,6 +86,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F633487F3AB54EF53E729C1C /* Pods_taipeipublic.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A9E255520D11754009CC5E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				0A6EDBE32096ADFF004BBF3C /* taipeipublic */,
+				0A9E255920D11755009CC5E7 /* taipeipublicTests */,
 				0A6EDBE22096ADFF004BBF3C /* Products */,
 				D3149E127504D6CEB898CCD3 /* Pods */,
 				B932BCB6D553A847A5CE8DB9 /* Frameworks */,
@@ -141,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				0A6EDBE12096ADFF004BBF3C /* taipeipublic.app */,
+				0A9E255820D11754009CC5E7 /* taipeipublicTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -159,6 +182,15 @@
 				0AE5DEC820BBD88F006A56EC /* GoogleService-Info.plist */,
 			);
 			path = taipeipublic;
+			sourceTree = "<group>";
+		};
+		0A9E255920D11755009CC5E7 /* taipeipublicTests */ = {
+			isa = PBXGroup;
+			children = (
+				0A9E256420D2082B009CC5E7 /* YoubikeManagerTests.swift */,
+				0A9E255C20D11755009CC5E7 /* Info.plist */,
+			);
+			path = taipeipublicTests;
 			sourceTree = "<group>";
 		};
 		B932BCB6D553A847A5CE8DB9 /* Frameworks */ = {
@@ -203,6 +235,24 @@
 			productReference = 0A6EDBE12096ADFF004BBF3C /* taipeipublic.app */;
 			productType = "com.apple.product-type.application";
 		};
+		0A9E255720D11754009CC5E7 /* taipeipublicTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A9E256120D11755009CC5E7 /* Build configuration list for PBXNativeTarget "taipeipublicTests" */;
+			buildPhases = (
+				0A9E255420D11754009CC5E7 /* Sources */,
+				0A9E255520D11754009CC5E7 /* Frameworks */,
+				0A9E255620D11754009CC5E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0A9E255E20D11755009CC5E7 /* PBXTargetDependency */,
+			);
+			name = taipeipublicTests;
+			productName = taipeipublicTests;
+			productReference = 0A9E255820D11754009CC5E7 /* taipeipublicTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -216,6 +266,10 @@
 					0A6EDBE02096ADFF004BBF3C = {
 						CreatedOnToolsVersion = 9.3;
 						LastSwiftMigration = 0930;
+					};
+					0A9E255720D11754009CC5E7 = {
+						CreatedOnToolsVersion = 9.3;
+						TestTargetID = 0A6EDBE02096ADFF004BBF3C;
 					};
 				};
 			};
@@ -233,6 +287,7 @@
 			projectRoot = "";
 			targets = (
 				0A6EDBE02096ADFF004BBF3C /* taipeipublic */,
+				0A9E255720D11754009CC5E7 /* taipeipublicTests */,
 			);
 		};
 /* End PBXProject section */
@@ -251,6 +306,13 @@
 				0A6EDBEA2096AE00004BBF3C /* Main.storyboard in Resources */,
 				0A09C40920AA90E1007D3EBE /* RouteTableViewCell.xib in Resources */,
 				0AE5DEC920BBD88F006A56EC /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A9E255620D11754009CC5E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,7 +429,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0A9E255420D11754009CC5E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A9E256520D2082B009CC5E7 /* YoubikeManagerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0A9E255E20D11755009CC5E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A6EDBE02096ADFF004BBF3C /* taipeipublic */;
+			targetProxy = 0A9E255D20D11755009CC5E7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0A6EDBE82096AE00004BBF3C /* Main.storyboard */ = {
@@ -548,6 +626,47 @@
 			};
 			name = Release;
 		};
+		0A9E255F20D11755009CC5E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AE4647D95EDEB0E4801DA3A /* Pods-taipeipublic.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9VPGGN82CW;
+				INFOPLIST_FILE = taipeipublicTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChenAlan.taipeipublicTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/taipeipublic.app/taipeipublic";
+			};
+			name = Debug;
+		};
+		0A9E256020D11755009CC5E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9VPGGN82CW;
+				INFOPLIST_FILE = taipeipublicTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChenAlan.taipeipublicTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/taipeipublic.app/taipeipublic";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -565,6 +684,15 @@
 			buildConfigurations = (
 				0A6EDBF42096AE03004BBF3C /* Debug */,
 				0A6EDBF52096AE03004BBF3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A9E256120D11755009CC5E7 /* Build configuration list for PBXNativeTarget "taipeipublicTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A9E255F20D11755009CC5E7 /* Debug */,
+				0A9E256020D11755009CC5E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
