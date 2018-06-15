@@ -17,6 +17,7 @@ class BusInfoViewController: UIViewController {
     var busStatus = [BusStatus]()
     var busInfoUpdateCounter = 20
     var timer = Timer()
+    let spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
 
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var busNumberLabel: UILabel!
@@ -49,6 +50,7 @@ class BusInfoViewController: UIViewController {
         manager.requestBusStopInfo(inCity: Constant.City.newTaipei, ofRouteName: busName)
         manager.requestBusStatus(inCity: Constant.City.taipei, ofRouteName: busName)
         manager.requestBusStatus(inCity: Constant.City.newTaipei, ofRouteName: busName)
+        runSpinner(spinner, in: self.view)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -136,10 +138,12 @@ extension BusInfoViewController: BusStatusManagerDelegate {
     func busStatusManager(_ manager: RouteManager, didGet status: [BusStatus]) {
         self.busStatus = status
         self.busStopInfoTableView.reloadData()
+        spinner.stopAnimating()
     }
 
     func busStatusManager(_ manager: RouteManager, didFailWith error: Error) {
         print(error)
+        spinner.stopAnimating()
     }
 }
 
