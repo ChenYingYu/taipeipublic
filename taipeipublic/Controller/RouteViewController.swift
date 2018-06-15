@@ -68,6 +68,8 @@ class RouteViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         runSpinner(spinner, in: self.view)
+        resetRoutes()
+        routeTableView.reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
