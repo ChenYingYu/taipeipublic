@@ -16,6 +16,9 @@ class RouteViewController: UIViewController {
     var destination: GMSPlace?
     var destinationName = Constant.DefaultValue.emptyString
     var destinationId = Constant.DefaultValue.emptyString
+    var origin: GMSPlace?
+    var originId = Constant.DefaultValue.emptyString
+    var originName = Constant.DefaultValue.emptyString
     var route: Route?
     var routes = [Route]()
     var youbikeRoute: Route?
@@ -24,9 +27,12 @@ class RouteViewController: UIViewController {
     var youbikeRouteDictionary = [Int: [Route]]()
     var youbikeStations = [YoubikeStation]()
     var youbikeStationsDictionary = [Int: [YoubikeStation]]()
-    var passHandler: ((Route?, [Route]?, [YoubikeStation]?, Bool, GMSPlace) -> Void)?
+    var passHandler: ((Route?, [Route]?, [YoubikeStation]?, Bool, GMSPlace?, GMSPlace?) -> Void)?
     weak var navigationDelegate: NavigationDelegate?
     let spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+    var originLatitude = CLLocationManager().getUserLatitude()
+    var originLongitude = CLLocationManager().getUserLongitude()
+    var targetButton = UIButton()
 
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var routeTableView: UITableView!
@@ -39,19 +45,21 @@ class RouteViewController: UIViewController {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
         autocompleteController.delegate = self
+        targetButton = sender
         present(autocompleteController, animated: true, completion: nil)
     }
 
     @IBAction func back(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
+        if let destination = destination {
+            self.passHandler?(nil, nil, nil, false, destination, nil)
+        }
         navigationDelegate?.stopNavigation()
         navigationDelegate?.showDestination()
     }
 
     override func viewDidLoad() {
-        if let place = destination {
-            self.passHandler?(nil, nil, nil, false, place)
-        }
+        self.passHandler?(nil, nil, nil, false, nil, nil)
         resetRoutes()
         setUpTitleView()
         setUpRouteTableView()
@@ -81,6 +89,7 @@ class RouteViewController: UIViewController {
         UIApplication.shared.statusBarStyle = .lightContent
         backButton.tintColor = UIColor.white
         destinationButton.setTitle("  \(destinationName)", for: .normal)
+        originButton.setTitle("  \(origin?.name ?? "我的位置")", for: .normal)
         titleView.addGradient()
     }
 
@@ -93,10 +102,9 @@ class RouteViewController: UIViewController {
     }
 
     func getRoutes() {
-        let locationManager = CLLocationManager()
         let routeManager = RouteManager()
         routeManager.delegate = self
-        routeManager.requestRoute(originLatitude: locationManager.getUserLatitude(), originLongitude: locationManager.getUserLongitude(), destinationId: destinationId)
+        routeManager.requestRoute(originLatitude: originLatitude, originLongitude: originLongitude, destinationId: destinationId)
     }
 }
 
@@ -146,8 +154,8 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let place = destination {
-            self.passHandler?(routes[indexPath.row], youbikeRouteDictionary[indexPath.row], youbikeStationsDictionary[indexPath.row], true, place)
+        if let destination = destination {
+            self.passHandler?(routes[indexPath.row], youbikeRouteDictionary[indexPath.row], youbikeStationsDictionary[indexPath.row], true, destination, origin ?? nil)
         }
         navigationDelegate?.hideDestination()
         navigationDelegate?.startNavigation()
@@ -277,10 +285,18 @@ extension UIView {
 extension RouteViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         dismiss(animated: true, completion: nil)
-        destination = place
-        destinationId = place.placeID
-        destinationName = place.name
-        destinationButton.setTitle("  \(place.name)", for: .normal)
+        targetButton.setTitle("  \(place.name)", for: .normal)
+        if targetButton == destinationButton {
+            destination = place
+            destinationId = place.placeID
+            destinationName = place.name
+        } else if targetButton == originButton {
+            origin = place
+            originId = place.placeID
+            originName = place.name
+            originLatitude = place.coordinate.latitude
+            originLongitude = place.coordinate.longitude
+        }
         getRoutes()
     }
 

@@ -15,9 +15,15 @@ class MapViewController: UIViewController {
     var isNavigationMode = false
     var isDestinationMode = false
     //搜尋目的地後使用的變數
+    var originalDestination: GMSPlace?
+    var originalDestinationId = Constant.DefaultValue.emptyString
+    var originalDestinationName = Constant.DefaultValue.emptyString
     var destination: GMSPlace?
     var destinationId = Constant.DefaultValue.emptyString
     var destinationName = Constant.DefaultValue.emptyString
+    var origin: GMSPlace?
+    var originId = Constant.DefaultValue.emptyString
+    var originName = Constant.DefaultValue.emptyString
     //進行導航時使用的變數
     var routes = [Route]()
     var youbikeRoute: Route?
@@ -53,12 +59,10 @@ class MapViewController: UIViewController {
         updateMapPadding()
     }
 
-    func showDestinationMarker() {
-        if let place = destination {
+    func showDestinationMarker(of place: GMSPlace) {
             let marker = GMSMarker(position: place.coordinate)
             marker.map = mapView
             mapView.camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 15.0)
-        }
     }
 
     func updateCameraToFitMapBounds() {
@@ -154,7 +158,9 @@ class MapViewController: UIViewController {
 
     func startNavigating() {
         mapView.clear()
-        showDestinationMarker()
+        if let place = destination {
+            showDestinationMarker(of: place)
+        }
         updateCameraToFitMapBounds()
         drawRoutePolyline()
         drawYoubikeRoutePolyline()
@@ -174,13 +180,29 @@ class MapViewController: UIViewController {
         let storyboard = UIStoryboard(name: Constant.Storyboard.main, bundle: nil)
         if let routeViewController = storyboard.instantiateViewController(withIdentifier: Constant.Identifier.routeViewController) as? RouteViewController {
             routeViewController.navigationDelegate = self
-            if let place = destination {
-                routeViewController.destination = place
-                routeViewController.destinationName = place.name
-                routeViewController.destinationId = place.placeID
+            if sender == destinationInfoView.showRouteButton {
+                if let destination = originalDestination {
+                    routeViewController.destination = destination
+                    routeViewController.destinationName = destination.name
+                    routeViewController.destinationId = destination.placeID
+                    let locationManager = CLLocationManager()
+                    routeViewController.originLatitude = locationManager.getUserLatitude()
+                    routeViewController.originLongitude = locationManager.getUserLongitude()
+                }
+            } else if let destination = destination {
+                routeViewController.destination = destination
+                routeViewController.destinationName = destination.name
+                routeViewController.destinationId = destination.placeID
+                if let origin = origin {
+                    routeViewController.origin = origin
+                    routeViewController.originName = origin.name
+                    routeViewController.originId = origin.placeID
+                    routeViewController.originLatitude = origin.coordinate.latitude
+                    routeViewController.originLongitude = origin.coordinate.longitude
+                }
             }
             routeViewController.routes = routes
-            routeViewController.passHandler = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode, destination) in
+            routeViewController.passHandler = { [weak self] (route, youbikeRoute, youbikeStation, isNavigationMode, destination, origin) in
                 self?.selectedRoute = route
                 self?.selectedYoubikeRoutes = youbikeRoute
                 if let selectedYoubikeStation = youbikeStation {
@@ -188,6 +210,7 @@ class MapViewController: UIViewController {
                 }
                 self?.isNavigationMode = isNavigationMode
                 self?.destination = destination
+                self?.origin = origin
             }
             present(routeViewController, animated: true, completion: nil)
         }
@@ -199,18 +222,18 @@ extension MapViewController: GMSAutocompleteViewControllerDelegate {
 
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         dismiss(animated: true, completion: nil)
-        destination = place
-        destinationId = place.placeID
-        destinationName = place.name
+        originalDestination = place
+        originalDestinationId = place.placeID
+        originalDestinationName = place.name
         destinationInfoView.titleLabel.text = place.name
         searchButton.setTitle("  \(place.name)", for: UIControlState.normal)
         destinationInfoView.addressLabel.text = place.formattedAddress
         isDestinationMode = true
-        showDestinationInfo()
+        showDestinationInfo(of: place)
     }
 
-    func showDestinationInfo() {
-        showDestinationMarker()
+    func showDestinationInfo(of place: GMSPlace) {
+        showDestinationMarker(of: place)
         destinationInfoView.showRouteButton.addTarget(self, action: #selector(showRoute), for: .touchUpInside)
         self.destinationInfoView.isHidden = false
         self.searchButton.isHidden = false
@@ -379,7 +402,9 @@ protocol NavigationDelegate: class {
 
 extension MapViewController: NavigationDelegate {
     func showDestination() {
-        showDestinationInfo()
+        if let place = originalDestination {
+            showDestinationInfo(of: place)
+        }
     }
 
     func hideDestination() {
