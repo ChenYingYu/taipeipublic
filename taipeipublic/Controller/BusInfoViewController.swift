@@ -93,17 +93,6 @@ extension BusInfoViewController: UITableViewDelegate, UITableViewDataSource {
         let index = directionSegmentedControl.selectedSegmentIndex
         if busRoutes.count > index, busRoutes[index].stops.count > indexPath.row {
             cell.stopNameLabel.text = busRoutes[index].stops[indexPath.row].name.tw
-//            if cell.stopNameLabel.text == departureStopName {
-//                cell.departureOrArrivalTagLabel.text = "本站上車"
-//                cell.departureOrArrivalTagLabel.backgroundColor = cell.departureColor
-//                cell.departureOrArrivalTagLabel.isHidden = false
-//            } else if cell.stopNameLabel.text == arrivalStopName {
-//                cell.departureOrArrivalTagLabel.text = "本站下車"
-//                cell.departureOrArrivalTagLabel.backgroundColor = cell.arrivalColor
-//                cell.departureOrArrivalTagLabel.isHidden = false
-//            } else {
-//                cell.departureOrArrivalTagLabel.isHidden = true
-//            }
             for status in busStatus where status.direction == index && cell.stopNameLabel.text == status.name.tw {
                 if let estimateTime = status.estimateTime {
                     switch estimateTime / 60 {
