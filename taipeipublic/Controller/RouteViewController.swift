@@ -63,13 +63,8 @@ class RouteViewController: UIViewController {
         resetRoutes()
         setUpTitleView()
         setUpRouteTableView()
-        getRoutes()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
         runSpinner(spinner, in: self.view)
-        resetRoutes()
-        routeTableView.reloadData()
+        getRoutes()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -299,6 +294,9 @@ extension RouteViewController: GMSAutocompleteViewControllerDelegate {
             originLatitude = place.coordinate.latitude
             originLongitude = place.coordinate.longitude
         }
+        resetRoutes()
+        routeTableView.reloadData()
+        runSpinner(spinner, in: self.view)
         getRoutes()
     }
 
