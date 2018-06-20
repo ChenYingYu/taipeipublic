@@ -81,7 +81,7 @@ class RouteManager {
             "key": Constant.googlePlacesAPIKey,
             "alternatives": "true",
             "destination": "\(destinationLatitude),\(destinationLongitude)",
-            "waypoints": "via:\(startYoubikeStation.latitude),\(startYoubikeStation.longitude)|via:\(endYoubikeStation.latitude),\(endYoubikeStation.longitude)"
+//            "waypoints": "via:\(startYoubikeStation.latitude),\(startYoubikeStation.longitude)|via:\(endYoubikeStation.latitude),\(endYoubikeStation.longitude)"
             ]
 
         Alamofire.request("https://maps.googleapis.com/maps/api/directions/json", method: .get, parameters: urlParams)

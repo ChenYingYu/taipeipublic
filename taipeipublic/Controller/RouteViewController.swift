@@ -120,29 +120,45 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         }
         route = routes[indexPath.row]
         var routeInfo = Constant.DefaultValue.emptyString
-        if let selectedRoute = route, let legs = selectedRoute.legs {
-            let leg = legs[0]
-            let duration = leg.duration?.durationText
-            //路線資訊格式
-            routeInfo += "\(duration ?? "")： \n" //總時間：
-            for index in leg.steps.indices {
-                if index != 0 {
-                    routeInfo += " > "//更換交通工具
+        guard let selectedRoute = route, let legs = selectedRoute.legs else {
+            return cell
+        }
+        let leg = legs[0]
+        let duration = leg.duration?.durationText ?? ""
+        let durationValue = leg.duration?.durationValue ?? 0
+        var youbikeDuration = ""
+        var youbikeDurationValue = 0
+        if let youbikeRoutes = youbikeRouteDictionary[indexPath.row] {
+            for youbikeRoute in youbikeRoutes {
+                if let leg = youbikeRoute.legs?[0], let youbikeValue = leg.duration?.durationValue {
+                    cell.youbikeLabel.isHidden = false
+                    youbikeDuration = " / Youbike \(String(youbikeValue / 120 + 4)) 分鐘"
+                    youbikeDurationValue = youbikeValue / 120 + 4
                 }
-                if let instruction = leg.steps[index].instructions?.enumerated() {
-                    for (index, character) in instruction where index < 2 {
-                        routeInfo += "\(character)"//交通工具
-                    }
-                    routeInfo += " \(leg.steps[index].duration.durationText)"//交通工具時程
+            }
+        } else {
+            cell.youbikeLabel.isHidden = true
+        }
+        //路線資訊格式
+        routeInfo += "原始： \(duration) \n" //總時間：
+        for index in leg.steps.indices {
+            if index == 0, youbikeDurationValue != 0 {
+                routeInfo += "修正： \(durationValue / 60 - leg.steps[index].duration.durationValue / 60 + youbikeDurationValue) 分鐘 \n"
+            }
+            if index != 0 {
+                routeInfo += " > "//更換交通工具
+            }
+            if let instruction = leg.steps[index].instructions?.enumerated() {
+                for (index, character) in instruction where index < 2 {
+                    routeInfo += "\(character)"//交通工具
+                }
+                routeInfo += " \(leg.steps[index].duration.durationText)"//交通工具時程
+                if index == 0 {
+                    routeInfo += youbikeDuration
                 }
             }
         }
         cell.subtitleLabel.text = routeInfo
-        if youbikeStationsDictionary[indexPath.row] != nil {
-            cell.youbikeLabel.isHidden = false
-        } else {
-            cell.youbikeLabel.isHidden = true
-        }
         return cell
     }
 
@@ -212,7 +228,7 @@ extension RouteViewController: RouteManagerDelegate {
             youbikeStations.removeAll()
             youbikeRoutes.removeAll()
             checkYoubikeStation(firstYoubikeStation, and: secondYoubikeStation, in: leg.steps[0], withRouteIndex: index)
-            checkYoubikeStation(thirdYoubikeStation, and: finalYoubikeStation, in: leg.steps[leg.steps.count - 1], withRouteIndex: index)
+//            checkYoubikeStation(thirdYoubikeStation, and: finalYoubikeStation, in: leg.steps[leg.steps.count - 1], withRouteIndex: index)
         }
         routeTableView.reloadData()
         spinner.stopAnimating()
@@ -233,10 +249,14 @@ extension RouteViewController: RouteManagerDelegate {
         routeManager.youbikeDelegate = self
         //取得附近 Youbike 路線
         if let youbikeStart = start, let youbikeEnd = destination, youbikeStart.name != youbikeEnd.name {
+            guard let startYoubikeStationLatitude = Double(youbikeStart.latitude), let startYoubikeStationLongitude = Double(youbikeStart.longitude), let endYoubikeStationLatitude = Double(youbikeEnd.latitude), let endYoubikeStationLongitude = Double(youbikeEnd.longitude) else {
+                return
+            }
             //加入 Youbike 租借站做為中途點並取得新路線
             let startPoint = step.startLocation
             let endPoint = step.endLocation
-            routeManager.requestYoubikeRoute(originLatitude: startPoint.lat, originLongitude: startPoint.lng, destinationLatitude: endPoint.lat, destinationLongitude: endPoint.lng, through: youbikeStart, and: youbikeEnd, withRouteIndex: index)
+            routeManager.requestYoubikeRoute(originLatitude: startYoubikeStationLatitude, originLongitude: startYoubikeStationLongitude, destinationLatitude: endYoubikeStationLatitude, destinationLongitude: endYoubikeStationLongitude, through: youbikeStart, and: youbikeEnd, withRouteIndex: index)
+
         }
     }
 
@@ -255,6 +275,7 @@ extension RouteViewController: YoubikeRouteManagerDelegate {
             self.youbikeRoutes.append(routes[0])
             self.youbikeRouteDictionary.updateValue(self.youbikeRoutes, forKey: index)
             self.youbikeRoutes.removeAll()
+            routeTableView.reloadData()
             return
         }
     }
