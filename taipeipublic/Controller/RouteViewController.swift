@@ -131,8 +131,8 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         if let youbikeRoutes = youbikeRouteDictionary[indexPath.row] {
             for youbikeRoute in youbikeRoutes {
                 if let leg = youbikeRoute.legs?[0], let youbikeValue = leg.duration?.durationValue {
-                    cell.youbikeLabel.isHidden = false
-                    youbikeDuration = " / Youbike \(String(youbikeValue / 120 + 4)) 分鐘"
+//                    cell.youbikeLabel.isHidden = false
+                    youbikeDuration = "Youbike \(String(youbikeValue / 120 + 4)) 分鐘"
                     youbikeDurationValue = youbikeValue / 120 + 4
                 }
             }
@@ -140,21 +140,22 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
             cell.youbikeLabel.isHidden = true
         }
         //路線資訊格式
-        routeInfo += "原始： \(duration) \n" //總時間：
+        routeInfo = "\(duration) ：\n" //總時間：
         for index in leg.steps.indices {
-            if index == 0, youbikeDurationValue != 0 {
-                routeInfo += "修正： \(durationValue / 60 - leg.steps[index].duration.durationValue / 60 + youbikeDurationValue) 分鐘 \n"
+            if index == 0, youbikeDurationValue != 0, youbikeDurationValue < leg.steps[index].duration.durationValue / 60 {
+                routeInfo = "\(durationValue / 60 - leg.steps[index].duration.durationValue / 60 + youbikeDurationValue) 分鐘： \n"
             }
             if index != 0 {
                 routeInfo += " > "//更換交通工具
             }
             if let instruction = leg.steps[index].instructions?.enumerated() {
-                for (index, character) in instruction where index < 2 {
-                    routeInfo += "\(character)"//交通工具
-                }
-                routeInfo += " \(leg.steps[index].duration.durationText)"//交通工具時程
-                if index == 0 {
+                if index == 0, youbikeDurationValue != 0, youbikeDurationValue < leg.steps[index].duration.durationValue / 60 {
                     routeInfo += youbikeDuration
+                } else {
+                    for (index, character) in instruction where index < 2 {
+                        routeInfo += "\(character)"//交通工具
+                    }
+                    routeInfo += " \(leg.steps[index].duration.durationText)"//交通工具時程
                 }
             }
         }

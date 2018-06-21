@@ -29,7 +29,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="路線資訊" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wvf-kd-SLn">
-                        <rect key="frame" x="20" y="46" width="412" height="71"/>
+                        <rect key="frame" x="20" y="11" width="412" height="106"/>
                         <fontDescription key="fontDescription" name="PingFangTC-Regular" family="PingFang TC" pointSize="20"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -40,8 +40,8 @@
                     <constraint firstItem="384-K2-HlM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Foe-kc-TFr"/>
                     <constraint firstItem="wvf-kd-SLn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Fs7-il-Su6"/>
                     <constraint firstAttribute="trailingMargin" secondItem="wvf-kd-SLn" secondAttribute="trailing" id="Oyd-vu-xx1"/>
-                    <constraint firstItem="wvf-kd-SLn" firstAttribute="top" secondItem="384-K2-HlM" secondAttribute="bottom" constant="10" id="XCe-F7-LZQ"/>
                     <constraint firstAttribute="bottomMargin" secondItem="wvf-kd-SLn" secondAttribute="bottom" id="dpV-Qz-sbk"/>
+                    <constraint firstItem="wvf-kd-SLn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="fnB-s8-ogO"/>
                     <constraint firstItem="384-K2-HlM" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="xD5-87-lgM"/>
                     <constraint firstItem="384-K2-HlM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="yWW-Pi-gv1"/>
                 </constraints>
