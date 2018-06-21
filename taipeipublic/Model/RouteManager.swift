@@ -15,7 +15,7 @@ protocol RouteManagerDelegate: class {
 }
 
 protocol YoubikeRouteManagerDelegate: class {
-    func youbikeManager(_ manager: RouteManager, didGet routes: [Route], atRouteIndex index: Int)
+    func youbikeManager(_ manager: RouteManager, didGet routes: [Route], atRouteIndex index: Int, atYoubikeRouteIndex youbikeRouteIndex: Int)
     func youbikeManager(_ manager: RouteManager, didFailWith error: Error)
 }
 
@@ -73,7 +73,7 @@ class RouteManager {
             }
     }
 
-    func requestYoubikeRoute(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double, through startYoubikeStation: YoubikeStation, and endYoubikeStation: YoubikeStation, withRouteIndex index: Int) {
+    func requestYoubikeRoute(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double, through startYoubikeStation: YoubikeStation, and endYoubikeStation: YoubikeStation, withRouteIndex index: Int, atYoubikeRouteIndex youbikeRouteIndex: Int) {
 
         let urlParams = [
             "origin": "\(originLatitude),\(originLongitude)",
@@ -101,7 +101,7 @@ class RouteManager {
                     do {
                         let root = try JSONDecoder().decode(Root.self, from: data)
                         let youbikeRoutes = root.routes
-                        self.youbikeDelegate?.youbikeManager(self, didGet: youbikeRoutes, atRouteIndex: index)
+                        self.youbikeDelegate?.youbikeManager(self, didGet: youbikeRoutes, atRouteIndex: index, atYoubikeRouteIndex: youbikeRouteIndex)
                     } catch let error {
                         self.youbikeDelegate?.youbikeManager(self, didFailWith: error)
                     }
