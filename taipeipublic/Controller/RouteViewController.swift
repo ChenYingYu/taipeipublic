@@ -140,7 +140,7 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
             cell.youbikeLabel.isHidden = true
         }
         //路線資訊格式
-        routeInfo = "\(duration) ：\n" //總時間：
+        routeInfo = "\(duration)：\n" //總時間：
         for index in leg.steps.indices {
             if index == 0, youbikeDurationValue != 0, youbikeDurationValue < leg.steps[index].duration.durationValue / 60 {
                 routeInfo = "\(durationValue / 60 - leg.steps[index].duration.durationValue / 60 + youbikeDurationValue) 分鐘： \n"
