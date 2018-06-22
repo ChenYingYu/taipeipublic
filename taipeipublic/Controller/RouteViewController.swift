@@ -154,6 +154,8 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
                 finalDuration -= leg.steps[index].duration.durationValue / 60 - firstYoubikeDurationValue
                 totalDuration = "\(finalDuration) 分鐘： \n"
             } else if index == leg.steps.count - 1, secondYoubikeDurationValue != 0, secondYoubikeDurationValue < leg.steps[index].duration.durationValue / 60 {
+                finalDuration -= leg.steps[index].duration.durationValue / 60 - secondYoubikeDurationValue
+                totalDuration = "\(finalDuration) 分鐘： \n"
             }
             if index != 0 {
                 routeDetails += " > "//更換交通工具
