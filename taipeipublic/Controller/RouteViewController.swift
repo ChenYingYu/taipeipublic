@@ -292,6 +292,7 @@ extension RouteViewController: RouteManagerDelegate {
     func manager(_ manager: RouteManager, didFailWith error: Error) {
         print("Found Error:\n\(error)\n")
         spinner.stopAnimating()
+        showAlert(title: Constant.AlertMessage.routeNotFoundTitle, message: Constant.AlertMessage.routeNotFoundContent)
     }
 }
 

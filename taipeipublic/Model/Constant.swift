@@ -74,5 +74,7 @@ struct Constant {
         static let dataNotFound = "找不到資料"
         static let busInfoNotFound = "抱歉，未找到該班公車的詳細資訊\n請將螢幕截圖並寄至\n\"alan831007@gmail.com\"\n我們會盡快找出原因並處理"
         static let okTitle = "好的"
+        static let routeNotFoundTitle = "找不到路線"
+        static let routeNotFoundContent = "抱歉，無法找到合適的路線，請嘗試更換起點或目的地。\n如有疑問，請將螢幕截圖並寄至\n\"alan831007@gmail.com\"\n我們會盡快找出原因並處理"
     }
 }
