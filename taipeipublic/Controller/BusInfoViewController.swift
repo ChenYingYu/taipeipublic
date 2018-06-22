@@ -136,8 +136,10 @@ extension BusInfoViewController: BusRouteManagerDelegate {
 
 extension BusInfoViewController: BusStatusManagerDelegate {
     func busStatusManager(_ manager: RouteManager, didGet status: [BusStatus]) {
-        self.busStatus = status
-        self.busStopInfoTableView.reloadData()
+        if status.count != 0 {
+            self.busStatus = status
+            self.busStopInfoTableView.reloadData()
+        }
         spinner.stopAnimating()
     }
 
