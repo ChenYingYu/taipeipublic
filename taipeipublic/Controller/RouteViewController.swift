@@ -150,12 +150,20 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
         var finalDuration = durationValue / 60
         var routeDetails = ""
         for index in leg.steps.indices {
-            if index == 0, firstYoubikeDurationValue != 0, firstYoubikeDurationValue < leg.steps[index].duration.durationValue / 60 {
-                finalDuration -= leg.steps[index].duration.durationValue / 60 - firstYoubikeDurationValue
-                totalDuration = "\(finalDuration) 分鐘： \n"
-            } else if index == leg.steps.count - 1, secondYoubikeDurationValue != 0, secondYoubikeDurationValue < leg.steps[index].duration.durationValue / 60 {
-                finalDuration -= leg.steps[index].duration.durationValue / 60 - secondYoubikeDurationValue
-                totalDuration = "\(finalDuration) 分鐘： \n"
+            if index == 0, firstYoubikeDurationValue != 0 {
+                if firstYoubikeDurationValue < leg.steps[index].duration.durationValue / 60 {
+                    finalDuration -= leg.steps[index].duration.durationValue / 60 - firstYoubikeDurationValue
+                    totalDuration = "\(finalDuration) 分鐘： \n"
+                } else {
+                    routeDictionary[indexPath.row]?.removeValue(forKey: 1)
+                }
+            } else if index == leg.steps.count - 1, secondYoubikeDurationValue != 0 {
+                if secondYoubikeDurationValue < leg.steps[index].duration.durationValue / 60 {
+                    finalDuration -= leg.steps[index].duration.durationValue / 60 - secondYoubikeDurationValue
+                    totalDuration = "\(finalDuration) 分鐘： \n"
+                } else {
+                    routeDictionary[indexPath.row]?.removeValue(forKey: 2)
+                }
             }
             if index != 0 {
                 routeDetails += " > "//更換交通工具
