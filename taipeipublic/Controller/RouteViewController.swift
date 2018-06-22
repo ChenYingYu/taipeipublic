@@ -284,9 +284,7 @@ extension RouteViewController: RouteManagerDelegate {
                 return
             }
             //加入 Youbike 租借站做為中途點並取得新路線
-            let startPoint = step.startLocation
-            let endPoint = step.endLocation
-            routeManager.requestYoubikeRoute(originLatitude: startYoubikeStationLatitude, originLongitude: startYoubikeStationLongitude, destinationLatitude: endYoubikeStationLatitude, destinationLongitude: endYoubikeStationLongitude, through: youbikeStart, and: youbikeEnd, withRouteIndex: index, atYoubikeRouteIndex: youbikeRouteIndex)
+            routeManager.requestYoubikeRoute(originLatitude: startYoubikeStationLatitude, originLongitude: startYoubikeStationLongitude, destinationLatitude: endYoubikeStationLatitude, destinationLongitude: endYoubikeStationLongitude, withRouteIndex: index, atYoubikeRouteIndex: youbikeRouteIndex)
 
         }
     }
@@ -303,7 +301,6 @@ extension RouteViewController: YoubikeRouteManagerDelegate {
             if let youbikeRoutes = routeDictionary[index] {
                 self.youbikeRouteDictionary = youbikeRoutes
             }
-//            let dictionary = [youbikeRouteIndex: routes[0]]
             self.youbikeRouteDictionary.updateValue(routes[0], forKey: youbikeRouteIndex)
             self.routeDictionary.updateValue(self.youbikeRouteDictionary, forKey: index)
             self.youbikeRouteDictionary.removeAll()

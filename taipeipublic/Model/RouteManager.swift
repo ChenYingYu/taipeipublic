@@ -73,15 +73,14 @@ class RouteManager {
             }
     }
 
-    func requestYoubikeRoute(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double, through startYoubikeStation: YoubikeStation, and endYoubikeStation: YoubikeStation, withRouteIndex index: Int, atYoubikeRouteIndex youbikeRouteIndex: Int) {
+    func requestYoubikeRoute(originLatitude: Double, originLongitude: Double, destinationLatitude: Double, destinationLongitude: Double, withRouteIndex index: Int, atYoubikeRouteIndex youbikeRouteIndex: Int) {
 
         let urlParams = [
             "origin": "\(originLatitude),\(originLongitude)",
             "mode": "walking",
             "key": Constant.googlePlacesAPIKey,
             "alternatives": "true",
-            "destination": "\(destinationLatitude),\(destinationLongitude)",
-//            "waypoints": "via:\(startYoubikeStation.latitude),\(startYoubikeStation.longitude)|via:\(endYoubikeStation.latitude),\(endYoubikeStation.longitude)"
+            "destination": "\(destinationLatitude),\(destinationLongitude)"
             ]
 
         Alamofire.request("https://maps.googleapis.com/maps/api/directions/json", method: .get, parameters: urlParams)
