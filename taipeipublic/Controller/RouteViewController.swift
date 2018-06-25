@@ -181,6 +181,9 @@ extension RouteViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
         }
+        if finalDuration >= 60 {
+            totalDuration = "\(finalDuration / 60) 小時 \(finalDuration % 60) 分鐘：\n"
+        }
         routeInfo += totalDuration
         routeInfo += routeDetails
         cell.subtitleLabel.text = routeInfo
