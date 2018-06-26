@@ -105,9 +105,7 @@ class RouteManager {
                         self.youbikeDelegate?.youbikeManager(self, didFailWith: error)
                     }
                 } else {
-                    DispatchQueue.main.async {
-                        self.youbikeDelegate?.youbikeManager(self, didFailWith: response.result.error!)
-                    }
+                    self.youbikeDelegate?.youbikeManager(self, didFailWith: response.result.error!)
                 }
         }
     }
