@@ -74,13 +74,13 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="顯示 Youbike 站點" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jps-dt-Sqp">
-                                <rect key="frame" x="10.000000000000007" y="95" width="123.66666666666669" height="18"/>
+                                <rect key="frame" x="15.000000000000007" y="95" width="123.66666666666669" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nLZ-sT-KuB">
-                                <rect key="frame" x="47.333333333333343" y="123" width="51" height="31"/>
+                                <rect key="frame" x="52.333333333333343" y="123" width="51" height="31"/>
                                 <color key="onTintColor" red="0.37647058820000001" green="0.68235294120000001" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="showOrHideYoubikeStation:" destination="BYZ-38-t0r" eventType="valueChanged" id="oJf-hp-ZnC"/>
@@ -114,7 +114,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Jps-dt-Sqp" firstAttribute="top" secondItem="ICl-re-SCB" secondAttribute="bottom" constant="10" id="2aD-0O-SpC"/>
-                            <constraint firstItem="Jps-dt-Sqp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="9Ye-Ii-Atk"/>
+                            <constraint firstItem="Jps-dt-Sqp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="9Ye-Ii-Atk"/>
                             <constraint firstItem="nLZ-sT-KuB" firstAttribute="centerX" secondItem="Jps-dt-Sqp" secondAttribute="centerX" id="ASX-zH-faV"/>
                             <constraint firstAttribute="bottom" secondItem="6qb-Ff-xfq" secondAttribute="bottom" id="Bh4-cb-w25"/>
                             <constraint firstItem="6qb-Ff-xfq" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="VxX-is-DvC"/>
