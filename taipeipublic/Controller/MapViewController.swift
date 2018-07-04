@@ -42,6 +42,17 @@ class MapViewController: UIViewController {
     @IBOutlet var routeDetailTableView: UITableView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerButton: UIButton!
+    @IBOutlet weak var showYoubikeStopLabel: UILabel!
+    @IBOutlet weak var youbikeStationSwitch: UISwitch!
+    @IBAction func showOrHideYoubikeStation(_ sender: UISwitch) {
+        if sender.isOn {
+            sender.setOn(false, animated: true)
+            // MARK: 顯示所有 Youbike 站點
+            showAllYoubikeStations()
+        } else {
+            sender.setOn(true, animated: true)
+        }
+    }
     @IBAction func showGoogleSearchController(_ sender: UIButton) {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.tintColor = .blue
@@ -213,6 +224,16 @@ class MapViewController: UIViewController {
                 self?.origin = origin
             }
             present(routeViewController, animated: true, completion: nil)
+        }
+    }
+
+    func showAllYoubikeStations() {
+        let youbikeManager = YoubikeManager.getStationInfo()
+        let youbikeStations = youbikeManager?.getYoubikeLocation()
+        if let youbikeStations = youbikeStations {
+            for station in youbikeStations {
+                addYoubikeMarker(of: station)
+            }
         }
     }
 }

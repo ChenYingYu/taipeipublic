@@ -73,6 +73,19 @@
                                     <constraint firstItem="Zi8-If-Cm5" firstAttribute="top" secondItem="6qb-Ff-xfq" secondAttribute="top" constant="32" id="yNe-yC-aba"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="顯示 Youbike 站點" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jps-dt-Sqp">
+                                <rect key="frame" x="10.000000000000007" y="95" width="123.66666666666669" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nLZ-sT-KuB">
+                                <rect key="frame" x="47.333333333333343" y="123" width="51" height="31"/>
+                                <color key="onTintColor" red="0.37647058820000001" green="0.68235294120000001" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="showOrHideYoubikeStation:" destination="BYZ-38-t0r" eventType="valueChanged" id="oJf-hp-ZnC"/>
+                                </connections>
+                            </switch>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6dM-OV-MDn" customClass="DestinationInfoView" customModule="taipeipublic" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="586" width="414" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -100,10 +113,14 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Jps-dt-Sqp" firstAttribute="top" secondItem="ICl-re-SCB" secondAttribute="bottom" constant="10" id="2aD-0O-SpC"/>
+                            <constraint firstItem="Jps-dt-Sqp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="9Ye-Ii-Atk"/>
+                            <constraint firstItem="nLZ-sT-KuB" firstAttribute="centerX" secondItem="Jps-dt-Sqp" secondAttribute="centerX" id="ASX-zH-faV"/>
                             <constraint firstAttribute="bottom" secondItem="6qb-Ff-xfq" secondAttribute="bottom" id="Bh4-cb-w25"/>
                             <constraint firstItem="6qb-Ff-xfq" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="VxX-is-DvC"/>
                             <constraint firstItem="6dM-OV-MDn" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="WK9-IB-GA8"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6dM-OV-MDn" secondAttribute="bottom" id="WWl-t4-RzG"/>
+                            <constraint firstItem="nLZ-sT-KuB" firstAttribute="top" secondItem="Jps-dt-Sqp" secondAttribute="bottom" constant="10" id="cRA-Yn-MUF"/>
                             <constraint firstItem="6qb-Ff-xfq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gKx-yF-U2D"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6qb-Ff-xfq" secondAttribute="trailing" id="sw4-vv-HHk"/>
                             <constraint firstItem="6dM-OV-MDn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="t6U-xu-MGx"/>
@@ -118,6 +135,8 @@
                         <outlet property="mapView" destination="6qb-Ff-xfq" id="aAk-PJ-JMz"/>
                         <outlet property="routeDetailTableView" destination="1Bp-R6-cF7" id="vTM-2h-DbG"/>
                         <outlet property="searchButton" destination="ICl-re-SCB" id="ai7-Ul-rIZ"/>
+                        <outlet property="showYoubikeStopLabel" destination="Jps-dt-Sqp" id="ev9-mb-kEK"/>
+                        <outlet property="youbikeStationSwitch" destination="nLZ-sT-KuB" id="llV-60-kRx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
