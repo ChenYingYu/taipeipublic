@@ -34,6 +34,7 @@ class MapViewController: UIViewController {
     var transitTag = Constant.DefaultValue.zero
     var transitInfoDictionary = [Int: [String: String]]()
     var initialCenter = CGPoint()
+    var youbikeMarkers = [GMSMarker]()
 
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var mapView: GMSMapView!
@@ -46,11 +47,10 @@ class MapViewController: UIViewController {
     @IBOutlet weak var youbikeStationSwitch: UISwitch!
     @IBAction func showOrHideYoubikeStation(_ sender: UISwitch) {
         if sender.isOn {
-            sender.setOn(false, animated: true)
             // MARK: 顯示所有 Youbike 站點
             showAllYoubikeStations()
         } else {
-            sender.setOn(true, animated: true)
+            hideAllYoubikeStations()
         }
     }
     @IBAction func showGoogleSearchController(_ sender: UIButton) {
@@ -133,6 +133,7 @@ class MapViewController: UIViewController {
             let marker = GMSMarker(position: position)
             marker.icon = UIImage(named: Constant.Icon.bicycle)
             marker.title = station.name
+            youbikeMarkers.append(marker)
             marker.map = mapView
         }
     }
@@ -234,6 +235,12 @@ class MapViewController: UIViewController {
             for station in youbikeStations {
                 addYoubikeMarker(of: station)
             }
+        }
+    }
+
+    func hideAllYoubikeStations() {
+        for marker in youbikeMarkers {
+            marker.map = nil
         }
     }
 }
