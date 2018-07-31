@@ -1,6 +1,7 @@
 # 台北大眾 [<img src="https://github.com/nick1ee/Shalk/raw/master/screenshot/DownloadAppStoreBadge.png" width="160" height="50" align=center>](https://itunes.apple.com/tw/app/台北大眾/id1390434956?mt=8)
 ### 台北的捷運公車路網發達，但仍然存在因站牌較少而需步行長距離才能搭乘公車的區域。<br />
 ### 這款APP納入台北市超過400站的Youbike站點，發掘可替換步行路線的Youbike路線，希望讓大眾在使用導航時可以有更多元的選擇。 <br />
+### (檔案不包含API KEY，若有執行需求請至 App Store 下載)。<br />
 
 # Feature
 * 地圖
