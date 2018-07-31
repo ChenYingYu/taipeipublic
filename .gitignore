@@ -60,6 +60,8 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+GoogleService-Info.plist
+taipeipublic/Model/Constant.swift
 
 ## Obj-C/Swift specific
 *.hmap
