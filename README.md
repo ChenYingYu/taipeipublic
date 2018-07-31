@@ -21,7 +21,7 @@
   * 若詳細路線資訊內有公車路線，則提供該公車班次的即時動態，讓使用者導航體驗不中斷
   
 # Screenshot
-<img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/RoutePage.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/Youbike路線特寫.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/詳細路線資訊.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/公車動態.png" width="270" height="480"> 
+<img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/Youbike預估時間（古亭國中---101）.PNG" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/Youbike路線特寫.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/詳細路線資訊.png" width="270" height="480"> <img src="https://github.com/ChenYingYu/reflections/blob/master/ScreenShot/公車動態.png" width="270" height="480"> 
 
 # Library
 * SwiftLint
@@ -47,7 +47,18 @@
 * 1.1 - 2018/06/06
 
   * 新增台北市區公車動態
+  
+* 1.2 - 2018/06/19
 
+  * 新增新北市區公車動態
+
+* 1.3 - 2018/06/22
+
+  * 新增 Youbike 路線時程預估
+  
+* 1.4 - 2018/06/29
+
+  * 新增新北市 Youbike 站點
 # Contacts
 Ying-Yu Chen <br />
 alan831007@gmail.com 
